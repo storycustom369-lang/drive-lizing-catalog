@@ -56,9 +56,15 @@ h1,h2,h3,.dl-num,.dl-btn,.dl-pill,.dl-title{font-family:'Onest',Arial,sans-serif
 .dl-pill{flex:none;padding:11px 20px;border-radius:999px;border:1px solid var(--border-strong);background:transparent;color:var(--navy);font-weight:600;font-size:14px;cursor:pointer;white-space:nowrap;transition:background .15s,color .15s,border-color .15s;}
 .dl-pill.is-active{background:var(--blue);border-color:var(--blue);color:#fff;}
 .dl-source-pill{background:var(--surface-tint);}
+.dl-pill--range{display:flex;flex-direction:column;align-items:center;gap:0;padding-top:7px;padding-bottom:7px;line-height:1.1;}
+.dl-pill__main{font-size:14px;font-weight:700;}
+.dl-pill__sub{font-size:9px;font-weight:600;opacity:.7;margin-top:1px;}
 .dl-tabs__divider{flex:none;width:1px;align-self:stretch;background:var(--border-strong);margin:2px 2px;}
 @media (max-width:640px){
   .dl-source-pill{font-size:12.5px;padding:10px 14px;}
+  .dl-pill--range{padding-top:6px;padding-bottom:6px;padding-left:14px;padding-right:14px;}
+  .dl-pill__main{font-size:12.5px;}
+  .dl-pill__sub{font-size:8px;}
 }
 .dl-marquee{overflow:hidden;background:var(--blue);white-space:nowrap;}
 .dl-marquee__track{display:inline-flex;align-items:center;animation:dlscroll 26s linear infinite;}
@@ -301,7 +307,8 @@ h1,h2,h3,.dl-num,.dl-btn,.dl-pill,.dl-title{font-family:'Onest',Arial,sans-serif
   };
   var MARQUEE_ITEMS = [
     ['shield','92% одобрений'], ['doc','По 2 документам'], ['swap','Trade-in'],
-    ['car','Более 60 автомобилей'], ['bank','Без банка'], ['star','Новые и с пробегом']
+    ['car','Более 60 автомобилей'], ['bank','Без банка'], ['star','Новые и с пробегом'],
+    ['swap','Аренда авто с выкупом'], ['bank','Лизинг для физ. и юр.лиц']
   ];
   var CAR_PLACEHOLDER = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 13l2-6h14l2 6v5h-3M6 18H3v-5M9 18h6" stroke-linecap="round" stroke-linejoin="round"/><circle cx="7" cy="17" r="1.8"/><circle cx="17" cy="17" r="1.8"/></svg>';
   var LEASE_ICON_SVG = '<svg viewBox="0 0 24 24" fill="none"><path d="M12 2L4 5v6c0 5 3.4 9.4 8 11 4.6-1.6 8-6 8-11V5l-8-3z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M12 8v4M12 15.5v.01" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>';
@@ -522,7 +529,9 @@ h1,h2,h3,.dl-num,.dl-btn,.dl-pill,.dl-title{font-family:'Onest',Arial,sans-serif
       btn.textContent = s.label;
       btn.type = 'button';
       btn.addEventListener('click', function(){
+        if (state.source === s.key) return;
         state.source = s.key;
+        state.bucket = 'all';
         buildTabs();
         renderGrid();
       });
@@ -535,9 +544,13 @@ h1,h2,h3,.dl-num,.dl-btn,.dl-pill,.dl-title{font-family:'Onest',Arial,sans-serif
 
     BUCKETS.forEach(function(b){
       var btn = document.createElement('button');
-      btn.className = 'dl-pill' + (state.bucket === b.key ? ' is-active' : '');
-      btn.textContent = b.label;
+      btn.className = 'dl-pill' + (b.key !== 'all' ? ' dl-pill--range' : '') + (state.bucket === b.key ? ' is-active' : '');
       btn.type = 'button';
+      if (b.key === 'all') {
+        btn.textContent = b.label;
+      } else {
+        btn.innerHTML = '<span class="dl-pill__main">' + b.label + '</span><span class="dl-pill__sub">в неделю</span>';
+      }
       btn.addEventListener('click', function(){
         state.bucket = b.key;
         buildTabs();
@@ -756,13 +769,6 @@ h1,h2,h3,.dl-num,.dl-btn,.dl-pill,.dl-title{font-family:'Onest',Arial,sans-serif
       priceRow.appendChild(num);
       priceRow.appendChild(unit);
       body.appendChild(priceRow);
-
-      if (price.week) {
-        var weekLine = document.createElement('div');
-        weekLine.className = 'dl-price-week';
-        weekLine.textContent = fmt(price.week) + ' ₽ в неделю';
-        body.appendChild(weekLine);
-      }
 
       var btn = document.createElement('button');
       btn.className = 'dl-btn';
