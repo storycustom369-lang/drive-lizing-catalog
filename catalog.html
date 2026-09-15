@@ -578,10 +578,6 @@ h1,h2,h3,.dl-num,.dl-btn,.dl-pill,.dl-title{font-family:'Onest',Arial,sans-serif
 
       var art = buildGallery(car.photos, car.marka + ' ' + car.model, { count: true });
       art.classList.add('dl-card__art');
-      var badge = document.createElement('div');
-      badge.className = 'dl-card__badge';
-      badge.textContent = car.art;
-      art.appendChild(badge);
 
       if (car.isLeaseProgram) {
         var leaseBadge = document.createElement('div');
