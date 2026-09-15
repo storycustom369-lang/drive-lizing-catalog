@@ -56,6 +56,7 @@ h1,h2,h3,.dl-num,.dl-btn,.dl-pill,.dl-title{font-family:'Onest',Arial,sans-serif
 .dl-pill{flex:none;padding:11px 20px;border-radius:999px;border:1px solid var(--border-strong);background:transparent;color:var(--navy);font-weight:600;font-size:14px;cursor:pointer;white-space:nowrap;transition:background .15s,color .15s,border-color .15s;}
 .dl-pill.is-active{background:var(--blue);border-color:var(--blue);color:#fff;}
 .dl-source-pill{background:var(--surface-tint);}
+.dl-tabs__pinned{position:sticky;left:0;z-index:5;display:flex;align-items:center;gap:10px;background:var(--surface);padding-right:4px;}
 .dl-pill--range{display:flex;flex-direction:column;align-items:center;gap:0;padding-top:7px;padding-bottom:7px;line-height:1.1;}
 .dl-pill__main{font-size:14px;font-weight:700;}
 .dl-pill__sub{font-size:9px;font-weight:600;opacity:.7;margin-top:1px;}
@@ -552,6 +553,9 @@ h1,h2,h3,.dl-num,.dl-btn,.dl-pill,.dl-title{font-family:'Onest',Arial,sans-serif
     if (!wrap) return;
     wrap.innerHTML = '';
 
+    var pinned = document.createElement('div');
+    pinned.className = 'dl-tabs__pinned';
+
     SOURCE_TABS.forEach(function(s){
       var btn = document.createElement('button');
       btn.className = 'dl-pill dl-source-pill' + (state.source === s.key ? ' is-active' : '');
@@ -564,12 +568,13 @@ h1,h2,h3,.dl-num,.dl-btn,.dl-pill,.dl-title{font-family:'Onest',Arial,sans-serif
         buildTabs();
         renderGrid();
       });
-      wrap.appendChild(btn);
+      pinned.appendChild(btn);
     });
 
     var divider = document.createElement('div');
     divider.className = 'dl-tabs__divider';
-    wrap.appendChild(divider);
+    pinned.appendChild(divider);
+    wrap.appendChild(pinned);
 
     BUCKETS.forEach(function(b){
       var btn = document.createElement('button');
