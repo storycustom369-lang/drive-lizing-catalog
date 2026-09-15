@@ -304,8 +304,8 @@ h1,h2,h3,.dl-num,.dl-btn,.dl-pill,.dl-title{font-family:'Onest',Arial,sans-serif
           <p class="dl-cta__text">У нас есть ещё модели, которых нет в каталоге, плюс машины под заказ. Напишите, что вам нужно (марку, бюджет, платёж в неделю), подберём вариант и посчитаем условия.</p>
         </div>
         <div class="dl-cta__links">
-          <a class="dl-cta__link" href="https://t.me/" target="_blank" rel="noopener">Telegram</a>
-          <a class="dl-cta__link" href="https://web.max.ru/" target="_blank" rel="noopener">MAX</a>
+          <a class="dl-cta__link" href="https://t.me/" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" width="20" height="20"><circle cx="12" cy="12" r="12" fill="#29A9EB"/><path d="M17.53 7.2L15.4 17.6c-.16.72-.58.9-1.18.56l-3.26-2.4-1.57 1.51c-.17.18-.32.33-.66.33l.24-3.36 6.1-5.51c.27-.24-.06-.37-.41-.13l-7.54 4.75-3.25-1.02c-.7-.22-.72-.7.15-1.04l12.7-4.9c.59-.22 1.1.14.9 1.05z" fill="#fff"/></svg><span>Telegram</span></a>
+          <a class="dl-cta__link" href="https://web.max.ru/" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" width="20" height="20"><defs><linearGradient id="maxIconGrad" x1="0" y1="0" x2="24" y2="24"><stop offset="0" stop-color="#4B7BF5"/><stop offset="1" stop-color="#9857F3"/></linearGradient></defs><rect width="24" height="24" rx="7" fill="url(#maxIconGrad)"/><path d="M6.3 8.8c0-1.1.9-2 2-2h7.4c1.1 0 2 .9 2 2v4.6c0 1.1-.9 2-2 2H10l-3.1 2.6v-2.6h-.6c-1.1 0-2-.9-2-2V8.8z" fill="#fff"/></svg><span>MAX</span></a>
         </div>
       </div>
       <div class="dl-cta__right">
@@ -1199,7 +1199,7 @@ h1,h2,h3,.dl-num,.dl-btn,.dl-pill,.dl-title{font-family:'Onest',Arial,sans-serif
     buildLeadForm(wrap, {
       collection: 'requests',
       submitLabel: 'Отправить заявку',
-      commentPlaceholder: 'Какая марка/бюджет/платёж в неделю нужен',
+      commentPlaceholder: 'Какая марка авто и год?\nЕсть ли ПВ?\nКакой платёж в месяц нужен?',
       extra: { type: 'custom_request' },
       onSuccess: function(){
         renderSuccess(wrap, 'Заявка отправлена', 'Спасибо! Мы подберём варианты и свяжемся с вами в ближайшее время.');
