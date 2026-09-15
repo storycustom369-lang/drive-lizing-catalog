@@ -122,10 +122,19 @@ h1,h2,h3,.dl-num,.dl-btn,.dl-pill,.dl-title{font-family:'Onest',Arial,sans-serif
 .dl-empty{padding:60px 0;text-align:center;color:var(--muted);font-size:14px;}
 .dl-modal-backdrop{position:fixed;inset:0;background:rgba(15,30,59,.5);display:flex;align-items:center;justify-content:center;padding:20px;z-index:100;}
 .dl-modal-backdrop[hidden]{display:none;}
-.dl-modal{background:var(--surface);border-radius:20px;max-width:420px;width:100%;padding:24px;box-shadow:var(--shadow);max-height:90vh;overflow-y:auto;}
-.dl-modal__head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:16px;}
+.dl-modal{background:var(--surface);border-radius:20px;max-width:420px;width:100%;padding:24px;box-shadow:var(--shadow);max-height:90vh;overflow-y:auto;position:relative;}
+.dl-modal__head{position:sticky;top:-24px;margin:-24px -24px 16px;padding:16px 24px 12px;background:var(--surface);z-index:2;display:flex;align-items:flex-start;justify-content:space-between;gap:12px;border-bottom:1px solid var(--border);}
 .dl-modal__title{font-size:16px;font-weight:600;color:var(--navy);}
-.dl-modal__close{background:none;border:none;color:var(--muted);cursor:pointer;font-size:20px;line-height:1;padding:2px;}
+.dl-modal__close{background:var(--surface-tint);border:none;color:var(--navy);cursor:pointer;font-size:20px;line-height:1;padding:6px;width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex:none;}
+.dl-modal__scrollcue{position:sticky;bottom:0;left:0;right:0;height:28px;margin:0 -24px -24px;background:linear-gradient(to bottom, rgba(255,255,255,0), var(--surface) 85%);pointer-events:none;display:flex;align-items:flex-end;justify-content:center;z-index:1;}
+.dl-modal__scrollcue svg{width:18px;height:18px;color:var(--muted);margin-bottom:4px;animation:dlbounce 1.6s ease-in-out infinite;}
+.dl-modal__scrollcue.is-hidden{display:none;}
+@keyframes dlbounce{0%,100%{transform:translateY(0);opacity:.55;}50%{transform:translateY(4px);opacity:1;}}
+@media (max-width:640px){
+  .dl-modal-backdrop{padding:0;}
+  .dl-modal{max-width:100%;width:100%;height:100dvh;max-height:100dvh;border-radius:0;}
+  .dl-modal__photo{aspect-ratio:16/11;margin-bottom:12px;}
+}
 .dl-field{margin-bottom:14px;}
 .dl-label{display:block;font-size:11px;font-weight:700;color:var(--muted);margin-bottom:8px;text-transform:uppercase;letter-spacing:.04em;}
 .dl-seg{display:grid;gap:6px;background:var(--surface-tint);border-radius:999px;padding:4px;}
@@ -976,6 +985,19 @@ h1,h2,h3,.dl-num,.dl-btn,.dl-pill,.dl-title{font-family:'Onest',Arial,sans-serif
       pvSum.textContent = variant.pv > 0 ? ('Сумма ПВ: ' + fmt(variant.pv) + ' ₽') : 'Без первоначального взноса';
     }
     update();
+
+    var scrollCue = document.createElement('div');
+    scrollCue.className = 'dl-modal__scrollcue';
+    scrollCue.innerHTML = '<svg viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+    modal.appendChild(scrollCue);
+
+    function updateScrollCue(){
+      var needsScroll = modal.scrollHeight - modal.clientHeight > 40;
+      var nearBottom = modal.scrollTop + modal.clientHeight >= modal.scrollHeight - 20;
+      scrollCue.classList.toggle('is-hidden', !needsScroll || nearBottom);
+    }
+    modal.addEventListener('scroll', updateScrollCue);
+    requestAnimationFrame(updateScrollCue);
 
     backdrop.hidden = false;
     document.body.style.overflow = 'hidden';
