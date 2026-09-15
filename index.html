@@ -162,7 +162,9 @@ h1,h2,h3,.dl-num,.dl-btn,.dl-pill,.dl-title{font-family:'Onest',Arial,sans-serif
 .dl-topbar__stars{display:flex;align-items:center;justify-content:flex-end;gap:4px;}
 .dl-topbar__stars svg{width:12px;height:12px;flex:none;color:#F5A623;}
 .dl-topbar__stars b{font-size:14px;font-weight:800;color:var(--navy);margin-left:2px;}
-.dl-topbar__reviews-text{font-size:12px;font-weight:600;color:var(--navy-soft);margin-top:3px;max-width:260px;}
+.dl-topbar__reviews-text{font-size:12px;font-weight:600;color:var(--navy-soft);margin-top:3px;max-width:260px;display:flex;align-items:center;justify-content:flex-end;flex-wrap:wrap;gap:5px;}
+.dl-topbar__review-logo{height:15px;width:auto;display:inline-block;vertical-align:middle;}
+.dl-topbar__review-logo--avito{height:13px;}
 @media (max-width:640px){
   .dl-topbar__inner{gap:10px;padding:12px 16px;}
   .dl-topbar__inner{gap:8px;}
@@ -174,7 +176,9 @@ h1,h2,h3,.dl-num,.dl-btn,.dl-pill,.dl-title{font-family:'Onest',Arial,sans-serif
   .dl-topbar__stars{justify-content:flex-end;}
   .dl-topbar__stars svg{width:10px;height:10px;}
   .dl-topbar__stars b{font-size:12px;}
-  .dl-topbar__reviews-text{font-size:9.5px;max-width:130px;}
+  .dl-topbar__reviews-text{font-size:9.5px;max-width:130px;gap:3px;}
+  .dl-topbar__review-logo{height:11px;}
+  .dl-topbar__review-logo--avito{height:9px;}
 }
 .dl-marquee--top{background:var(--surface);border-bottom:1px solid var(--border);}
 .dl-marquee--top .dl-marquee__item{color:var(--navy);}
@@ -275,7 +279,7 @@ h1,h2,h3,.dl-num,.dl-btn,.dl-pill,.dl-title{font-family:'Onest',Arial,sans-serif
     </div>
     <div class="dl-topbar__reviews">
       <div class="dl-topbar__stars"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2.9 6.3 6.9.7-5.2 4.6 1.6 6.8L12 16.9 5.8 20.4l1.6-6.8L2.2 9l6.9-.7L12 2z"/></svg><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2.9 6.3 6.9.7-5.2 4.6 1.6 6.8L12 16.9 5.8 20.4l1.6-6.8L2.2 9l6.9-.7L12 2z"/></svg><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2.9 6.3 6.9.7-5.2 4.6 1.6 6.8L12 16.9 5.8 20.4l1.6-6.8L2.2 9l6.9-.7L12 2z"/></svg><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2.9 6.3 6.9.7-5.2 4.6 1.6 6.8L12 16.9 5.8 20.4l1.6-6.8L2.2 9l6.9-.7L12 2z"/></svg><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2.9 6.3 6.9.7-5.2 4.6 1.6 6.8L12 16.9 5.8 20.4l1.6-6.8L2.2 9l6.9-.7L12 2z"/></svg><b>4.9</b></div>
-      <div class="dl-topbar__reviews-text">Более 400 отзывов на 2ГИС, Авито и других площадках</div>
+      <div class="dl-topbar__reviews-text">Более 400 отзывов на <img src="icon-2gis.webp" alt="2ГИС" class="dl-topbar__review-logo"><img src="icon-avito.png" alt="Авито" class="dl-topbar__review-logo dl-topbar__review-logo--avito"></div>
     </div>
   </div>
 </div>
