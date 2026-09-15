@@ -140,6 +140,8 @@ h1,h2,h3,.dl-num,.dl-btn,.dl-pill,.dl-title{font-family:'Onest',Arial,sans-serif
   .dl-range-grid{grid-template-columns:1fr;}
 }
 .dl-range-card{position:relative;display:flex;align-items:stretch;background:#fff;border:none;border-radius:16px;overflow:hidden;padding:0;cursor:pointer;text-align:left;font-family:inherit;transition:transform .15s;aspect-ratio:2.3/1;}
+.dl-range-card--full{display:block;}
+.dl-range-card--full img{width:100%;height:100%;object-fit:cover;display:block;}
 .dl-range-card:hover{transform:translateY(-2px);}
 .dl-range-card__photo{width:48%;flex:none;background:#fff;padding:6px;}
 .dl-range-card__photo img{width:100%;height:100%;object-fit:contain;display:block;}
@@ -410,10 +412,16 @@ h1,h2,h3,.dl-num,.dl-btn,.dl-pill,.dl-title{font-family:'Onest',Arial,sans-serif
   }
 
   var RANGE_CARD_PHOTO = {
-    '10-15': 'https://static.tildacdn.com/stor6635-6663-4937-b039-653939343233/8b71faafff27d5d7826ad6297c7b133a.jpg',
-    '15-20': 'https://static.tildacdn.com/stor6163-3039-4530-b339-363064353961/93809991e1b54cfeac9a303950efb4b0.jpg',
-    '20-25': 'https://static.tildacdn.com/stor3566-6135-4164-b037-376264643132/046c8d8975f1e8305667b8308b63c3a6.jpg',
-    'bolee25': 'https://static.tildacdn.com/stor3161-3333-4134-b130-313866326335/22fde9858851057ba0bc85b62b47591a.jpg'
+    '10-15': '/_blob/a1a99c3efad136523b556a49c42be43e',
+    '15-20': '/_blob/578d437d571bddc9d527479608ea5759',
+    '20-25': '/_blob/318dfa0c642d89a98979ebf21a079359',
+    'bolee25': '/_blob/1ce5adbf1769b677c832ba9c83f83971'
+  };
+  var RANGE_CARD_FULL_IMAGE = {
+    '10-15': 'https://static.tildacdn.com/tild3962-3764-4664-b634-333030313038/1.svg',
+    '15-20': 'https://static.tildacdn.com/tild3338-3834-4833-a466-613332313561/2.svg',
+    '20-25': 'https://static.tildacdn.com/tild3239-3534-4564-a535-613739633961/3.svg',
+    'bolee25': 'https://static.tildacdn.com/tild3564-6532-4438-a138-626432666235/4.svg'
   };
 
   function buildRangeCards(){
@@ -424,9 +432,24 @@ h1,h2,h3,.dl-num,.dl-btn,.dl-pill,.dl-title{font-family:'Onest',Arial,sans-serif
     order.forEach(function(key){
       var list = CARS.filter(function(c){ return c.bucket === key; });
       if (!list.length) return;
+      var b = BUCKETS.find(function(x){ return x.key === key; });
+
+      var fullImageUrl = RANGE_CARD_FULL_IMAGE[key];
+      if (fullImageUrl) {
+        var fullCard = document.createElement('button');
+        fullCard.type = 'button';
+        fullCard.className = 'dl-range-card dl-range-card--full';
+        fullCard.addEventListener('click', function(){ goToBucket(key); });
+        var fullImg = document.createElement('img');
+        fullImg.src = fullImageUrl;
+        fullImg.alt = b.label;
+        fullCard.appendChild(fullImg);
+        wrap.appendChild(fullCard);
+        return;
+      }
+
       var cutoutUrl = RANGE_CARD_PHOTO[key];
       var withPhoto = cutoutUrl ? { photos: [cutoutUrl] } : list.find(function(c){ return c.photos && c.photos.length; });
-      var b = BUCKETS.find(function(x){ return x.key === key; });
 
       var card = document.createElement('button');
       card.type = 'button';
