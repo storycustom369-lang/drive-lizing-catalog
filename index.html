@@ -125,11 +125,8 @@ h1,h2,h3,.dl-num,.dl-btn,.dl-pill,.dl-title{font-family:'Onest',Arial,sans-serif
 .dl-topbar{position:sticky;top:0;z-index:41;background:var(--surface);border-bottom:1px solid var(--border);}
 .dl-topbar__inner{max-width:1180px;margin:0 auto;padding:12px 24px;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;}
 .dl-topbar__logo{display:flex;align-items:center;gap:10px;}
-.dl-topbar__mark{width:22px;height:22px;flex:none;color:var(--blue);}
-.dl-topbar__mark svg{width:100%;height:100%;}
-.dl-topbar__name{font-weight:800;font-size:14px;line-height:1.15;letter-spacing:.02em;color:var(--navy);text-transform:uppercase;}
-.dl-topbar__name em{display:block;font-style:normal;font-weight:700;color:var(--navy-soft);letter-spacing:.06em;}
-.dl-topbar__caption{font-size:11px;font-weight:600;color:var(--muted);margin-top:3px;}
+.dl-topbar__logo-img{height:48px;width:auto;flex:none;display:block;}
+.dl-topbar__caption{font-size:11px;font-weight:600;color:var(--muted);}
 .dl-topbar__reviews{font-size:13px;font-weight:600;color:var(--navy-soft);text-align:right;}
 @media (max-width:640px){
   .dl-topbar__inner{gap:6px;}
@@ -211,13 +208,8 @@ h1,h2,h3,.dl-num,.dl-btn,.dl-pill,.dl-title{font-family:'Onest',Arial,sans-serif
 <div class="dl-topbar">
   <div class="dl-topbar__inner">
     <div class="dl-topbar__logo">
-      <div class="dl-topbar__mark">
-        <svg viewBox="0 0 24 24" fill="none"><path d="M2 17L11 8M7 17L14 10M12 17L17 12" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"/></svg>
-      </div>
-      <div class="dl-topbar__wordmark">
-        <div class="dl-topbar__name">ДРАЙВ<em>ЛИЗИНГ</em></div>
-        <div class="dl-topbar__caption">Работаем с физ. и юр. лицами</div>
-      </div>
+      <img src="logo.png" alt="Драйв Лизинг" class="dl-topbar__logo-img">
+      <div class="dl-topbar__caption">Работаем с физ. и юр. лицами</div>
     </div>
     <div class="dl-topbar__reviews">Более 400 отзывов за 7 лет работы на площадках 2ГИС / Яндекс</div>
   </div>
