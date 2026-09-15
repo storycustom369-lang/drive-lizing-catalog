@@ -127,10 +127,15 @@ h1,h2,h3,.dl-num,.dl-btn,.dl-pill,.dl-title{font-family:'Onest',Arial,sans-serif
 .dl-topbar__logo{display:flex;align-items:center;gap:10px;}
 .dl-topbar__logo-img{height:48px;width:auto;flex:none;display:block;}
 .dl-topbar__caption{font-size:11px;font-weight:600;color:var(--muted);}
-.dl-topbar__reviews{font-size:13px;font-weight:600;color:var(--navy-soft);text-align:right;}
+.dl-topbar__reviews{text-align:right;}
+.dl-topbar__stars{display:flex;align-items:center;justify-content:flex-end;gap:4px;}
+.dl-topbar__stars svg{width:12px;height:12px;flex:none;color:#F5A623;}
+.dl-topbar__stars b{font-size:14px;font-weight:800;color:var(--navy);margin-left:2px;}
+.dl-topbar__reviews-text{font-size:12px;font-weight:600;color:var(--navy-soft);margin-top:3px;max-width:260px;}
 @media (max-width:640px){
   .dl-topbar__inner{gap:6px;}
-  .dl-topbar__reviews{font-size:12px;text-align:left;}
+  .dl-topbar__reviews{text-align:left;}
+  .dl-topbar__stars{justify-content:flex-start;}
 }
 .dl-marquee--top{background:var(--surface);border-bottom:1px solid var(--border);}
 .dl-marquee--top .dl-marquee__item{color:var(--navy);}
@@ -211,7 +216,10 @@ h1,h2,h3,.dl-num,.dl-btn,.dl-pill,.dl-title{font-family:'Onest',Arial,sans-serif
       <img src="logo.png" alt="Драйв Лизинг" class="dl-topbar__logo-img">
       <div class="dl-topbar__caption">Работаем с физ. и юр. лицами</div>
     </div>
-    <div class="dl-topbar__reviews">Более 400 отзывов за 7 лет работы на площадках 2ГИС / Яндекс</div>
+    <div class="dl-topbar__reviews">
+      <div class="dl-topbar__stars"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2.9 6.3 6.9.7-5.2 4.6 1.6 6.8L12 16.9 5.8 20.4l1.6-6.8L2.2 9l6.9-.7L12 2z"/></svg><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2.9 6.3 6.9.7-5.2 4.6 1.6 6.8L12 16.9 5.8 20.4l1.6-6.8L2.2 9l6.9-.7L12 2z"/></svg><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2.9 6.3 6.9.7-5.2 4.6 1.6 6.8L12 16.9 5.8 20.4l1.6-6.8L2.2 9l6.9-.7L12 2z"/></svg><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2.9 6.3 6.9.7-5.2 4.6 1.6 6.8L12 16.9 5.8 20.4l1.6-6.8L2.2 9l6.9-.7L12 2z"/></svg><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2.9 6.3 6.9.7-5.2 4.6 1.6 6.8L12 16.9 5.8 20.4l1.6-6.8L2.2 9l6.9-.7L12 2z"/></svg><b>4.9</b></div>
+      <div class="dl-topbar__reviews-text">Более 400 отзывов на 2ГИС, Авито и других площадках</div>
+    </div>
   </div>
 </div>
 
