@@ -206,11 +206,11 @@ h1,h2,h3,.dl-num,.dl-btn,.dl-pill,.dl-title{font-family:'Onest',Arial,sans-serif
 }
 </style>
 
-<h2 class="sr-only" style="position:absolute;width:1px;height:1px;overflow:hidden;">Драйв Лизинг — автомобили в лизинг и рассрочку</h2>
+<h2 class="sr-only" style="position:absolute;width:1px;height:1px;overflow:hidden;">Каталог автомобилей Драйв Лизинг с расчётом еженедельного платежа по каждой категории цен</h2>
 
 <div class="dl-topbar">
   <div class="dl-topbar__inner">
-    <div class="dl-topbar__logo">
+    <a href="index.html" class="dl-topbar__logo" style="text-decoration:none;">
       <div class="dl-topbar__mark">
         <svg viewBox="0 0 24 24" fill="none"><path d="M2 17L11 8M7 17L14 10M12 17L17 12" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"/></svg>
       </div>
@@ -218,23 +218,48 @@ h1,h2,h3,.dl-num,.dl-btn,.dl-pill,.dl-title{font-family:'Onest',Arial,sans-serif
         <div class="dl-topbar__name">ДРАЙВ<em>ЛИЗИНГ</em></div>
         <div class="dl-topbar__caption">Работаем с физ. и юр. лицами</div>
       </div>
-    </div>
+    </a>
     <div class="dl-topbar__reviews">Более 400 отзывов за 7 лет работы на площадках 2ГИС / Яндекс</div>
   </div>
 </div>
 
-<div class="dl-marquee dl-marquee--top">
-  <div class="dl-marquee__track" id="dlMarqueeTrackTop"></div>
+<div class="dl-sticky">
+  <div class="dl-tabs" id="dlTabs"></div>
+  <div class="dl-marquee">
+    <div class="dl-marquee__track" id="dlMarqueeTrack"></div>
+  </div>
 </div>
 
-<div class="dl-ranges dl-ranges--first">
-  <div class="dl-ranges__inner">
-    <div class="dl-ranges__head">
-      <h2>Сколько готовы платить <em>в неделю?</em></h2>
-      <p>Нажмите на диапазон, покажем подходящие машины</p>
-    </div>
-    <div class="dl-range-grid" id="dlRangeGrid"></div>
+<div class="dl-wrap">
+  <div class="dl-heading">
+    <h2 id="dlHeading">Все автомобили</h2>
+    <span class="dl-count" id="dlCount"></span>
   </div>
+  <div class="dl-grid" id="dlGrid"></div>
+  <div class="dl-empty" id="dlEmpty" hidden>В этой категории пока нет машин</div>
+
+  <div class="dl-cta" id="dlCtaSection">
+    <div class="dl-cta__inner">
+      <div class="dl-cta__left">
+        <div class="dl-cta__frame">
+          <p class="dl-cta__title">Не нашли подходящий автомобиль?</p>
+          <p class="dl-cta__text">У нас есть ещё модели, которых нет в каталоге, плюс машины под заказ. Напишите, что вам нужно (марку, бюджет, платёж в неделю), подберём вариант и посчитаем условия.</p>
+        </div>
+        <div class="dl-cta__links">
+          <a class="dl-cta__link" href="https://t.me/" target="_blank" rel="noopener">Telegram</a>
+          <a class="dl-cta__link" href="https://web.max.ru/" target="_blank" rel="noopener">MAX</a>
+        </div>
+      </div>
+      <div class="dl-cta__right">
+        <p class="dl-cta__form-title">Оставить заявку</p>
+        <div id="dlCtaFormWrap"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="dl-modal-backdrop" id="dlModalBackdrop" hidden>
+  <div class="dl-modal" id="dlModal"></div>
 </div>
 
 <script>
@@ -416,12 +441,7 @@ h1,h2,h3,.dl-num,.dl-btn,.dl-pill,.dl-title{font-family:'Onest',Arial,sans-serif
     '20-25': '/_blob/318dfa0c642d89a98979ebf21a079359',
     'bolee25': '/_blob/1ce5adbf1769b677c832ba9c83f83971'
   };
-  var RANGE_CARD_FULL_IMAGE = {
-    '10-15': 'https://static.tildacdn.com/tild3962-3764-4664-b634-333030313038/1.svg',
-    '15-20': 'https://static.tildacdn.com/tild3338-3834-4833-a466-613332313561/2.svg',
-    '20-25': 'https://static.tildacdn.com/tild3239-3534-4564-a535-613739633961/3.svg',
-    'bolee25': 'https://static.tildacdn.com/tild3564-6532-4438-a138-626432666235/4.svg'
-  };
+  var RANGE_CARD_FULL_IMAGE = {};
 
   function buildRangeCards(){
     var wrap = document.getElementById('dlRangeGrid');
