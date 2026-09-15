@@ -1044,7 +1044,7 @@ h1,h2,h3,.dl-num,.dl-btn,.dl-pill,.dl-title{font-family:'Onest',Arial,sans-serif
 
     var hint = document.createElement('div');
     hint.className = 'dl-form-hint';
-    hint.textContent = 'Нажимая «Отправить», вы соглашаетесь на обработку персональных данных.';
+    hint.innerHTML = 'Нажимая «Отправить», вы соглашаетесь на <a href="privacy.html" target="_blank" rel="noopener" style="color:inherit;">обработку персональных данных</a>.';
 
     container.appendChild(nameField);
     container.appendChild(phoneField);
