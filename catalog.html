@@ -18,34 +18,6 @@
   --muted:#8A93A6;
   --shadow:0 10px 30px rgba(15,30,59,0.08);
 }
-@media (prefers-color-scheme: dark){
-  :root:not([data-theme="light"]){
-    --navy:#F2F5FA;
-    --navy-soft:#B7C2D0;
-    --blue:#5B8DF5;
-    --blue-dark:#7CA4F7;
-    --surface:#152535;
-    --surface-page:#0E1B29;
-    --surface-tint:#1B2E40;
-    --border:#26394B;
-    --border-strong:#33495E;
-    --muted:#8496AA;
-    --shadow:0 10px 30px rgba(0,0,0,0.35);
-  }
-}
-:root[data-theme="dark"]{
-  --navy:#F2F5FA;
-  --navy-soft:#B7C2D0;
-  --blue:#5B8DF5;
-  --blue-dark:#7CA4F7;
-  --surface:#152535;
-  --surface-page:#0E1B29;
-  --surface-tint:#1B2E40;
-  --border:#26394B;
-  --border-strong:#33495E;
-  --muted:#8496AA;
-  --shadow:0 10px 30px rgba(0,0,0,0.35);
-}
 *{box-sizing:border-box;}
 body{margin:0;background:var(--surface-page);color:var(--navy);font-family:'Golos Text',Arial,sans-serif;}
 h1,h2,h3,.dl-num,.dl-btn,.dl-pill,.dl-title{font-family:'Onest',Arial,sans-serif;}
@@ -243,6 +215,10 @@ h1,h2,h3,.dl-num,.dl-btn,.dl-pill,.dl-title{font-family:'Onest',Arial,sans-serif
 .dl-form-input:focus,.dl-form-textarea:focus{border-color:var(--blue);}
 .dl-form-textarea{resize:vertical;min-height:64px;font-family:inherit;}
 .dl-form-hint{font-size:11.5px;color:var(--muted);margin-top:6px;line-height:1.4;}
+.dl-form-consent{display:flex;align-items:flex-start;gap:8px;margin:12px 0;font-size:12.5px;color:var(--navy-soft);line-height:1.4;cursor:pointer;}
+.dl-form-consent input{flex:none;width:16px;height:16px;margin-top:1px;accent-color:var(--blue);cursor:pointer;}
+.dl-form-consent a{color:var(--blue);}
+.dl-form-consent.is-error{color:#D14343;}
 .dl-success{display:flex;flex-direction:column;align-items:center;text-align:center;gap:10px;padding:12px 4px 4px;}
 .dl-success svg{width:44px;height:44px;color:var(--blue);}
 .dl-success__title{font-size:16px;font-weight:700;color:var(--navy);}
@@ -1066,16 +1042,24 @@ h1,h2,h3,.dl-num,.dl-btn,.dl-pill,.dl-title{font-family:'Onest',Arial,sans-serif
     errorMsg.style.color = '#D14343';
     errorMsg.hidden = true;
 
-    var hint = document.createElement('div');
-    hint.className = 'dl-form-hint';
-    hint.innerHTML = 'Нажимая «Отправить», вы соглашаетесь на <a href="privacy.html" target="_blank" rel="noopener" style="color:inherit;">обработку персональных данных</a>.';
+    var consentField = document.createElement('label');
+    consentField.className = 'dl-form-consent';
+    var consentInput = document.createElement('input');
+    consentInput.type = 'checkbox';
+    var consentText = document.createElement('span');
+    consentText.innerHTML = 'Согласен на <a href="privacy.html" target="_blank" rel="noopener">обработку персональных данных</a>';
+    consentField.appendChild(consentInput);
+    consentField.appendChild(consentText);
+    consentInput.addEventListener('change', function(){
+      consentField.classList.remove('is-error');
+    });
 
     container.appendChild(nameField);
     container.appendChild(phoneField);
     container.appendChild(commentField);
+    container.appendChild(consentField);
     container.appendChild(errorMsg);
     container.appendChild(submitBtn);
-    container.appendChild(hint);
 
     submitBtn.addEventListener('click', function(){
       var name = nameInput.value.trim();
@@ -1084,6 +1068,12 @@ h1,h2,h3,.dl-num,.dl-btn,.dl-pill,.dl-title{font-family:'Onest',Arial,sans-serif
         errorMsg.textContent = 'Укажите номер телефона, чтобы мы могли связаться с вами.';
         errorMsg.hidden = false;
         phoneInput.focus();
+        return;
+      }
+      if (!consentInput.checked) {
+        errorMsg.textContent = 'Нужно согласие на обработку персональных данных.';
+        errorMsg.hidden = false;
+        consentField.classList.add('is-error');
         return;
       }
       errorMsg.hidden = true;
