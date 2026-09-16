@@ -91,6 +91,7 @@ h1,h2,h3,.dl-num,.dl-btn,.dl-pill,.dl-title{font-family:'Onest',Arial,sans-serif
 .dl-num{font-size:19px;font-weight:700;color:var(--blue);}
 .dl-btn{width:100%;margin-top:10px;padding:12px;border:none;border-radius:12px;background:var(--blue);color:#fff;font-weight:600;font-size:14px;cursor:pointer;transition:background .15s;}
 .dl-btn:hover{background:var(--blue-dark);}
+.dl-btn--disabled,.dl-btn--disabled:hover{background:transparent;color:#D14343;cursor:not-allowed;text-decoration:line-through;border:1.5px solid #D14343;}
 .dl-empty{padding:60px 0;text-align:center;color:var(--muted);font-size:14px;}
 .dl-modal-backdrop{position:fixed;inset:0;background:rgba(15,30,59,.5);display:flex;align-items:center;justify-content:center;padding:20px;z-index:100;}
 .dl-modal-backdrop[hidden]{display:none;}
@@ -761,7 +762,12 @@ h1,h2,h3,.dl-num,.dl-btn,.dl-pill,.dl-title{font-family:'Onest',Arial,sans-serif
         body.appendChild(kompl);
       }
 
-      if (price) {
+      if (car.isIssued) {
+        var unavailNote = document.createElement('div');
+        unavailNote.className = 'dl-unavail-note';
+        unavailNote.textContent = 'Автомобиль выдан клиенту, сейчас недоступен';
+        body.appendChild(unavailNote);
+      } else if (price) {
         var priceRow = document.createElement('div');
         priceRow.className = 'dl-price-row';
         var label = document.createElement('span');
@@ -778,16 +784,20 @@ h1,h2,h3,.dl-num,.dl-btn,.dl-pill,.dl-title{font-family:'Onest',Arial,sans-serif
         priceRow.appendChild(unit);
         body.appendChild(priceRow);
       } else {
-        var unavailNote = document.createElement('div');
-        unavailNote.className = 'dl-unavail-note';
-        unavailNote.textContent = 'Автомобиль выдан клиенту, сейчас недоступен';
-        body.appendChild(unavailNote);
+        var unavailNote2 = document.createElement('div');
+        unavailNote2.className = 'dl-unavail-note';
+        unavailNote2.textContent = 'Автомобиль выдан клиенту, сейчас недоступен';
+        body.appendChild(unavailNote2);
       }
 
       var btn = document.createElement('button');
       btn.className = 'dl-btn';
       btn.type = 'button';
-      if (price) {
+      if (car.isIssued) {
+        btn.className = 'dl-btn dl-btn--disabled';
+        btn.textContent = 'Забронирован';
+        btn.disabled = true;
+      } else if (price) {
         btn.textContent = 'Подробнее и расчёт';
         btn.addEventListener('click', function(){ openModal(car); });
       } else {
