@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://driveleasing38.ru/sitemap.xml

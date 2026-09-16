@@ -1,6 +1,17 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Каталог Драйв Лизинг</title>
+<title>Каталог автомобилей в лизинг — Драйв Лизинг Иркутск</title>
+<meta name="description" content="Полный каталог автомобилей в лизинг и аренду с выкупом в Иркутске. Калькулятор платежа в сутки, неделю и месяц. Новые и с пробегом, без банка, по 2 документам.">
+<meta name="keywords" content="каталог авто в лизинг, авто в аренду с выкупом иркутск, лизинг физическим лицам, автомобили с пробегом в лизинг, новые авто в лизинг иркутск">
+<link rel="canonical" href="https://driveleasing38.ru/catalog.html">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="ru_RU">
+<meta property="og:site_name" content="Драйв Лизинг">
+<meta property="og:title" content="Каталог автомобилей в лизинг — Драйв Лизинг Иркутск">
+<meta property="og:description" content="Более 60 автомобилей в лизинг и аренду с выкупом. Калькулятор платежа в сутки, неделю и месяц.">
+<meta property="og:url" content="https://driveleasing38.ru/catalog.html">
+<meta property="og:image" content="https://driveleasing38.ru/logo.png">
+<meta name="twitter:card" content="summary_large_image">
 <link rel="icon" type="image/png" href="favicon.png">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -746,7 +757,7 @@ h1,h2,h3,.dl-num,.dl-btn,.dl-pill,.dl-title{font-family:'Onest',Arial,sans-serif
       var card = document.createElement('div');
       card.className = 'dl-card';
 
-      var art = buildGallery(car.photos, car.marka + ' ' + car.model, { count: true });
+      var art = buildGallery(car.photos, carTitle(car) + ' в лизинг и аренду с выкупом, Иркутск', { count: true });
       art.classList.add('dl-card__art');
 
       if (car.isLeaseProgram) {
@@ -861,7 +872,7 @@ h1,h2,h3,.dl-num,.dl-btn,.dl-pill,.dl-title{font-family:'Onest',Arial,sans-serif
     head.appendChild(closeBtn);
     modal.appendChild(head);
 
-    var photoWrap = buildGallery(car.photos, carTitle(car), { count: true, lightbox: true });
+    var photoWrap = buildGallery(car.photos, carTitle(car) + ' в лизинг и аренду с выкупом, Иркутск', { count: true, lightbox: true });
     photoWrap.classList.add('dl-modal__photo');
     if (!car.photos || !car.photos.length) {
       photoWrap.style.display = 'flex';
@@ -1255,11 +1266,48 @@ h1,h2,h3,.dl-num,.dl-btn,.dl-pill,.dl-title{font-family:'Onest',Arial,sans-serif
     }
   } catch (e) {}
 
+  function buildStructuredData(){
+    try {
+      var items = CARS.slice(0, 80).map(function(car, i){
+        var price = cardDayAtMaxTerm(car);
+        var product = {
+          '@type': 'Product',
+          'name': carTitle(car),
+          'brand': { '@type': 'Brand', 'name': car.marka },
+          'category': car.kuzov || 'автомобиль',
+          'description': (car.spec || (carTitle(car) + ', ' + (car.kuzov || 'автомобиль'))) + '. В лизинг и аренду с выкупом в Иркутске, Драйв Лизинг.'
+        };
+        if (car.photos && car.photos.length) product.image = car.photos[0];
+        if (price) {
+          product.offers = {
+            '@type': 'Offer',
+            'price': String(Math.round(price.day)),
+            'priceCurrency': 'RUB',
+            'availability': car.isIssued ? 'https://schema.org/OutOfStock' : 'https://schema.org/InStock',
+            'url': 'https://driveleasing38.ru/catalog.html'
+          };
+        }
+        return { '@type': 'ListItem', 'position': i + 1, 'item': product };
+      });
+      var data = {
+        '@context': 'https://schema.org',
+        '@type': 'ItemList',
+        'name': 'Каталог автомобилей в лизинг, Драйв Лизинг Иркутск',
+        'itemListElement': items
+      };
+      var script = document.createElement('script');
+      script.type = 'application/ld+json';
+      script.textContent = JSON.stringify(data);
+      document.head.appendChild(script);
+    } catch (e) {}
+  }
+
   buildRangeCards();
   buildTabs();
   buildMarquee();
   renderGrid();
   buildCtaForm();
+  buildStructuredData();
 
   function syncStickyOffset(){
     var topbar = document.querySelector('.dl-topbar');
