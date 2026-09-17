@@ -371,7 +371,7 @@ h1,h2,h3,.dl-num,.dl-btn,.dl-pill,.dl-title{font-family:'Onest',Arial,sans-serif
       var img = document.createElement('img');
       img.src = src;
       img.alt = title;
-      img.loading = 'lazy';
+      img.loading = opts.eager ? 'eager' : 'lazy';
       slide.appendChild(img);
       track.appendChild(slide);
       return slide;
@@ -873,7 +873,7 @@ h1,h2,h3,.dl-num,.dl-btn,.dl-pill,.dl-title{font-family:'Onest',Arial,sans-serif
     head.appendChild(closeBtn);
     modal.appendChild(head);
 
-    var photoWrap = buildGallery(car.photos, carTitle(car) + ' в лизинг и аренду с выкупом, Иркутск', { count: true, lightbox: true });
+    var photoWrap = buildGallery(car.photos, carTitle(car) + ' в лизинг и аренду с выкупом, Иркутск', { count: true, lightbox: true, eager: true });
     photoWrap.classList.add('dl-modal__photo');
     if (!car.photos || !car.photos.length) {
       photoWrap.style.display = 'flex';
