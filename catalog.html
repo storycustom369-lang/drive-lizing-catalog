@@ -390,13 +390,26 @@ h1,h2,h3,.dl-num,.dl-btn,.dl-pill,.dl-title{font-family:'Onest',Arial,sans-serif
 
     var track = document.createElement('div');
     track.className = 'dl-gallery__track';
-    var slideEls = photos.map(function(src){
+    var slideEls = photos.map(function(src, i){
       var slide = document.createElement('div');
       slide.className = 'dl-gallery__slide';
       var img = document.createElement('img');
-      img.src = src;
       img.alt = title;
-      img.loading = opts.eager ? 'eager' : 'lazy';
+      if (opts.eager) {
+        // Modal/lightbox: avoid native loading="lazy" (unreliable in some
+        // in-app WebViews when the image starts out inside a hidden modal).
+        // Load slide 1 immediately, defer the rest slightly so they don't
+        // compete with it for bandwidth on slow mobile connections.
+        if (i === 0) {
+          img.src = src;
+        } else {
+          var delay = Math.min(i * 120, 600);
+          setTimeout(function(){ img.src = src; }, delay);
+        }
+      } else {
+        img.src = src;
+        img.loading = 'lazy';
+      }
       slide.appendChild(img);
       track.appendChild(slide);
       return slide;
