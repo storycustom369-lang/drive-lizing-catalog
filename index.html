@@ -150,9 +150,11 @@ h1,h2,h3,.dl-num,.dl-btn,.dl-pill,.dl-title{font-family:'Onest',Arial,sans-serif
 .dl-pv-sum{font-size:12px;color:var(--muted);margin-top:8px;font-weight:600;}
 .dl-result{border-top:1px solid var(--border);padding-top:14px;margin-top:4px;display:flex;gap:6px;}
 .dl-result__cell{flex:1;min-width:0;background:var(--surface-tint);border-radius:12px;padding:8px 4px;text-align:center;}
-.dl-result__cell.is-main{background:color-mix(in srgb, var(--blue) 12%, var(--surface-tint));}
+.dl-result__cell.is-main{background:var(--blue);}
 .dl-result__num{font-size:14px;font-weight:700;display:block;color:var(--navy);white-space:nowrap;}
+.dl-result__cell.is-main .dl-result__num{color:#fff;}
 .dl-result__unit{font-size:9px;font-weight:700;color:var(--muted);text-transform:uppercase;}
+.dl-result__cell.is-main .dl-result__unit{color:rgba(255,255,255,.85);}
 @media (max-width:640px){
   .dl-grid{grid-template-columns:repeat(auto-fill,minmax(210px,1fr));}
 }
