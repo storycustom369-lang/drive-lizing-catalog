@@ -388,6 +388,26 @@ h1,h2,h3,.dl-num,.dl-btn,.dl-pill,.dl-title{font-family:'Onest',Arial,sans-serif
     gallery.className = 'dl-gallery';
     var idx = 0;
 
+    // iOS Safari sometimes leaves a dynamically-assigned <img src> fully
+    // "loaded" (naturalWidth/height set) yet never actually painted inside
+    // this flex/sticky gallery structure, on any slide, not just the first.
+    // Preloading via a detached Image first (so the real <img> only ever
+    // gets a src the browser has already fully decoded) plus a harmless
+    // opacity nudge on load reliably forces a real repaint.
+    function assignImgSrc(img, src){
+      var pre = new Image();
+      pre.onload = function(){
+        img.src = src;
+        img.addEventListener('load', function forceRepaint(){
+          img.removeEventListener('load', forceRepaint);
+          img.style.opacity = '0.999';
+          requestAnimationFrame(function(){ img.style.opacity = ''; });
+        });
+      };
+      pre.onerror = function(){ img.src = src; };
+      pre.src = src;
+    }
+
     var track = document.createElement('div');
     track.className = 'dl-gallery__track';
     var slideEls = photos.map(function(src, i){
@@ -401,11 +421,10 @@ h1,h2,h3,.dl-num,.dl-btn,.dl-pill,.dl-title{font-family:'Onest',Arial,sans-serif
         // Load slide 1 immediately, defer the rest slightly so they don't
         // compete with it for bandwidth on slow mobile connections.
         if (i === 0) {
-          img.decoding = 'sync';
-          img.src = src;
+          assignImgSrc(img, src);
         } else {
           var delay = Math.min(i * 120, 600);
-          setTimeout(function(){ img.src = src; }, delay);
+          setTimeout(function(){ assignImgSrc(img, src); }, delay);
         }
       } else {
         img.src = src;
