@@ -922,6 +922,29 @@ h1,h2,h3,.dl-num,.dl-btn,.dl-pill,.dl-title{font-family:'Onest',Arial,sans-serif
     }
     modal.appendChild(photoWrap);
 
+    // iOS Safari sometimes fails to compute the CSS aspect-ratio box on
+    // this element correctly (stays 0-height or stale) right after the
+    // modal is shown, or after a device rotation, leaving the photo
+    // effectively invisible even though it loaded fine. Pin an explicit
+    // pixel height instead of trusting aspect-ratio, and recompute it
+    // whenever the viewport size changes.
+    if (car.photos && car.photos.length) {
+      var fixPhotoHeight = function(){
+        var w = photoWrap.getBoundingClientRect().width;
+        if (w > 0) {
+          var ratio = window.innerWidth <= 640 ? (11 / 16) : (10 / 16);
+          photoWrap.style.height = Math.round(w * ratio) + 'px';
+        }
+      };
+      fixPhotoHeight();
+      requestAnimationFrame(fixPhotoHeight);
+      window.addEventListener('resize', fixPhotoHeight);
+      window.addEventListener('orientationchange', function(){
+        setTimeout(fixPhotoHeight, 50);
+        setTimeout(fixPhotoHeight, 300);
+      });
+    }
+
     if (car.spec) {
       var specLine = document.createElement('div');
       specLine.style.cssText = 'font-size:12.5px;color:var(--navy-soft);margin-bottom:14px;line-height:1.5;';
