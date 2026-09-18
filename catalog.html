@@ -401,6 +401,18 @@ h1,h2,h3,.dl-num,.dl-btn,.dl-pill,.dl-title{font-family:'Onest',Arial,sans-serif
         // Load slide 1 immediately, defer the rest slightly so they don't
         // compete with it for bandwidth on slow mobile connections.
         if (i === 0) {
+          // iOS Safari/WebKit sometimes decodes an eagerly-set image but
+          // never actually paints it inside a sticky/transform-using
+          // ancestor (the slide stays blank until some unrelated repaint,
+          // e.g. tapping into the lightbox). Forcing sync decode plus an
+          // explicit reflow nudge after load works around it.
+          img.decoding = 'sync';
+          img.onload = function(){
+            requestAnimationFrame(function(){
+              img.style.transform = 'translateZ(0)';
+              void img.offsetHeight;
+            });
+          };
           img.src = src;
         } else {
           var delay = Math.min(i * 120, 600);
