@@ -887,6 +887,13 @@ h1,h2,h3,.dl-num,.dl-btn,.dl-pill,.dl-title{font-family:'Onest',Arial,sans-serif
     var modal = document.getElementById('dlModal');
     modal.innerHTML = '';
 
+    // Show the modal before building its content (in particular before any
+    // img.src assignment below): on iOS Safari, an image loaded while its
+    // ancestor is display:none can end up permanently unpainted even after
+    // the ancestor becomes visible later.
+    backdrop.hidden = false;
+    document.body.style.overflow = 'hidden';
+
     var head = document.createElement('div');
     head.className = 'dl-modal__head';
     var titleWrap = document.createElement('div');
@@ -1057,9 +1064,6 @@ h1,h2,h3,.dl-num,.dl-btn,.dl-pill,.dl-title{font-family:'Onest',Arial,sans-serif
     }
     modal.addEventListener('scroll', updateScrollCue);
     requestAnimationFrame(updateScrollCue);
-
-    backdrop.hidden = false;
-    document.body.style.overflow = 'hidden';
   }
 
   var dbPromise = (window.claude && window.claude.use) ? window.claude.use('db') : Promise.resolve(null);
