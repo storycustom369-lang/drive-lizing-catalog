@@ -6,7 +6,7 @@
 Запуск: python3 generate_cars.py
 Результат: cars/<slug>/index.html на каждую машину + обновлённый sitemap.xml (не трогает старый sitemap.xml файл напрямую, пишет sitemap_generated.xml для ручной проверки перед заменой).
 """
-import re, json, os, html
+import re, json, os, html, hashlib
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 CATALOG_HTML = os.path.join(BASE_DIR, "catalog.html")
@@ -100,6 +100,144 @@ def render_specs(spec_d, year):
 def render_komplekt(items):
     lis = "".join(f'<li class="dl-komplekt-list__item"><svg viewBox="0 0 20 20" fill="none"><path d="M5 10.5l3 3 7-7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>{html.escape(i)}</li>' for i in items)
     return f'<ul class="dl-komplekt-list">{lis}</ul>'
+
+BADGE_ICONS = {
+    'blue': '<svg viewBox="0 0 24 24" fill="none"><path d="M4 12l5 5L20 6" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+    'teal': '<svg viewBox="0 0 24 24" fill="none"><path d="M12 3v18M7 7.5c0-1.4 2-2.5 5-2.5s5 1.1 5 2.5-2 2.5-5 2.5-5 1.1-5 2.5 2 2.5 5 2.5 5-1.1 5-2.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+    'amber': '<svg viewBox="0 0 24 24" fill="none"><rect x="3" y="7" width="18" height="13" rx="2" stroke="currentColor" stroke-width="2"/><path d="M3 11h18M8 7V5a2 2 0 012-2h4a2 2 0 012 2v2" stroke="currentColor" stroke-width="2"/></svg>',
+    'violet': '<svg viewBox="0 0 24 24" fill="none"><path d="M12 3l7 3v5c0 4.5-3 7.5-7 10-4-2.5-7-5.5-7-10V6l7-3z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>',
+}
+
+def render_badges2():
+    items = [
+        ('blue', '92% одобрение'),
+        ('teal', 'Взнос от 0%'),
+        ('amber', 'По 2 документам'),
+        ('violet', 'Без банка'),
+    ]
+    chips = "".join(
+        f'<span class="dl-badge2 dl-badge2--{c}"><span class="dl-badge2__ico">{BADGE_ICONS[c]}</span>{html.escape(t)}</span>'
+        for c, t in items
+    )
+    return f'<div class="dl-badges-row">{chips}</div>'
+
+HERO_HOOKS = [
+    "Забирайте на этой неделе, документы за один визит",
+    "Оформление в день обращения, без визита в банк",
+    "Из наличия — можно посмотреть и забрать сразу",
+    "Без справок о доходах и без КАСКО при оформлении",
+]
+
+def render_hero_banner(car, min_week, slug):
+    title = car_title(car)
+    idx = int(hashlib.md5(car['art'].encode()).hexdigest(), 16) % len(HERO_HOOKS)
+    hook = HERO_HOOKS[idx]
+    price_html = f'от <em>{fmt_money(min_week)}</em> в неделю' if min_week is not None else 'цена <em>по запросу</em>'
+    return f'''<div class="dl-hero-banner">
+    <div class="dl-hero-banner__eyebrow">Драйв Лизинг · Иркутск</div>
+    <h2 class="dl-hero-banner__title">{html.escape(title)} — {price_html}</h2>
+    <p class="dl-hero-banner__sub">{html.escape(hook)}</p>
+  </div>'''
+
+DESC_OPENERS = [
+    "{title} {year_bit}в нашем автопарке — {body_bit}готов к передаче в лизинг прямо сейчас.",
+    "Смотрите {title}{year_bit2} — один из автомобилей, которые уже стоят у нас {body_bit2}и ждут нового пользователя.",
+    "{title}{year_bit2} — {body_bit}вариант для тех, кто хочет начать ездить без долгого ожидания.",
+]
+DESC_SPEC_CLAUSES = [
+    "Пробег {mileage}, {color} цвет, двигатель {engine}.",
+    "На счётчике {mileage}, кузов {color}, под капотом {engine}.",
+    "{mileage} пробега, цвет {color}, мотор {engine}.",
+]
+DESC_KOMPLEKT_CLAUSES = [
+    "Из комплектации сразу отметим: {items}.",
+    "В салоне уже есть {items}.",
+    "Комплектация включает {items} и другое — полный список чуть ниже.",
+]
+DESC_CLOSERS = [
+    "Можно приехать и посмотреть машину вживую перед тем, как принимать решение.",
+    "Точную доступность на сегодня уточнит менеджер, когда оставите заявку.",
+    "Если модель не подойдёт — покажем похожие варианты из наличия.",
+]
+
+def render_description(car, spec_d, art_idx_seed):
+    title = car_title(car)
+    h = int(hashlib.md5(art_idx_seed.encode()).hexdigest(), 16)
+    opener = DESC_OPENERS[h % len(DESC_OPENERS)]
+    spec_clause = DESC_SPEC_CLAUSES[(h // 7) % len(DESC_SPEC_CLAUSES)]
+    komplekt_clause = DESC_KOMPLEKT_CLAUSES[(h // 13) % len(DESC_KOMPLEKT_CLAUSES)]
+    closer = DESC_CLOSERS[(h // 29) % len(DESC_CLOSERS)]
+
+    year_bit = f"{car.get('year')} года " if car.get('year') else ""
+    year_bit2 = f" {car.get('year')} года" if car.get('year') else ""
+    body_bit = f"{spec_d['body']} " if spec_d.get('body') else ""
+    body_bit2 = f"({spec_d['body']}) " if spec_d.get('body') else ""
+
+    parts = [opener.format(title=title, year_bit=year_bit, year_bit2=year_bit2, body_bit=body_bit, body_bit2=body_bit2)]
+    if spec_d.get('mileage') and spec_d.get('color') and spec_d.get('engine'):
+        parts.append(spec_clause.format(mileage=spec_d['mileage'], color=spec_d['color'], engine=spec_d['engine']))
+    komplekt = komplekt_items(car.get('komplekt'))
+    if komplekt:
+        top = ', '.join(komplekt[:3]).lower()
+        parts.append(komplekt_clause.format(items=top))
+    parts.append(closer)
+    return f'<p class="dl-description">{" ".join(parts)}</p>'
+
+WHY_CARDS = [
+    ("Без банка и скоринга", "Решение по машине принимаем сами, не банк — не смотрим кредитную историю и официальный доход.",
+     '<path d="M4 21V9l8-6 8 6v12M9 21v-7h6v7" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>'),
+    ("Прозрачный расчёт", "Один и тот же коэффициент к цене авто в зависимости от взноса — 2.3 без взноса, 1.8 при 20%. Без скрытых надбавок.",
+     '<path d="M4 4h16v16H4z" stroke="currentColor" stroke-width="2"/><path d="M8 15l3-3 2 2 4-5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>'),
+    ("Свой автопарк, не посредники", "100+ автомобилей у партнёра с 7-летней историей на рынке и 400+ отзывами — машина реальная, не с чужого объявления.",
+     '<path d="M5 17h14M6 17V9l2-4h8l2 4v8M9 17v3M15 17v3" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>'),
+    ("Работаем с физ. и юр. лицами", "Те же условия для ИП и организаций — не нужно искать отдельного лизингодателя под бизнес.",
+     '<path d="M3 21h18M5 21V7l7-4 7 4v14M9 21v-6h6v6" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>'),
+]
+
+def render_why_choose():
+    cards = "".join(
+        f'<div class="dl-why-card"><div class="dl-why-card__ico"><svg viewBox="0 0 24 24" fill="none">{icon}</svg></div>'
+        f'<div class="dl-why-card__title">{html.escape(t)}</div><div class="dl-why-card__text">{html.escape(d)}</div></div>'
+        for t, d, icon in WHY_CARDS
+    )
+    return f'<div class="dl-why-grid">{cards}</div>'
+
+OWN_STEPS = [
+    ("Оставляете заявку", "Выбираете машину на сайте или пишете нам — коротко расскажете, что нужно."),
+    ("Проверяем допуск", "Три условия: Иркутск или до 250 км от города, гражданство РФ, стаж от 3 лет."),
+    ("Подтверждаете документы", "Паспорт и водительское удостоверение — больше ничего собирать не нужно."),
+    ("Подписываем договор", "Фиксируем взнос (от 0%) и срок (12-36 мес), забираете машину."),
+    ("Платите по графику", "Раз в неделю или в месяц — как вам удобнее вносить платёж."),
+    ("Становитесь владельцем", "После последнего платежа автомобиль переходит в вашу собственность."),
+]
+
+def render_how_to_own():
+    items = "".join(
+        f'<li class="dl-steps__item"><span class="dl-steps__num"></span><div class="dl-steps__body">'
+        f'<div class="dl-steps__title">{html.escape(t)}</div><div class="dl-steps__text">{html.escape(d)}</div></div></li>'
+        for t, d in OWN_STEPS
+    )
+    return f'<ol class="dl-steps">{items}</ol>'
+
+def render_terms(car):
+    variants = car.get('variants') or {}
+    pv_range = "0-20%"
+    if variants:
+        keys = sorted(variants.keys(), key=int)
+        pv_range = f"{keys[0]}-{keys[-1]}%"
+    cells = [
+        ("12-36 мес", "Срок договора"),
+        (pv_range, "Первоначальный взнос"),
+        ("Паспорт + права", "Нужные документы"),
+        ("Еженедельно или ежемесячно", "График платежей"),
+    ]
+    grid = "".join(f'<div class="dl-terms__cell"><div class="dl-terms__val">{html.escape(v)}</div><div class="dl-terms__label">{html.escape(l)}</div></div>' for v,l in cells)
+    return f'''<div class="dl-terms">{grid}</div>
+  <ul class="dl-eligibility__list" style="margin-top:16px">
+    <li><b>Прописка или проживание</b> в Иркутске или в пределах ~250 км от города</li>
+    <li><b>Гражданство РФ</b></li>
+    <li><b>Стаж вождения от 3 лет</b> (меньше — возможен взнос от 30%)</li>
+  </ul>'''
 
 def render_calculator(car):
     variants = car.get('variants')
@@ -222,14 +360,11 @@ PAGE_TEMPLATE = '''<!DOCTYPE html>
     <span>{model}</span>
   </nav>
 
-  <div class="dl-badges-row">
-    <span class="dl-badge">92% одобрение</span>
-    <span class="dl-badge">Взнос от 0%</span>
-    <span class="dl-badge">По 2 документам</span>
-    <span class="dl-badge">Без банка</span>
-  </div>
+  {badges}
 
   <h1 class="dl-h1">{title} в лизинг и аренду с выкупом в Иркутске</h1>
+
+  {hero_banner}
 
   <div class="dl-detail-grid">
     <div class="dl-detail-main">
@@ -241,14 +376,17 @@ PAGE_TEMPLATE = '''<!DOCTYPE html>
       <h2 class="dl-h2">Комплектация</h2>
       {komplekt}
 
-      <div class="dl-eligibility">
-        <h2 class="dl-h2">Условия допуска</h2>
-        <ul class="dl-eligibility__list">
-          <li><b>Прописка или проживание</b> в Иркутске или в пределах ~250 км от города</li>
-          <li><b>Гражданство РФ</b></li>
-          <li><b>Стаж вождения от 3 лет</b> (меньше — возможен взнос от 30%)</li>
-        </ul>
-      </div>
+      <h2 class="dl-h2">Описание</h2>
+      {description}
+
+      <h2 class="dl-h2">Почему выгодно выбрать аренду с выкупом у нас</h2>
+      {why_choose}
+
+      <h2 class="dl-h2">Как стать владельцем</h2>
+      {how_to_own}
+
+      <h2 class="dl-h2">Условия аренды</h2>
+      {terms}
     </div>
 
     <aside class="dl-detail-side">
@@ -328,9 +466,15 @@ def main():
             model=html.escape(c['model'].strip()),
             title=html.escape(title),
             title_js=html.escape(title).replace('"','&quot;'),
+            badges=render_badges2(),
+            hero_banner=render_hero_banner(c, min_week, slug),
             gallery=render_gallery(c['photos'], title),
             specs=render_specs(spec_d, c.get('year')),
             komplekt=render_komplekt(komplekt_items(c['komplekt'])),
+            description=render_description(c, spec_d, c['art']),
+            why_choose=render_why_choose(),
+            how_to_own=render_how_to_own(),
+            terms=render_terms(c),
             calculator=render_calculator(c),
             related=render_related(c, cars, slugs_by_art),
             art=html.escape(c['art']),
