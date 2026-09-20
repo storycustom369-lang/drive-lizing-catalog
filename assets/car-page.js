@@ -2,16 +2,19 @@
   "use strict";
   var WORKER_URL = "https://odd-meadow-4208.litaufit.workers.dev";
 
-  // --- Галерея: свайп/стрелки/точки ---
+  // --- Галерея: свайп/стрелки/точки/миниатюры ---
   document.querySelectorAll(".dl-gallery").forEach(function(g){
     var track = g.querySelector(".dl-gallery__track");
     var slides = g.querySelectorAll(".dl-gallery__slide");
     var dots = g.querySelectorAll(".dl-gallery__dot");
     var countEl = g.querySelector(".dl-gallery__count");
+    var thumbsWrap = g.parentElement ? g.parentElement.parentElement.querySelector(".dl-thumbs") : null;
+    var thumbs = thumbsWrap ? thumbsWrap.querySelectorAll(".dl-thumb") : [];
     var idx = 0;
     function render(){
       track.style.transform = "translateX(-" + (idx * 100) + "%)";
       dots.forEach(function(d, i){ d.classList.toggle("is-active", i === idx); });
+      thumbs.forEach(function(t, i){ t.classList.toggle("is-active", i === idx); });
       if (countEl) countEl.textContent = (idx + 1) + " / " + slides.length;
     }
     var prev = g.querySelector(".dl-gallery__nav.is-prev");
@@ -19,6 +22,7 @@
     if (prev) prev.addEventListener("click", function(){ idx = (idx - 1 + slides.length) % slides.length; render(); });
     if (next) next.addEventListener("click", function(){ idx = (idx + 1) % slides.length; render(); });
     dots.forEach(function(d, i){ d.addEventListener("click", function(){ idx = i; render(); }); });
+    thumbs.forEach(function(t, i){ t.addEventListener("click", function(){ idx = i; render(); }); });
     // свайп на тач-устройствах
     var startX = null;
     track.addEventListener("touchstart", function(e){ startX = e.touches[0].clientX; }, {passive:true});

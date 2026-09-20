@@ -87,6 +87,15 @@ def render_gallery(photos, title):
     <div class="dl-gallery__count">1 / {len(photos)}</div>
   </div>'''
 
+def render_thumbs(photos, title):
+    if not photos or len(photos) < 2:
+        return ''
+    thumbs = "".join(
+        f'<button class="dl-thumb{" is-active" if i==0 else ""}" data-i="{i}"><img src="../../{p}" alt="{html.escape(title)}, миниатюра {i+1}" loading="lazy"></button>'
+        for i, p in enumerate(photos)
+    )
+    return f'<div class="dl-thumbs">{thumbs}</div>'
+
 def render_specs(spec_d, year):
     rows = []
     if year: rows.append(("Год выпуска", str(year)))
@@ -125,10 +134,40 @@ HERO_HOOKS = [
 ]
 
 HERO_POINTS = [
-    ("Оформление за 1 день", '<path d="M6 3h9l3 3v15H6z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><path d="M15 3v3h3" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><path d="M9 12h6M9 16h6" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/>'),
-    ("Для физ. и юр. лиц", '<circle cx="8" cy="8" r="3" stroke="currentColor" stroke-width="1.7"/><circle cx="17" cy="9" r="2.4" stroke="currentColor" stroke-width="1.7"/><path d="M3 20c0-3 2.2-5 5-5s5 2 5 5M14 20c0-2.3 1.6-4 3.5-4s3.5 1.7 3.5 4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/>'),
-    ("Большой выбор авто в наличии", '<path d="M4 16l1.4-5A2 2 0 017.3 9.5h9.4a2 2 0 011.9 1.5L20 16" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><path d="M3 16h18v3a1 1 0 01-1 1h-1a1 1 0 01-1-1v-1H6v1a1 1 0 01-1 1H4a1 1 0 01-1-1v-3z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><circle cx="7.5" cy="16" r="1.2" fill="currentColor"/><circle cx="16.5" cy="16" r="1.2" fill="currentColor"/>'),
+    ("Проверенные авто", '<path d="M4 16l4-9h8l4 9" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><path d="M2 16h20M6 16v3M18 16v3" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/><path d="M9 10.5l2 2 4-4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>'),
+    ("Прозрачный договор", '<path d="M6 3h9l3 3v15H6z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><path d="M15 3v3h3" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><path d="M9 12h6M9 16h6" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/>'),
+    ("Поддержка на всех этапах", '<path d="M4 16l1.4-5A2 2 0 017.3 9.5h9.4a2 2 0 011.9 1.5L20 16" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><path d="M3 16h18v3a1 1 0 01-1 1h-1a1 1 0 01-1-1v-1H6v1a1 1 0 01-1 1H4a1 1 0 01-1-1v-3z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><circle cx="7.5" cy="16" r="1.2" fill="currentColor"/><circle cx="16.5" cy="16" r="1.2" fill="currentColor"/>'),
 ]
+
+HERO_TAGLINES = [
+    "Ближе к новым горизонтам",
+    "Ваш путь начинается здесь",
+    "Дорога ждёт, машина готова",
+]
+
+def render_hero_top_right(car):
+    idx = int(hashlib.md5((car['art'] + 'tag').encode()).hexdigest(), 16) % len(HERO_TAGLINES)
+    tagline = HERO_TAGLINES[idx]
+    return f'''<div class="dl-hero-tagline-block">
+    <div class="dl-hero-tagline">{html.escape(tagline)}</div>
+    <div class="dl-hero-location">
+      <svg viewBox="0 0 24 24" fill="none"><path d="M12 21s7-6.1 7-11.5a7 7 0 10-14 0C5 14.9 12 21 12 21z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><circle cx="12" cy="9.5" r="2.3" stroke="currentColor" stroke-width="1.8"/></svg>
+      <div class="dl-hero-location__text"><b>Иркутск</b><span>рядом с Байкалом</span></div>
+    </div>
+  </div>'''
+
+SUBTITLES_BY_BODY = {
+    'кроссовер': 'Современный кроссовер для города и путешествий',
+    'седан': 'Комфортный седан для города и трассы',
+    'хэтчбек': 'Манёвренный хэтчбек для повседневных поездок',
+    'минивэн': 'Просторный минивэн для семьи и дальних поездок',
+    'универсал': 'Практичный универсал на каждый день',
+    'внедорожник': 'Надёжный внедорожник для города и бездорожья',
+}
+
+def render_subtitle(spec_d):
+    text = SUBTITLES_BY_BODY.get(spec_d.get('body'), 'Надёжный автомобиль для города и путешествий')
+    return f'<p class="dl-h1-subtitle">{html.escape(text)}</p>'
 
 def render_hero_banner(car, min_week, slug):
     title = car_title(car)
@@ -191,6 +230,19 @@ def render_description(car, spec_d, art_idx_seed):
         parts.append(komplekt_clause.format(items=top))
     parts.append(closer)
     return f'<p class="dl-description">{" ".join(parts)}</p>'
+
+def render_location_promo():
+    return '''<a class="dl-location-promo" href="https://driveleasing38.ru/" target="_blank" rel="noopener">
+    <img src="../../images/site/hero-bg.webp" alt="Озеро Байкал рядом с Иркутском">
+    <div class="dl-location-promo__badge">
+      <svg viewBox="0 0 24 24" fill="none"><path d="M12 21s7-6.1 7-11.5a7 7 0 10-14 0C5 14.9 12 21 12 21z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><circle cx="12" cy="9.5" r="2.3" stroke="currentColor" stroke-width="1.8"/></svg>
+      <div><b>Иркутск</b><span>рядом с Байкалом</span></div>
+    </div>
+    <div class="dl-location-promo__foot">
+      <span>Удобное расположение<br>и живописные маршруты рядом</span>
+      <span class="dl-location-promo__arrow"><svg viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+    </div>
+  </a>'''
 
 WHY_CARDS = [
     ("Без банка и скоринга", "Решение по машине принимаем сами, не банк — не смотрим кредитную историю и официальный доход."),
@@ -351,7 +403,7 @@ PAGE_TEMPLATE = '''<!DOCTYPE html>
 <link rel="icon" type="image/png" href="../../favicon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Onest:wght@500;600;700;800&family=Golos+Text:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Onest:wght@500;600;700;800&family=Golos+Text:wght@400;500;600;700&family=Caveat:wght@600;700&display=swap">
 <link rel="stylesheet" href="../../assets/site.css">
 {schema}
 </head>
@@ -380,7 +432,13 @@ PAGE_TEMPLATE = '''<!DOCTYPE html>
     <div class="dl-hero-section__inner">
       {badges}
 
-      <h1 class="dl-h1">{title} в лизинг и аренду с выкупом в Иркутске</h1>
+      <div class="dl-hero-top">
+        <div class="dl-hero-top__main">
+          <h1 class="dl-h1">{title} в лизинг и аренду с выкупом в Иркутске</h1>
+          {subtitle}
+        </div>
+        {hero_top_right}
+      </div>
 
       {hero_banner}
     </div>
@@ -389,6 +447,7 @@ PAGE_TEMPLATE = '''<!DOCTYPE html>
   <div class="dl-detail-grid">
     <div class="dl-detail-main">
       <div class="dl-card__art dl-detail-gallery">{gallery}</div>
+      {thumbs}
 
       <h2 class="dl-h2">Характеристики</h2>
       {specs}
@@ -397,7 +456,10 @@ PAGE_TEMPLATE = '''<!DOCTYPE html>
       {komplekt}
 
       <h2 class="dl-h2">Описание</h2>
-      {description}
+      <div class="dl-desc-row">
+        <div class="dl-desc-row__text">{description}</div>
+        {location_promo}
+      </div>
 
       <h2 class="dl-h2">Почему выгодно выбрать аренду с выкупом у нас</h2>
       {why_choose}
@@ -488,10 +550,14 @@ def main():
             title_js=html.escape(title).replace('"','&quot;'),
             badges=render_badges2(),
             hero_banner=render_hero_banner(c, min_week, slug),
+            subtitle=render_subtitle(spec_d),
+            hero_top_right=render_hero_top_right(c),
             gallery=render_gallery(c['photos'], title),
+            thumbs=render_thumbs(c['photos'], title),
             specs=render_specs(spec_d, c.get('year')),
             komplekt=render_komplekt(komplekt_items(c['komplekt'])),
             description=render_description(c, spec_d, c['art']),
+            location_promo=render_location_promo(),
             why_choose=render_why_choose(),
             how_to_own=render_how_to_own(),
             terms=render_terms(c),
