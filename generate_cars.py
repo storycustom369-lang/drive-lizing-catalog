@@ -107,11 +107,12 @@ BADGE_ICONS = [
     '<svg viewBox="0 0 24 24" fill="none"><rect x="3" y="6" width="18" height="14" rx="1.5" stroke="currentColor" stroke-width="1.8"/><path d="M3 10h18M8 6V4.5a1.5 1.5 0 011.5-1.5h5A1.5 1.5 0 0116 4.5V6" stroke="currentColor" stroke-width="1.8"/></svg>',
     '<svg viewBox="0 0 24 24" fill="none"><path d="M12 2.5l7.5 3.3v5.4c0 4.9-3.2 8.2-7.5 10.3-4.3-2.1-7.5-5.4-7.5-10.3V5.8L12 2.5z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>',
 ]
+BADGE_COLORS = ['blue', 'teal', 'amber', 'violet']
 
 def render_badges2():
     items = ['92% одобрение', 'Взнос от 0%', 'По 2 документам', 'Без банка']
     chips = "".join(
-        f'<span class="dl-badge2"><span class="dl-badge2__ico">{BADGE_ICONS[i]}</span>{html.escape(t)}</span>'
+        f'<span class="dl-badge2 dl-badge2--{BADGE_COLORS[i]}"><span class="dl-badge2__ico">{BADGE_ICONS[i]}</span>{html.escape(t)}</span>'
         for i, t in enumerate(items)
     )
     return f'<div class="dl-badges-row">{chips}</div>'
