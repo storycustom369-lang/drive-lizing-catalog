@@ -101,23 +101,18 @@ def render_komplekt(items):
     lis = "".join(f'<li class="dl-komplekt-list__item"><svg viewBox="0 0 20 20" fill="none"><path d="M5 10.5l3 3 7-7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>{html.escape(i)}</li>' for i in items)
     return f'<ul class="dl-komplekt-list">{lis}</ul>'
 
-BADGE_ICONS = {
-    'blue': '<svg viewBox="0 0 24 24" fill="none"><path d="M4 12l5 5L20 6" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>',
-    'teal': '<svg viewBox="0 0 24 24" fill="none"><path d="M12 3v18M7 7.5c0-1.4 2-2.5 5-2.5s5 1.1 5 2.5-2 2.5-5 2.5-5 1.1-5 2.5 2 2.5 5 2.5 5-1.1 5-2.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>',
-    'amber': '<svg viewBox="0 0 24 24" fill="none"><rect x="3" y="7" width="18" height="13" rx="2" stroke="currentColor" stroke-width="2"/><path d="M3 11h18M8 7V5a2 2 0 012-2h4a2 2 0 012 2v2" stroke="currentColor" stroke-width="2"/></svg>',
-    'violet': '<svg viewBox="0 0 24 24" fill="none"><path d="M12 3l7 3v5c0 4.5-3 7.5-7 10-4-2.5-7-5.5-7-10V6l7-3z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>',
-}
+BADGE_ICONS = [
+    '<svg viewBox="0 0 24 24" fill="none"><path d="M4 12l5 5L20 6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+    '<svg viewBox="0 0 24 24" fill="none"><path d="M12 2v20M6 6.5c0-1.4 2.2-2.7 6-2.7s6 1.3 6 2.7-2.2 2.7-6 2.7-6 1.3-6 2.7 2.2 2.7 6 2.7 6 1.3 6 2.7" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>',
+    '<svg viewBox="0 0 24 24" fill="none"><rect x="3" y="6" width="18" height="14" rx="1.5" stroke="currentColor" stroke-width="1.8"/><path d="M3 10h18M8 6V4.5a1.5 1.5 0 011.5-1.5h5A1.5 1.5 0 0116 4.5V6" stroke="currentColor" stroke-width="1.8"/></svg>',
+    '<svg viewBox="0 0 24 24" fill="none"><path d="M12 2.5l7.5 3.3v5.4c0 4.9-3.2 8.2-7.5 10.3-4.3-2.1-7.5-5.4-7.5-10.3V5.8L12 2.5z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>',
+]
 
 def render_badges2():
-    items = [
-        ('blue', '92% одобрение'),
-        ('teal', 'Взнос от 0%'),
-        ('amber', 'По 2 документам'),
-        ('violet', 'Без банка'),
-    ]
+    items = ['92% одобрение', 'Взнос от 0%', 'По 2 документам', 'Без банка']
     chips = "".join(
-        f'<span class="dl-badge2 dl-badge2--{c}"><span class="dl-badge2__ico">{BADGE_ICONS[c]}</span>{html.escape(t)}</span>'
-        for c, t in items
+        f'<span class="dl-badge2"><span class="dl-badge2__ico">{BADGE_ICONS[i]}</span>{html.escape(t)}</span>'
+        for i, t in enumerate(items)
     )
     return f'<div class="dl-badges-row">{chips}</div>'
 
@@ -184,23 +179,19 @@ def render_description(car, spec_d, art_idx_seed):
     return f'<p class="dl-description">{" ".join(parts)}</p>'
 
 WHY_CARDS = [
-    ("Без банка и скоринга", "Решение по машине принимаем сами, не банк — не смотрим кредитную историю и официальный доход.",
-     '<path d="M4 21V9l8-6 8 6v12M9 21v-7h6v7" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>'),
-    ("Прозрачный расчёт", "Один и тот же коэффициент к цене авто в зависимости от взноса — 2.3 без взноса, 1.8 при 20%. Без скрытых надбавок.",
-     '<path d="M4 4h16v16H4z" stroke="currentColor" stroke-width="2"/><path d="M8 15l3-3 2 2 4-5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>'),
-    ("Свой автопарк, не посредники", "100+ автомобилей у партнёра с 7-летней историей на рынке и 400+ отзывами — машина реальная, не с чужого объявления.",
-     '<path d="M5 17h14M6 17V9l2-4h8l2 4v8M9 17v3M15 17v3" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>'),
-    ("Работаем с физ. и юр. лицами", "Те же условия для ИП и организаций — не нужно искать отдельного лизингодателя под бизнес.",
-     '<path d="M3 21h18M5 21V7l7-4 7 4v14M9 21v-6h6v6" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>'),
+    ("Без банка и скоринга", "Решение по машине принимаем сами, не банк — не смотрим кредитную историю и официальный доход."),
+    ("Прозрачный расчёт", "Один и тот же коэффициент к цене авто в зависимости от взноса — 2.3 без взноса, 1.8 при 20%. Без скрытых надбавок."),
+    ("Свой автопарк, не посредники", "100+ автомобилей у партнёра с 7-летней историей на рынке и 400+ отзывами — машина реальная, не с чужого объявления."),
+    ("Работаем с физ. и юр. лицами", "Те же условия для ИП и организаций — не нужно искать отдельного лизингодателя под бизнес."),
 ]
 
 def render_why_choose():
-    cards = "".join(
-        f'<div class="dl-why-card"><div class="dl-why-card__ico"><svg viewBox="0 0 24 24" fill="none">{icon}</svg></div>'
-        f'<div class="dl-why-card__title">{html.escape(t)}</div><div class="dl-why-card__text">{html.escape(d)}</div></div>'
-        for t, d, icon in WHY_CARDS
+    items = "".join(
+        f'<div class="dl-why-item"><div class="dl-why-item__num">{i+1:02d}</div>'
+        f'<div><div class="dl-why-item__title">{html.escape(t)}</div><div class="dl-why-item__text">{html.escape(d)}</div></div></div>'
+        for i, (t, d) in enumerate(WHY_CARDS)
     )
-    return f'<div class="dl-why-grid">{cards}</div>'
+    return f'<div class="dl-why-list">{items}</div>'
 
 OWN_STEPS = [
     ("Оставляете заявку", "Выбираете машину на сайте или пишете нам — коротко расскажете, что нужно."),
