@@ -124,15 +124,28 @@ HERO_HOOKS = [
     "Без справок о доходах и без КАСКО при оформлении",
 ]
 
+HERO_POINTS = [
+    ("Оформление за 1 день", '<path d="M6 3h9l3 3v15H6z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><path d="M15 3v3h3" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><path d="M9 12h6M9 16h6" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/>'),
+    ("Для физ. и юр. лиц", '<circle cx="8" cy="8" r="3" stroke="currentColor" stroke-width="1.7"/><circle cx="17" cy="9" r="2.4" stroke="currentColor" stroke-width="1.7"/><path d="M3 20c0-3 2.2-5 5-5s5 2 5 5M14 20c0-2.3 1.6-4 3.5-4s3.5 1.7 3.5 4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/>'),
+    ("Большой выбор авто в наличии", '<path d="M4 16l1.4-5A2 2 0 017.3 9.5h9.4a2 2 0 011.9 1.5L20 16" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><path d="M3 16h18v3a1 1 0 01-1 1h-1a1 1 0 01-1-1v-1H6v1a1 1 0 01-1 1H4a1 1 0 01-1-1v-3z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><circle cx="7.5" cy="16" r="1.2" fill="currentColor"/><circle cx="16.5" cy="16" r="1.2" fill="currentColor"/>'),
+]
+
 def render_hero_banner(car, min_week, slug):
     title = car_title(car)
     idx = int(hashlib.md5(car['art'].encode()).hexdigest(), 16) % len(HERO_HOOKS)
     hook = HERO_HOOKS[idx]
     price_html = f'от <em>{fmt_money(min_week)}</em> в неделю' if min_week is not None else 'цена <em>по запросу</em>'
+    points = "".join(
+        f'<div class="dl-hero-banner__point"><svg viewBox="0 0 24 24" fill="none">{icon}</svg><span>{html.escape(t)}</span></div>'
+        for t, icon in HERO_POINTS
+    )
     return f'''<div class="dl-hero-banner">
-    <div class="dl-hero-banner__eyebrow">Драйв Лизинг · Иркутск</div>
-    <h2 class="dl-hero-banner__title">{html.escape(title)} — {price_html}</h2>
-    <p class="dl-hero-banner__sub">{html.escape(hook)}</p>
+    <div class="dl-hero-banner__main">
+      <div class="dl-hero-banner__eyebrow">Драйв Лизинг · Иркутск</div>
+      <h2 class="dl-hero-banner__title">{html.escape(title)} — {price_html}</h2>
+      <p class="dl-hero-banner__sub">{html.escape(hook)}</p>
+    </div>
+    <div class="dl-hero-banner__points">{points}</div>
   </div>'''
 
 DESC_OPENERS = [
