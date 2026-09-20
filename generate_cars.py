@@ -376,11 +376,13 @@ PAGE_TEMPLATE = '''<!DOCTYPE html>
     <span>{model}</span>
   </nav>
 
-  {badges}
+  <div class="dl-hero-section">
+    {badges}
 
-  <h1 class="dl-h1">{title} в лизинг и аренду с выкупом в Иркутске</h1>
+    <h1 class="dl-h1">{title} в лизинг и аренду с выкупом в Иркутске</h1>
 
-  {hero_banner}
+    {hero_banner}
+  </div>
 
   <div class="dl-detail-grid">
     <div class="dl-detail-main">

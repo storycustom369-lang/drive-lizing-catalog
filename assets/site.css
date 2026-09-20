@@ -244,6 +244,9 @@ h1,h2,h3,.dl-num,.dl-btn,.dl-pill,.dl-title{font-family:'Onest',Arial,sans-serif
 .dl-breadcrumb span{color:var(--border-strong);}
 .dl-breadcrumb span:last-child{color:var(--navy);font-weight:600;}
 
+.dl-hero-section{background-image:url('../images/site/hero-bg.webp');background-size:cover;background-position:center 65%;border-radius:20px;padding:22px 26px 1px;margin:14px 0 0;overflow:hidden;}
+@media (max-width:640px){.dl-hero-section{padding:16px 16px 1px;border-radius:14px;}}
+
 .dl-badges-row{display:flex;flex-wrap:wrap;gap:10px;margin:16px 0 10px;}
 .dl-badge2{display:inline-flex;align-items:center;gap:7px;font-size:12.5px;font-weight:700;padding:9px 15px;border-radius:999px;backdrop-filter:blur(14px) saturate(180%);-webkit-backdrop-filter:blur(14px) saturate(180%);border:1px solid transparent;}
 .dl-badge2__ico{width:15px;height:15px;flex:none;}
