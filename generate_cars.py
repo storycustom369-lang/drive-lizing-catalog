@@ -211,6 +211,13 @@ def render_how_to_own():
     )
     return f'<ol class="dl-steps">{items}</ol>'
 
+TERMS_ICONS = [
+    '<svg viewBox="0 0 24 24" fill="none"><rect x="3" y="5" width="18" height="16" rx="2" stroke="currentColor" stroke-width="1.8"/><path d="M3 9.5h18M8 3v4M16 3v4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>',
+    '<svg viewBox="0 0 24 24" fill="none"><circle cx="7" cy="7" r="3" stroke="currentColor" stroke-width="1.8"/><circle cx="17" cy="17" r="3" stroke="currentColor" stroke-width="1.8"/><path d="M18 6L6 18" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>',
+    '<svg viewBox="0 0 24 24" fill="none"><rect x="2.5" y="5.5" width="19" height="13" rx="2" stroke="currentColor" stroke-width="1.8"/><circle cx="8.5" cy="12" r="2" stroke="currentColor" stroke-width="1.6"/><path d="M13 10.5h6M13 13.5h4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>',
+    '<svg viewBox="0 0 24 24" fill="none"><path d="M4 12a8 8 0 0114-5.3M20 12a8 8 0 01-14 5.3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><path d="M18 3v4h-4M6 21v-4h4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+]
+
 def render_terms(car):
     variants = car.get('variants') or {}
     pv_range = "0-20%"
@@ -223,7 +230,11 @@ def render_terms(car):
         ("Паспорт + права", "Нужные документы"),
         ("Еженедельно или ежемесячно", "График платежей"),
     ]
-    grid = "".join(f'<div class="dl-terms__cell"><div class="dl-terms__val">{html.escape(v)}</div><div class="dl-terms__label">{html.escape(l)}</div></div>' for v,l in cells)
+    grid = "".join(
+        f'<div class="dl-terms__cell"><div class="dl-terms__ico">{TERMS_ICONS[i]}</div>'
+        f'<div class="dl-terms__val">{html.escape(v)}</div><div class="dl-terms__label">{html.escape(l)}</div></div>'
+        for i, (v, l) in enumerate(cells)
+    )
     return f'''<div class="dl-terms">{grid}</div>
   <ul class="dl-eligibility__list" style="margin-top:16px">
     <li><b>Прописка или проживание</b> в Иркутске или в пределах ~250 км от города</li>
