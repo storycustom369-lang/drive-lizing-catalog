@@ -201,7 +201,7 @@ WHY_CARDS = [
 
 def render_why_choose():
     items = "".join(
-        f'<div class="dl-why-item"><div class="dl-why-item__num">{i+1:02d}</div>'
+        f'<div class="dl-why-item"><div class="dl-why-item__ico dl-why-item__ico--{BADGE_COLORS[i]}"><svg viewBox="0 0 24 24" fill="none">{BADGE_ICONS[i]}</svg></div>'
         f'<div><div class="dl-why-item__title">{html.escape(t)}</div><div class="dl-why-item__text">{html.escape(d)}</div></div></div>'
         for i, (t, d) in enumerate(WHY_CARDS)
     )
@@ -377,11 +377,13 @@ PAGE_TEMPLATE = '''<!DOCTYPE html>
   </nav>
 
   <div class="dl-hero-section">
-    {badges}
+    <div class="dl-hero-section__inner">
+      {badges}
 
-    <h1 class="dl-h1">{title} в лизинг и аренду с выкупом в Иркутске</h1>
+      <h1 class="dl-h1">{title} в лизинг и аренду с выкупом в Иркутске</h1>
 
-    {hero_banner}
+      {hero_banner}
+    </div>
   </div>
 
   <div class="dl-detail-grid">
