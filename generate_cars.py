@@ -174,17 +174,12 @@ def render_hero_banner(car, min_week, slug):
     idx = int(hashlib.md5(car['art'].encode()).hexdigest(), 16) % len(HERO_HOOKS)
     hook = HERO_HOOKS[idx]
     price_html = f'от <em>{fmt_money(min_week)}</em> в неделю' if min_week is not None else 'цена <em>по запросу</em>'
-    points = "".join(
-        f'<div class="dl-hero-banner__point"><svg viewBox="0 0 24 24" fill="none">{icon}</svg><span>{html.escape(t)}</span></div>'
-        for t, icon in HERO_POINTS
-    )
     return f'''<div class="dl-hero-banner">
     <div class="dl-hero-banner__main">
       <div class="dl-hero-banner__eyebrow">Драйв Лизинг · Иркутск</div>
       <h2 class="dl-hero-banner__title">{html.escape(title)} — {price_html}</h2>
       <p class="dl-hero-banner__sub">{html.escape(hook)}</p>
     </div>
-    <div class="dl-hero-banner__points">{points}</div>
   </div>'''
 
 DESC_OPENERS = [
@@ -456,19 +451,14 @@ PAGE_TEMPLATE = '''<!DOCTYPE html>
       {komplekt}
 
       <h2 class="dl-h2">Описание</h2>
-      <div class="dl-desc-row">
-        <div class="dl-desc-row__text">{description}</div>
-        {location_promo}
-      </div>
+      {description}
+      {location_promo}
 
       <h2 class="dl-h2">Почему выгодно выбрать аренду с выкупом у нас</h2>
       {why_choose}
 
       <h2 class="dl-h2">Как стать владельцем</h2>
       {how_to_own}
-
-      <h2 class="dl-h2">Условия аренды</h2>
-      {terms}
     </div>
 
     <aside class="dl-detail-side">
@@ -560,7 +550,6 @@ def main():
             location_promo=render_location_promo(),
             why_choose=render_why_choose(),
             how_to_own=render_how_to_own(),
-            terms=render_terms(c),
             calculator=render_calculator(c),
             related=render_related(c, cars, slugs_by_art),
             art=html.escape(c['art']),
