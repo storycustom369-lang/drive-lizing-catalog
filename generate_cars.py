@@ -444,8 +444,6 @@ PAGE_TEMPLATE = '''<!DOCTYPE html>
 
   <div class="dl-hero-section">
     <div class="dl-hero-section__inner">
-      {badges}
-
       <div class="dl-hero-top">
         <div class="dl-hero-top__main">
           <h1 class="dl-h1"><em>{title}</em> в лизинг и аренду с выкупом в Иркутске</h1>
@@ -453,6 +451,8 @@ PAGE_TEMPLATE = '''<!DOCTYPE html>
         </div>
         {hero_top_right}
       </div>
+
+      {badges}
 
       {hero_banner}
     </div>
