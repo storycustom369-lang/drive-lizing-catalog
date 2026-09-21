@@ -317,6 +317,16 @@ h1,h2,h3,.dl-num,.dl-btn,.dl-pill,.dl-title{font-family:'Onest',Arial,sans-serif
   .dl-hero-banner__points{gap:16px;}
   .dl-hero-banner__point{max-width:84px;}
 }
+@media (max-width:640px){
+  .dl-hero-banner{padding:14px 16px;gap:12px;margin:14px 0 20px;}
+  .dl-hero-banner__eyebrow{font-size:9px;margin-bottom:4px;}
+  .dl-hero-banner__title{font-size:14px;}
+  .dl-hero-banner__sub{font-size:10.5px;margin-top:4px;}
+  .dl-hero-banner__points{width:100%;gap:8px;flex-wrap:nowrap;}
+  .dl-hero-banner__point{flex:1;min-width:0;max-width:none;gap:4px;}
+  .dl-hero-banner__point svg{width:15px;height:15px;}
+  .dl-hero-banner__point span{font-size:9.5px;line-height:1.2;}
+}
 
 .dl-hero-top{display:flex;justify-content:space-between;align-items:flex-start;gap:20px;flex-wrap:wrap-reverse;}
 .dl-hero-top__main{flex:1;min-width:260px;}
