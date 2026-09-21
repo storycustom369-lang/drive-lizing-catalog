@@ -180,7 +180,7 @@ def render_hero_banner(car, min_week, slug):
     hook = HERO_HOOKS[idx]
     price_html = f'от <em>{fmt_money(min_week)}</em> в неделю' if min_week is not None else 'цена <em>по запросу</em>'
     points = "".join(
-        f'<div class="dl-hero-banner__point"><svg viewBox="0 0 24 24" fill="none">{icon}</svg><span>{html.escape(t)}</span></div>'
+        f'<div class="dl-hero-banner__point"><span class="dl-hero-banner__point-ico"><svg viewBox="0 0 24 24" fill="none">{icon}</svg></span><span class="dl-hero-banner__point-text">{html.escape(t)}</span></div>'
         for t, icon in HERO_POINTS
     )
     return f'''<div class="dl-hero-banner">
