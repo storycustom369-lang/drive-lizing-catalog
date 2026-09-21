@@ -366,7 +366,7 @@ h1,h2,h3,.dl-num,.dl-btn,.dl-pill,.dl-title{font-family:'Onest',Arial,sans-serif
 @media (max-width:900px){
   .dl-detail-grid{grid-template-columns:1fr;}
 }
-.dl-detail-gallery{aspect-ratio:16/10;max-height:340px;border-radius:16px;}
+.dl-detail-gallery{width:100%;aspect-ratio:16/10;border-radius:16px;}
 .dl-gallery__empty{display:flex;align-items:center;justify-content:center;height:100%;color:var(--muted);font-size:13px;}
 
 .dl-detail-gallery .dl-gallery__slide img{object-fit:contain;background:var(--surface-tint);}
