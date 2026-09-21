@@ -160,7 +160,7 @@ def render_badges2():
     cards = "".join(
         f'<div class="dl-badge3 dl-badge3--{BADGE_COLORS[i]}">'
         f'<span class="dl-badge3__ico"><img src="../../images/icons3d/{BADGE3_ICON_IMAGES[i]}.png" alt="" loading="lazy"></span>'
-        f'<div class="dl-badge3__text"><b>{html.escape(t)}</b><span>{html.escape(s)}</span></div></div>'
+        f'<div class="dl-badge3__text"><b>{html.escape(t)}</b></div></div>'
         for i, (t, s) in enumerate(BADGE_ITEMS)
     )
     return f'<div class="dl-badges-grid">{cards}</div>'
