@@ -108,10 +108,10 @@ def render_thumbs(photos, title):
 
 SPEC_ICONS = {
     "Год выпуска": "calendar",
-    "Пробег": "compass",
+    "Пробег": "speedometer",
     "Цвет": "droplet",
     "Двигатель": "gear",
-    "Тип кузова": "car",
+    "Тип кузова": "car2",
 }
 
 def render_specs(spec_d, year):
@@ -174,7 +174,7 @@ HERO_HOOKS = [
 
 HERO_POINTS = [
     ("Проверенные авто", "car"),
-    ("Прозрачный договор", "document"),
+    ("Прозрачный договор", "document2"),
     ("Поддержка на всех этапах", "heart"),
 ]
 
