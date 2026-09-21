@@ -91,7 +91,7 @@
     <aside class="dl-detail-side">
       <div class="dl-card dl-calc-card">
         <h2 class="dl-h2" style="margin-top:0">Рассчитайте платёж</h2>
-        <div class="dl-calc" data-car-data='{"10": {"label": "ПВ 10%", "pv": 234900, "total": 4698000, "terms": {"36": {"day": 4290, "week": 30033, "month": 130500}, "48": {"day": 3218, "week": 22525, "month": 97875}, "60": {"day": 2574, "week": 18020, "month": 78300}}}, "20": {"label": "ПВ 20%", "pv": 469800, "total": 4228200, "terms": {"36": {"day": 3861, "week": 27030, "month": 117450}, "48": {"day": 2896, "week": 20272, "month": 88088}, "60": {"day": 2317, "week": 16218, "month": 70470}}}}'>
+        <div class="dl-calc" data-car-data='{"10": {"label": "ПВ 10%", "pv": 234900, "total": 4698000, "terms": {"36": {"day": 4290, "week": 30033, "month": 130500}, "48": {"day": 3218, "week": 22525, "month": 97875}, "60": {"day": 2574, "week": 18020, "month": 78300}}}, "20": {"label": "ПВ 20%", "pv": 469800, "total": 4228200, "terms": {"36": {"day": 3861, "week": 27030, "month": 117450}, "48": {"day": 2896, "week": 20272, "month": 88088}, "60": {"day": 2317, "week": 16218, "month": 70470}}}}' data-art="ДЛ-062" data-car="Omoda C5">
     <div class="dl-field">
       <span class="dl-label">Первоначальный взнос</span>
       <div class="dl-seg dl-seg--pv" style="grid-template-columns:repeat(2,1fr)"><button data-pv="10" class="">ПВ 10%</button><button data-pv="20" class="is-active">ПВ 20%</button></div>
@@ -106,7 +106,7 @@
       <div class="dl-result__cell"><span class="dl-result__num" data-out="month">-</span><span class="dl-result__unit">в месяц</span></div>
     </div>
     <div class="dl-pv-sum" data-out="pv-sum"></div>
-    <button class="dl-btn dl-btn--calc-cta" type="button">Оставить заявку на этот автомобиль</button>
+    <button class="dl-btn dl-btn--calc-cta" type="button">Забронировать</button>
   </div>
       </div>
     </aside>
@@ -190,6 +190,10 @@
       </div>
     </div>
   </div>
+</div>
+
+<div class="dl-modal-backdrop" id="dlModalBackdrop" hidden>
+  <div class="dl-modal" id="dlModal"></div>
 </div>
 
 <script src="../../assets/car-page.js"></script>

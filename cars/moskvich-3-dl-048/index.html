@@ -91,7 +91,7 @@
     <aside class="dl-detail-side">
       <div class="dl-card dl-calc-card">
         <h2 class="dl-h2" style="margin-top:0">Рассчитайте платёж</h2>
-        <div class="dl-calc" data-car-data='{"10": {"label": "ПВ 10%", "pv": 213500, "total": 4270000, "terms": {"36": {"day": 3900, "week": 27297, "month": 118611}, "48": {"day": 2925, "week": 20473, "month": 88958}, "60": {"day": 2340, "week": 16378, "month": 71167}}}, "20": {"label": "ПВ 20%", "pv": 427000, "total": 3843000, "terms": {"36": {"day": 3510, "week": 24567, "month": 106750}, "48": {"day": 2632, "week": 18425, "month": 80062}, "60": {"day": 2106, "week": 14740, "month": 64050}}}}'>
+        <div class="dl-calc" data-car-data='{"10": {"label": "ПВ 10%", "pv": 213500, "total": 4270000, "terms": {"36": {"day": 3900, "week": 27297, "month": 118611}, "48": {"day": 2925, "week": 20473, "month": 88958}, "60": {"day": 2340, "week": 16378, "month": 71167}}}, "20": {"label": "ПВ 20%", "pv": 427000, "total": 3843000, "terms": {"36": {"day": 3510, "week": 24567, "month": 106750}, "48": {"day": 2632, "week": 18425, "month": 80062}, "60": {"day": 2106, "week": 14740, "month": 64050}}}}' data-art="ДЛ-048" data-car="Москвич 3">
     <div class="dl-field">
       <span class="dl-label">Первоначальный взнос</span>
       <div class="dl-seg dl-seg--pv" style="grid-template-columns:repeat(2,1fr)"><button data-pv="10" class="">ПВ 10%</button><button data-pv="20" class="is-active">ПВ 20%</button></div>
@@ -106,7 +106,7 @@
       <div class="dl-result__cell"><span class="dl-result__num" data-out="month">-</span><span class="dl-result__unit">в месяц</span></div>
     </div>
     <div class="dl-pv-sum" data-out="pv-sum"></div>
-    <button class="dl-btn dl-btn--calc-cta" type="button">Оставить заявку на этот автомобиль</button>
+    <button class="dl-btn dl-btn--calc-cta" type="button">Забронировать</button>
   </div>
       </div>
     </aside>
@@ -190,6 +190,10 @@
       </div>
     </div>
   </div>
+</div>
+
+<div class="dl-modal-backdrop" id="dlModalBackdrop" hidden>
+  <div class="dl-modal" id="dlModal"></div>
 </div>
 
 <script src="../../assets/car-page.js"></script>

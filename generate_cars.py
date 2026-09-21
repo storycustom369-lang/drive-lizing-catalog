@@ -315,15 +315,16 @@ def render_terms(car):
   </ul>'''
 
 def render_calculator(car):
+    title_attr = html.escape(car_title(car)).replace('"', '&quot;')
     variants = car.get('variants')
     if not variants:
-        return '<div class="dl-calc-unavailable">Точная цена уточняется у менеджера. Оставьте заявку, посчитаем индивидуально.<button class="dl-btn dl-btn--calc-cta" type="button">Оставить заявку</button></div>'
+        return f'<div class="dl-calc-unavailable">Точная цена уточняется у менеджера. Оставьте заявку, посчитаем индивидуально.<button class="dl-btn dl-btn--calc-cta" type="button" data-art="{car["art"]}" data-car="{title_attr}">Забронировать</button></div>'
     pv_keys = sorted(variants.keys(), key=int)
     last_variant = variants[pv_keys[-1]]
     term_keys = sorted(last_variant['terms'].keys(), key=int)
     pv_buttons = "".join(f'<button data-pv="{k}" class="{"is-active" if i==len(pv_keys)-1 else ""}">{VARIANT_LABELS.get(k, k+"%")}</button>' for i,k in enumerate(pv_keys))
     term_buttons = "".join(f'<button data-term="{k}" class="{"is-active" if i==len(term_keys)-1 else ""}">{TERM_LABELS.get(k, k+" мес")}</button>' for i,k in enumerate(term_keys))
-    return f'''<div class="dl-calc" data-car-data='{build_calculator_data(car)}'>
+    return f'''<div class="dl-calc" data-car-data='{build_calculator_data(car)}' data-art="{car['art']}" data-car="{title_attr}">
     <div class="dl-field">
       <span class="dl-label">Первоначальный взнос</span>
       <div class="dl-seg dl-seg--pv" style="grid-template-columns:repeat({len(pv_keys)},1fr)">{pv_buttons}</div>
@@ -338,7 +339,7 @@ def render_calculator(car):
       <div class="dl-result__cell"><span class="dl-result__num" data-out="month">-</span><span class="dl-result__unit">в месяц</span></div>
     </div>
     <div class="dl-pv-sum" data-out="pv-sum"></div>
-    <button class="dl-btn dl-btn--calc-cta" type="button">Оставить заявку на этот автомобиль</button>
+    <button class="dl-btn dl-btn--calc-cta" type="button">Забронировать</button>
   </div>'''
 
 def render_related(car, all_cars, slugs_by_art):
@@ -502,6 +503,10 @@ PAGE_TEMPLATE = '''<!DOCTYPE html>
       </div>
     </div>
   </div>
+</div>
+
+<div class="dl-modal-backdrop" id="dlModalBackdrop" hidden>
+  <div class="dl-modal" id="dlModal"></div>
 </div>
 
 <script src="../../assets/car-page.js"></script>

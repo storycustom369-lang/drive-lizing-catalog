@@ -91,7 +91,7 @@
     <aside class="dl-detail-side">
       <div class="dl-card dl-calc-card">
         <h2 class="dl-h2" style="margin-top:0">Рассчитайте платёж</h2>
-        <div class="dl-calc" data-car-data='{"10": {"label": "ПВ 10%", "pv": 309900, "total": 6198000, "terms": {"36": {"day": 5660, "week": 39622, "month": 172167}, "48": {"day": 4245, "week": 29716, "month": 129125}, "60": {"day": 3396, "week": 23773, "month": 103300}}}, "20": {"label": "ПВ 20%", "pv": 619800, "total": 5578200, "terms": {"36": {"day": 5094, "week": 35660, "month": 154950}, "48": {"day": 3821, "week": 26745, "month": 116212}, "60": {"day": 3057, "week": 21396, "month": 92970}}}}'>
+        <div class="dl-calc" data-car-data='{"10": {"label": "ПВ 10%", "pv": 309900, "total": 6198000, "terms": {"36": {"day": 5660, "week": 39622, "month": 172167}, "48": {"day": 4245, "week": 29716, "month": 129125}, "60": {"day": 3396, "week": 23773, "month": 103300}}}, "20": {"label": "ПВ 20%", "pv": 619800, "total": 5578200, "terms": {"36": {"day": 5094, "week": 35660, "month": 154950}, "48": {"day": 3821, "week": 26745, "month": 116212}, "60": {"day": 3057, "week": 21396, "month": 92970}}}}' data-art="ДЛ-052" data-car="Москвич M70">
     <div class="dl-field">
       <span class="dl-label">Первоначальный взнос</span>
       <div class="dl-seg dl-seg--pv" style="grid-template-columns:repeat(2,1fr)"><button data-pv="10" class="">ПВ 10%</button><button data-pv="20" class="is-active">ПВ 20%</button></div>
@@ -106,7 +106,7 @@
       <div class="dl-result__cell"><span class="dl-result__num" data-out="month">-</span><span class="dl-result__unit">в месяц</span></div>
     </div>
     <div class="dl-pv-sum" data-out="pv-sum"></div>
-    <button class="dl-btn dl-btn--calc-cta" type="button">Оставить заявку на этот автомобиль</button>
+    <button class="dl-btn dl-btn--calc-cta" type="button">Забронировать</button>
   </div>
       </div>
     </aside>
@@ -190,6 +190,10 @@
       </div>
     </div>
   </div>
+</div>
+
+<div class="dl-modal-backdrop" id="dlModalBackdrop" hidden>
+  <div class="dl-modal" id="dlModal"></div>
 </div>
 
 <script src="../../assets/car-page.js"></script>

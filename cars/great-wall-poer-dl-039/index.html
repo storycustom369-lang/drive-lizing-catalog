@@ -91,7 +91,7 @@
     <aside class="dl-detail-side">
       <div class="dl-card dl-calc-card">
         <h2 class="dl-h2" style="margin-top:0">Рассчитайте платёж</h2>
-        <div class="dl-calc" data-car-data='{"0": {"label": "Без ПВ", "pv": 0, "total": 8855000, "terms": {"12": {"day": 24260, "week": 169822, "month": 737917}, "24": {"day": 12130, "week": 84911, "month": 368958}, "36": {"day": 8087, "week": 56607, "month": 245972}}}, "10": {"label": "ПВ 10%", "pv": 385000, "total": 7700000, "terms": {"12": {"day": 21096, "week": 147671, "month": 641667}, "24": {"day": 10548, "week": 73836, "month": 320833}, "36": {"day": 7032, "week": 49224, "month": 213889}}}, "20": {"label": "ПВ 20%", "pv": 770000, "total": 6930000, "terms": {"12": {"day": 18986, "week": 132904, "month": 577500}, "24": {"day": 9493, "week": 66452, "month": 288750}, "36": {"day": 6329, "week": 44301, "month": 192500}}}}'>
+        <div class="dl-calc" data-car-data='{"0": {"label": "Без ПВ", "pv": 0, "total": 8855000, "terms": {"12": {"day": 24260, "week": 169822, "month": 737917}, "24": {"day": 12130, "week": 84911, "month": 368958}, "36": {"day": 8087, "week": 56607, "month": 245972}}}, "10": {"label": "ПВ 10%", "pv": 385000, "total": 7700000, "terms": {"12": {"day": 21096, "week": 147671, "month": 641667}, "24": {"day": 10548, "week": 73836, "month": 320833}, "36": {"day": 7032, "week": 49224, "month": 213889}}}, "20": {"label": "ПВ 20%", "pv": 770000, "total": 6930000, "terms": {"12": {"day": 18986, "week": 132904, "month": 577500}, "24": {"day": 9493, "week": 66452, "month": 288750}, "36": {"day": 6329, "week": 44301, "month": 192500}}}}' data-art="ДЛ-039" data-car="Great Wall Poer">
     <div class="dl-field">
       <span class="dl-label">Первоначальный взнос</span>
       <div class="dl-seg dl-seg--pv" style="grid-template-columns:repeat(3,1fr)"><button data-pv="0" class="">Без ПВ</button><button data-pv="10" class="">ПВ 10%</button><button data-pv="20" class="is-active">ПВ 20%</button></div>
@@ -106,7 +106,7 @@
       <div class="dl-result__cell"><span class="dl-result__num" data-out="month">-</span><span class="dl-result__unit">в месяц</span></div>
     </div>
     <div class="dl-pv-sum" data-out="pv-sum"></div>
-    <button class="dl-btn dl-btn--calc-cta" type="button">Оставить заявку на этот автомобиль</button>
+    <button class="dl-btn dl-btn--calc-cta" type="button">Забронировать</button>
   </div>
       </div>
     </aside>
@@ -190,6 +190,10 @@
       </div>
     </div>
   </div>
+</div>
+
+<div class="dl-modal-backdrop" id="dlModalBackdrop" hidden>
+  <div class="dl-modal" id="dlModal"></div>
 </div>
 
 <script src="../../assets/car-page.js"></script>
