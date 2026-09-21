@@ -335,6 +335,7 @@ h1,h2,h3,.dl-num,.dl-btn,.dl-pill,.dl-title{font-family:'Onest',Arial,sans-serif
 @media (max-width:640px){.dl-hero-tagline-block{display:none;}}
 
 .dl-h1{font-family:'Onest',Arial,sans-serif;font-size:clamp(24px,3.2vw,30px);font-weight:800;letter-spacing:-.01em;color:var(--navy);line-height:1.2;margin:6px 0 6px;text-wrap:balance;}
+.dl-h1 em{font-style:normal;color:var(--blue);text-transform:uppercase;white-space:nowrap;}
 .dl-h1-subtitle{font-size:14px;color:var(--navy-soft);margin:0 0 20px;}
 .dl-h2{font-family:'Onest',Arial,sans-serif;font-size:15px;font-weight:700;letter-spacing:.02em;text-transform:uppercase;color:var(--navy);margin:32px 0 14px;}
 

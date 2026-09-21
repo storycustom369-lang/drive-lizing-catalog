@@ -449,7 +449,7 @@ PAGE_TEMPLATE = '''<!DOCTYPE html>
 
       <div class="dl-hero-top">
         <div class="dl-hero-top__main">
-          <h1 class="dl-h1">{title} в лизинг и аренду с выкупом в Иркутске</h1>
+          <h1 class="dl-h1"><em>{title}</em> в лизинг и аренду с выкупом в Иркутске</h1>
           {subtitle}
         </div>
         {hero_top_right}
