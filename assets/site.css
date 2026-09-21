@@ -309,16 +309,20 @@ h1,h2,h3,.dl-num,.dl-btn,.dl-pill,.dl-title{font-family:'Onest',Arial,sans-serif
 .dl-hero-banner__title{font-family:'Onest',Arial,sans-serif;font-size:clamp(16px,2.1vw,19px);font-weight:600;color:#fff;line-height:1.3;margin:0;text-wrap:balance;}
 .dl-hero-banner__title em{font-style:normal;font-weight:800;font-variant-numeric:tabular-nums;}
 .dl-hero-banner__sub{font-family:'Onest',Arial,sans-serif;font-size:12px;color:rgba(255,255,255,.6);margin:6px 0 0;}
-.dl-hero-banner__points{position:relative;z-index:2;display:flex;gap:22px;flex-wrap:wrap;}
-.dl-hero-banner__point{display:flex;flex-direction:column;align-items:flex-start;gap:9px;max-width:108px;}
+.dl-hero-banner__points{position:relative;z-index:2;display:flex;gap:20px;flex-wrap:wrap;}
+.dl-hero-banner__point{display:flex;flex-direction:row;align-items:center;gap:10px;max-width:120px;}
 .dl-hero-banner__point-ico{
   position:relative;overflow:hidden;flex:none;
-  width:32px;height:32px;border-radius:50%;
+  width:34px;height:34px;border-radius:50%;
   display:flex;align-items:center;justify-content:center;
   background:rgba(255,255,255,.14);
   backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);
   box-shadow:inset 0 1px 1px rgba(255,255,255,.3), inset 0 -4px 6px rgba(0,0,0,.12);
 }
+.dl-hero-banner__point-ico--blue{background:color-mix(in srgb, var(--blue) 55%, rgba(255,255,255,.16));}
+.dl-hero-banner__point-ico--teal{background:color-mix(in srgb, #1FAE81 55%, rgba(255,255,255,.16));}
+.dl-hero-banner__point-ico--amber{background:color-mix(in srgb, #E8992C 55%, rgba(255,255,255,.16));}
+.dl-hero-banner__point-ico--violet{background:color-mix(in srgb, #8C5AE8 55%, rgba(255,255,255,.16));}
 .dl-hero-banner__point-ico::after{
   content:"";position:absolute;top:-60%;left:-60%;width:220%;height:220%;
   background:linear-gradient(115deg, rgba(255,255,255,0) 38%, rgba(255,255,255,.55) 50%, rgba(255,255,255,0) 62%);
@@ -328,7 +332,7 @@ h1,h2,h3,.dl-num,.dl-btn,.dl-pill,.dl-title{font-family:'Onest',Arial,sans-serif
 .dl-hero-banner__points .dl-hero-banner__point:nth-child(3) .dl-hero-banner__point-ico::after{animation-delay:1.8s;}
 @media (prefers-reduced-motion: reduce){.dl-hero-banner__point-ico::after{animation:none;}}
 .dl-hero-banner__point svg{width:16px;height:16px;color:#fff;position:relative;z-index:1;}
-.dl-hero-banner__point-text{font-family:'Onest',Arial,sans-serif;font-size:11.5px;font-weight:600;color:rgba(255,255,255,.85);line-height:1.35;}
+.dl-hero-banner__point-text{font-family:'Onest',Arial,sans-serif;font-size:11.5px;font-weight:600;color:rgba(255,255,255,.9);line-height:1.3;}
 @media (max-width:760px){
   .dl-hero-banner__points{gap:16px;}
   .dl-hero-banner__point{max-width:84px;}
