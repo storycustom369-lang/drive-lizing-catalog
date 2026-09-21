@@ -331,7 +331,7 @@ h1,h2,h3,.dl-num,.dl-btn,.dl-pill,.dl-title{font-family:'Onest',Arial,sans-serif
 .dl-hero-banner__points .dl-hero-banner__point:nth-child(3) .dl-hero-banner__point-ico::after{animation-delay:1.8s;}
 @media (prefers-reduced-motion: reduce){.dl-hero-banner__point-ico::after{animation:none;}}
 .dl-hero-banner__point svg{width:16px;height:16px;color:#fff;position:relative;z-index:1;}
-.dl-hero-banner__point-text{font-family:'Onest',Arial,sans-serif;font-size:11.5px;font-weight:600;color:rgba(255,255,255,.9);line-height:1.3;flex:1;min-width:0;}
+.dl-hero-banner__point-text{font-family:'Onest',Arial,sans-serif;font-size:10px;font-weight:600;color:rgba(255,255,255,.9);line-height:1.25;flex:1;min-width:0;}
 @media (max-width:760px){
   .dl-hero-banner__points{gap:16px;}
   .dl-hero-banner__point{max-width:84px;}
@@ -344,7 +344,7 @@ h1,h2,h3,.dl-num,.dl-btn,.dl-pill,.dl-title{font-family:'Onest',Arial,sans-serif
   .dl-hero-banner__point{flex:1;min-width:0;max-width:none;gap:5px;}
   .dl-hero-banner__point-ico{width:26px;height:26px;}
   .dl-hero-banner__point svg{width:13px;height:13px;}
-  .dl-hero-banner__point-text{font-size:9.5px;line-height:1.2;}
+  .dl-hero-banner__point-text{font-size:8.5px;line-height:1.15;}
 }
 
 .dl-hero-top{display:flex;justify-content:space-between;align-items:flex-start;gap:20px;flex-wrap:wrap-reverse;}
