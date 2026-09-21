@@ -335,7 +335,7 @@ h1,h2,h3,.dl-num,.dl-btn,.dl-pill,.dl-title{font-family:'Onest',Arial,sans-serif
   background:rgba(255,255,255,.85);
   box-shadow:inset 0 1px 1px rgba(255,255,255,.6), 0 2px 6px rgba(0,0,0,.12);
 }
-.dl-hero-banner__point-ico img{width:92%;height:92%;object-fit:contain;position:relative;z-index:1;}
+.dl-hero-banner__point-ico img{width:112%;height:112%;object-fit:contain;position:relative;z-index:1;}
 .dl-hero-banner__point-ico::after{
   content:"";position:absolute;top:-60%;left:-60%;width:220%;height:220%;
   background:linear-gradient(115deg, rgba(255,255,255,0) 38%, rgba(255,255,255,.55) 50%, rgba(255,255,255,0) 62%);
