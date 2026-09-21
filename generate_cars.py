@@ -229,13 +229,15 @@ def render_description(car, spec_d, art_idx_seed):
 def render_location_promo():
     return '''<a class="dl-location-promo" href="https://driveleasing38.ru/" target="_blank" rel="noopener">
     <img src="../../images/site/hero-bg.webp" alt="Озеро Байкал рядом с Иркутском">
-    <div class="dl-location-promo__badge">
-      <svg viewBox="0 0 24 24" fill="none"><path d="M12 21s7-6.1 7-11.5a7 7 0 10-14 0C5 14.9 12 21 12 21z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><circle cx="12" cy="9.5" r="2.3" stroke="currentColor" stroke-width="1.8"/></svg>
-      <div><b>Иркутск</b><span>рядом с Байкалом</span></div>
-    </div>
-    <div class="dl-location-promo__foot">
-      <span>Удобное расположение<br>и живописные маршруты рядом</span>
-      <span class="dl-location-promo__arrow"><svg viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+    <div class="dl-location-promo__inner">
+      <div class="dl-location-promo__badge">
+        <svg viewBox="0 0 24 24" fill="none"><path d="M12 21s7-6.1 7-11.5a7 7 0 10-14 0C5 14.9 12 21 12 21z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><circle cx="12" cy="9.5" r="2.3" stroke="currentColor" stroke-width="1.8"/></svg>
+        <div><b>Иркутск</b><span>рядом с Байкалом</span></div>
+      </div>
+      <div class="dl-location-promo__foot">
+        <span>Удобное расположение и живописные маршруты рядом</span>
+        <span class="dl-location-promo__arrow"><svg viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+      </div>
     </div>
   </a>'''
 
@@ -452,13 +454,6 @@ PAGE_TEMPLATE = '''<!DOCTYPE html>
 
       <h2 class="dl-h2">Описание</h2>
       {description}
-      {location_promo}
-
-      <h2 class="dl-h2">Почему выгодно выбрать аренду с выкупом у нас</h2>
-      {why_choose}
-
-      <h2 class="dl-h2">Как стать владельцем</h2>
-      {how_to_own}
     </div>
 
     <aside class="dl-detail-side">
@@ -468,6 +463,16 @@ PAGE_TEMPLATE = '''<!DOCTYPE html>
       </div>
     </aside>
   </div>
+</div>
+
+{location_promo}
+
+<div class="dl-wrap">
+  <h2 class="dl-h2">Почему выгодно выбрать аренду с выкупом у нас</h2>
+  {why_choose}
+
+  <h2 class="dl-h2">Как стать владельцем</h2>
+  {how_to_own}
 
   <div class="dl-heading"><h2>Другие машины в наличии</h2></div>
   {related}
