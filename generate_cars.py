@@ -34,6 +34,15 @@ def slugify(s):
     slug = re.sub(r'-+', '-', ''.join(out)).strip('-')
     return slug
 
+def min_week_price(car):
+    """Минимальный платёж в неделю: максимальный ПВ (ниже коэффициент) + максимальный срок (меньше платёж)."""
+    variants = car.get('variants')
+    if not variants:
+        return None
+    max_pv = sorted(variants.keys(), key=int)[-1]
+    max_term = sorted(variants[max_pv]['terms'].keys(), key=int)[-1]
+    return variants[max_pv]['terms'][max_term]['week']
+
 def load_cars():
     text = open(CATALOG_HTML, encoding='utf-8').read()
     m = re.search(r'var CARS = (\[.*?\]);', text, re.S)
@@ -150,10 +159,6 @@ def render_hero_top_right(car):
     tagline = HERO_TAGLINES[idx]
     return f'''<div class="dl-hero-tagline-block">
     <div class="dl-hero-tagline">{html.escape(tagline)}</div>
-    <div class="dl-hero-location">
-      <svg viewBox="0 0 24 24" fill="none"><path d="M12 21s7-6.1 7-11.5a7 7 0 10-14 0C5 14.9 12 21 12 21z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><circle cx="12" cy="9.5" r="2.3" stroke="currentColor" stroke-width="1.8"/></svg>
-      <div class="dl-hero-location__text"><b>Иркутск</b><span>рядом с Байкалом</span></div>
-    </div>
   </div>'''
 
 SUBTITLES_BY_BODY = {
@@ -174,12 +179,17 @@ def render_hero_banner(car, min_week, slug):
     idx = int(hashlib.md5(car['art'].encode()).hexdigest(), 16) % len(HERO_HOOKS)
     hook = HERO_HOOKS[idx]
     price_html = f'от <em>{fmt_money(min_week)}</em> в неделю' if min_week is not None else 'цена <em>по запросу</em>'
+    points = "".join(
+        f'<div class="dl-hero-banner__point"><svg viewBox="0 0 24 24" fill="none">{icon}</svg><span>{html.escape(t)}</span></div>'
+        for t, icon in HERO_POINTS
+    )
     return f'''<div class="dl-hero-banner">
     <div class="dl-hero-banner__main">
       <div class="dl-hero-banner__eyebrow">Драйв Лизинг · Иркутск</div>
       <h2 class="dl-hero-banner__title">{html.escape(title)} — {price_html}</h2>
       <p class="dl-hero-banner__sub">{html.escape(hook)}</p>
     </div>
+    <div class="dl-hero-banner__points">{points}</div>
   </div>'''
 
 DESC_OPENERS = [
@@ -309,10 +319,10 @@ def render_calculator(car):
     if not variants:
         return '<div class="dl-calc-unavailable">Точная цена уточняется у менеджера — оставьте заявку, посчитаем индивидуально.<button class="dl-btn dl-btn--calc-cta" type="button">Оставить заявку</button></div>'
     pv_keys = sorted(variants.keys(), key=int)
-    first_variant = variants[pv_keys[0]]
-    term_keys = sorted(first_variant['terms'].keys(), key=int)
-    pv_buttons = "".join(f'<button data-pv="{k}" class="{"is-active" if i==0 else ""}">{VARIANT_LABELS.get(k, k+"%")}</button>' for i,k in enumerate(pv_keys))
-    term_buttons = "".join(f'<button data-term="{k}" class="{"is-active" if i==0 else ""}">{TERM_LABELS.get(k, k+" мес")}</button>' for i,k in enumerate(term_keys))
+    last_variant = variants[pv_keys[-1]]
+    term_keys = sorted(last_variant['terms'].keys(), key=int)
+    pv_buttons = "".join(f'<button data-pv="{k}" class="{"is-active" if i==len(pv_keys)-1 else ""}">{VARIANT_LABELS.get(k, k+"%")}</button>' for i,k in enumerate(pv_keys))
+    term_buttons = "".join(f'<button data-term="{k}" class="{"is-active" if i==len(term_keys)-1 else ""}">{TERM_LABELS.get(k, k+" мес")}</button>' for i,k in enumerate(term_keys))
     return f'''<div class="dl-calc" data-car-data='{build_calculator_data(car)}'>
     <div class="dl-field">
       <span class="dl-label">Первоначальный взнос</span>
@@ -343,9 +353,7 @@ def render_related(car, all_cars, slugs_by_art):
         photo = c['photos'][0] if c['photos'] else None
         price = None
         try:
-            first_pv = sorted(c['variants'].keys(), key=int)[0]
-            first_term = sorted(c['variants'][first_pv]['terms'].keys(), key=int)[0]
-            price = c['variants'][first_pv]['terms'][first_term]['week']
+            price = min_week_price(c)
         except Exception:
             pass
         img = f'<img src="../../{photo}" alt="{html.escape(car_title(c))}" loading="lazy">' if photo else ''
@@ -522,11 +530,7 @@ def main():
         os.makedirs(outdir, exist_ok=True)
         title = car_title(c)
         spec_d = parse_spec(c.get('spec'))
-        min_week = None
-        if c.get('variants'):
-            pv_keys = sorted(c['variants'].keys(), key=int)
-            term_keys = sorted(c['variants'][pv_keys[0]]['terms'].keys(), key=int)
-            min_week = c['variants'][pv_keys[0]]['terms'][term_keys[0]]['week']
+        min_week = min_week_price(c)
         canonical = f"{SITE_URL}/cars/{slug}/"
         og_image = f"{SITE_URL}/{c['photos'][0]}" if c.get('photos') else f"{SITE_URL}/logo.png"
         price_bit = f" от {fmt_money(min_week)}/нед" if min_week is not None else ""
