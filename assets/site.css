@@ -259,8 +259,7 @@ h1,h2,h3,.dl-num,.dl-btn,.dl-pill,.dl-title{font-family:'Onest',Arial,sans-serif
 .dl-breadcrumb span:last-child{color:var(--navy);font-weight:600;}
 
 .dl-hero-section{padding-top:18px;}
-.dl-hero-section__inner{max-width:1180px;margin:0 auto;padding:0 24px 1px;}
-@media (max-width:640px){.dl-hero-section__inner{padding:0 16px 1px;}}
+.dl-hero-section__inner{max-width:1180px;margin:0 auto;padding:0 0 1px;}
 
 .dl-badges-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:18px 0 10px;}
 @media (max-width:860px){.dl-badges-grid{grid-template-columns:repeat(2,1fr);}}
