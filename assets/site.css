@@ -266,9 +266,9 @@ h1,h2,h3,.dl-num,.dl-btn,.dl-pill,.dl-title{font-family:'Onest',Arial,sans-serif
 @media (max-width:860px){.dl-badges-grid{grid-template-columns:repeat(2,1fr);}}
 .dl-badge3{
   display:flex;align-items:center;gap:10px;
-  background:#EEF3FC;border-radius:14px;padding:10px 12px;
+  background:transparent;border:1px solid var(--border);border-radius:14px;padding:10px 12px;
 }
-.dl-badge3__ico{flex:none;width:48px;height:48px;display:flex;align-items:center;justify-content:center;background:#fff;border-radius:50%;border:1px solid var(--border);box-shadow:0 1px 3px rgba(15,30,59,.08);padding:6px;}
+.dl-badge3__ico{flex:none;width:48px;height:48px;display:flex;align-items:center;justify-content:center;}
 .dl-badge3__ico img{width:100%;height:100%;object-fit:contain;display:block;}
 .dl-badge3__text{display:flex;flex-direction:column;gap:2px;min-width:0;}
 .dl-badge3__text b{font-family:'Onest',Arial,sans-serif;font-size:14px;font-weight:700;color:var(--navy);line-height:1.25;}
