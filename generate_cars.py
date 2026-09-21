@@ -453,8 +453,6 @@ PAGE_TEMPLATE = '''<!DOCTYPE html>
       </div>
 
       {badges}
-
-      {hero_banner}
     </div>
   </div>
 
@@ -462,6 +460,8 @@ PAGE_TEMPLATE = '''<!DOCTYPE html>
     <div class="dl-detail-main">
       <div class="dl-card__art dl-detail-gallery">{gallery}</div>
       {thumbs}
+
+      {hero_banner}
 
       <h2 class="dl-h2">Характеристики</h2>
       {specs}
