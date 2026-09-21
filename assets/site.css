@@ -271,12 +271,20 @@ h1,h2,h3,.dl-num,.dl-btn,.dl-pill,.dl-title{font-family:'Onest',Arial,sans-serif
   box-shadow:inset 0 1px 1px rgba(255,255,255,.85), inset 0 -8px 12px -6px rgba(255,255,255,.4), 0 6px 16px rgba(15,30,59,.1);
 }
 .dl-badge2::before{content:"";position:absolute;inset:0;z-index:-1;border-radius:inherit;background:linear-gradient(165deg, rgba(255,255,255,.65) 0%, rgba(255,255,255,0) 60%);pointer-events:none;}
-.dl-badge2__ico{width:24px;height:24px;flex:none;margin-left:-2px;}
-.dl-badge2__ico img{width:100%;height:100%;object-fit:contain;display:block;}
+.dl-badge2__ico{
+  width:22px;height:22px;border-radius:50%;flex:none;margin-left:-2px;
+  display:flex;align-items:center;justify-content:center;
+  box-shadow:inset 0 -3px 4px rgba(0,0,0,.2), inset 0 2px 2px rgba(255,255,255,.85), 0 2px 4px rgba(15,30,59,.18);
+}
+.dl-badge2__ico svg{width:12px;height:12px;color:#fff;filter:drop-shadow(0 1px 1px rgba(0,0,0,.25));}
 .dl-badge2--blue{background:color-mix(in srgb, var(--blue) 20%, rgba(255,255,255,.55));color:var(--blue-dark);}
+.dl-badge2--blue .dl-badge2__ico{background:radial-gradient(circle at 32% 26%, #8DB6FF 0%, var(--blue) 55%, var(--blue-dark) 100%);}
 .dl-badge2--teal{background:color-mix(in srgb, #1FAE81 20%, rgba(255,255,255,.55));color:#0E8F6C;}
+.dl-badge2--teal .dl-badge2__ico{background:radial-gradient(circle at 32% 26%, #86EBCB 0%, #1FAE81 55%, #0E8F6C 100%);}
 .dl-badge2--amber{background:color-mix(in srgb, #E8992C 22%, rgba(255,255,255,.55));color:#A6690A;}
+.dl-badge2--amber .dl-badge2__ico{background:radial-gradient(circle at 32% 26%, #FFD48F 0%, #E8992C 55%, #A6690A 100%);}
 .dl-badge2--violet{background:color-mix(in srgb, #8C5AE8 20%, rgba(255,255,255,.55));color:#6B3FC4;}
+.dl-badge2--violet .dl-badge2__ico{background:radial-gradient(circle at 32% 26%, #CDB3FA 0%, #8C5AE8 55%, #6B3FC4 100%);}
 
 .dl-hero-banner{margin:18px 0 24px;background:linear-gradient(120deg, var(--navy) 0%, var(--blue-dark) 100%);border-radius:14px;padding:20px 24px;position:relative;overflow:hidden;isolation:isolate;display:flex;align-items:center;justify-content:space-between;gap:28px;flex-wrap:wrap;}
 .dl-hero-banner::before{content:"";position:absolute;inset:0;background:linear-gradient(115deg, rgba(255,255,255,.22) 0%, rgba(255,255,255,0) 28%, rgba(255,255,255,0) 62%, rgba(255,255,255,.08) 100%);pointer-events:none;z-index:1;}

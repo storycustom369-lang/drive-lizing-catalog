@@ -127,12 +127,10 @@ BADGE_ICONS = [
 ]
 BADGE_COLORS = ['blue', 'teal', 'amber', 'violet']
 
-BADGE_ICON_IMAGES = ['approval', 'downpayment', 'documents', 'nobank']
-
 def render_badges2():
     items = ['92% одобрение', 'Взнос от 0%', 'По 2 документам', 'Без банка']
     chips = "".join(
-        f'<span class="dl-badge2 dl-badge2--{BADGE_COLORS[i]}"><span class="dl-badge2__ico"><img src="../../images/icons3d/{BADGE_ICON_IMAGES[i]}.png" alt="" loading="lazy"></span>{html.escape(t)}</span>'
+        f'<span class="dl-badge2 dl-badge2--{BADGE_COLORS[i]}"><span class="dl-badge2__ico">{BADGE_ICONS[i]}</span>{html.escape(t)}</span>'
         for i, t in enumerate(items)
     )
     return f'<div class="dl-badges-row">{chips}</div>'
