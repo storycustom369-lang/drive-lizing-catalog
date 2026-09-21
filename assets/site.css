@@ -332,8 +332,8 @@ h1,h2,h3,.dl-num,.dl-btn,.dl-pill,.dl-title{font-family:'Onest',Arial,sans-serif
 .dl-hero-tagline{font-family:'Caveat',cursive;font-size:22px;font-weight:700;color:var(--blue-dark);line-height:1.15;text-align:right;transform:rotate(-2deg);}
 @media (max-width:640px){.dl-hero-tagline-block{display:none;}}
 
-.dl-h1{font-family:'Onest',Arial,sans-serif;font-size:clamp(26px,3.6vw,34px);font-weight:800;letter-spacing:-.01em;color:var(--navy);line-height:1.15;margin:14px 0 6px;text-wrap:balance;}
-.dl-h1-sub2{font-family:'Onest',Arial,sans-serif;font-size:clamp(17px,2.2vw,20px);font-weight:600;color:var(--navy-soft);margin:0 0 6px;line-height:1.3;}
+.dl-h1{font-family:'Onest',Arial,sans-serif;font-size:clamp(26px,3.6vw,34px);font-weight:800;letter-spacing:-.01em;color:var(--blue);text-transform:uppercase;line-height:1.15;margin:14px 0 6px;text-wrap:balance;}
+.dl-h1-sub2{font-family:'Onest',Arial,sans-serif;font-size:clamp(17px,2.2vw,20px);font-weight:600;color:#000;margin:0 0 6px;line-height:1.3;}
 .dl-h1-subtitle{font-size:14px;color:var(--muted);margin:0 0 20px;}
 .dl-h2{font-family:'Onest',Arial,sans-serif;font-size:15px;font-weight:700;letter-spacing:.02em;text-transform:uppercase;color:var(--navy);margin:32px 0 14px;}
 
