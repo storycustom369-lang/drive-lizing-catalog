@@ -256,6 +256,7 @@
     var outWeek = calc.querySelector('[data-out="week"]');
     var outMonth = calc.querySelector('[data-out="month"]');
     var outPvSum = calc.querySelector('[data-out="pv-sum"]');
+    var outPvHint = calc.querySelector('[data-out="pv-hint"]');
 
     function fmt(n){ return n.toLocaleString("ru-RU") + " ₽"; }
 
@@ -278,6 +279,7 @@
       if (outWeek) outWeek.textContent = fmt(t.week);
       if (outMonth) outMonth.textContent = fmt(t.month);
       if (outPvSum) outPvSum.textContent = variant.pv > 0 ? "Первоначальный взнос: " + fmt(variant.pv) : "Без первоначального взноса";
+      if (outPvHint) outPvHint.textContent = variant.pv > 0 ? fmt(variant.pv) : "0 ₽";
     }
     pvButtons.forEach(function(b){
       b.addEventListener("click", function(){

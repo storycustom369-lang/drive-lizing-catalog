@@ -349,33 +349,77 @@ def render_terms(car):
     <li><b>Стаж вождения от 3 лет</b> (меньше, возможен взнос от 30%)</li>
   </ul>'''
 
+CALC_ICONS = {
+    'calculator': '<rect x="5" y="2" width="14" height="20" rx="2" stroke="currentColor" stroke-width="1.6"/><rect x="7.5" y="4.5" width="9" height="4" rx="0.5" stroke="currentColor" stroke-width="1.4"/><circle cx="8.5" cy="12.5" r="1" fill="currentColor"/><circle cx="12" cy="12.5" r="1" fill="currentColor"/><circle cx="15.5" cy="12.5" r="1" fill="currentColor"/><circle cx="8.5" cy="16" r="1" fill="currentColor"/><circle cx="12" cy="16" r="1" fill="currentColor"/><circle cx="15.5" cy="16" r="1" fill="currentColor"/><circle cx="8.5" cy="19.2" r="1" fill="currentColor"/><rect x="11" y="18.2" width="5.5" height="2" rx="1" fill="currentColor"/>',
+    'coins': '<ellipse cx="12" cy="7" rx="6" ry="2.3" stroke="currentColor" stroke-width="1.6"/><path d="M6 7v4c0 1.3 2.7 2.3 6 2.3s6-1 6-2.3V7" stroke="currentColor" stroke-width="1.6"/><path d="M6 11v4c0 1.3 2.7 2.3 6 2.3s6-1 6-2.3v-4" stroke="currentColor" stroke-width="1.6"/>',
+    'info': '<circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.6"/><circle cx="12" cy="8" r="1" fill="currentColor"/><path d="M12 11v6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>',
+    'calendar': '<rect x="3" y="5" width="18" height="16" rx="2" stroke="currentColor" stroke-width="1.6"/><path d="M3 9.5h18M8 3v4M16 3v4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>',
+    'shield-percent': '<path d="M12 3l7 3v6c0 5-3 8.5-7 9.5-4-1-7-4.5-7-9.5V6l7-3z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="M9.5 14.5l5-5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/><circle cx="10" cy="10" r="1" fill="currentColor"/><circle cx="14" cy="14" r="1" fill="currentColor"/>',
+    'chart': '<path d="M4 20V13M10 20V9M16 20V5M3 20h17" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>',
+    'wallet': '<rect x="3" y="6" width="18" height="13" rx="2" stroke="currentColor" stroke-width="1.6"/><path d="M3 10h18" stroke="currentColor" stroke-width="1.6"/><circle cx="17" cy="14" r="1.3" fill="currentColor"/>',
+    'pie': '<circle cx="12" cy="12" r="8" stroke="currentColor" stroke-width="1.6"/><path d="M12 4v8l6 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>',
+    'arrow': '<path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>',
+    'car': '<path d="M4 16l1.4-5A2 2 0 017.3 9.5h9.4a2 2 0 011.9 1.5L20 16" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="M3 16h18v3a1 1 0 01-1 1h-1a1 1 0 01-1-1v-1H6v1a1 1 0 01-1 1H4a1 1 0 01-1-1v-3z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><circle cx="7.5" cy="16" r="1.1" fill="currentColor"/><circle cx="16.5" cy="16" r="1.1" fill="currentColor"/>',
+    'document': '<rect x="5" y="3" width="14" height="18" rx="2" stroke="currentColor" stroke-width="1.6"/><path d="M8 8h8M8 12h8M8 16h5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>',
+    'shield-check': '<path d="M12 3l7 3v6c0 5-3 8.5-7 9.5-4-1-7-4.5-7-9.5V6l7-3z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="M9 12l2 2 4-4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>',
+    'lock': '<rect x="5" y="10" width="14" height="10" rx="2" stroke="currentColor" stroke-width="1.6"/><path d="M8 10V7a4 4 0 018 0v3" stroke="currentColor" stroke-width="1.6"/>',
+}
+def ci(name):
+    return f'<svg viewBox="0 0 24 24" fill="none">{CALC_ICONS[name]}</svg>'
+
 def render_calculator(car):
     title_attr = html.escape(car_title(car)).replace('"', '&quot;')
+    head = f'''<div class="dl-calc-head">
+    <div class="dl-calc-head__text">
+      <h2 class="dl-h2" style="margin:0">Рассчитайте платёж</h2>
+      <p class="dl-calc-head__sub">Подберите условия и узнайте, сколько платить</p>
+    </div>
+    <div class="dl-calc-head__note">
+      <span class="dl-calc-head__note-ico">{ci('calculator')}</span>
+      <span>Прозрачные условия,<br>без скрытых платежей</span>
+    </div>
+  </div>'''
     variants = car.get('variants')
     if not variants:
-        return f'<div class="dl-calc-unavailable">Точная цена уточняется у менеджера. Оставьте заявку, посчитаем индивидуально.<button class="dl-btn dl-btn--calc-cta" type="button" data-art="{car["art"]}" data-car="{title_attr}">Забронировать</button></div>'
+        return f'{head}<div class="dl-calc-unavailable">Точная цена уточняется у менеджера. Оставьте заявку, посчитаем индивидуально.<button class="dl-btn dl-btn--calc-cta" type="button" data-art="{car["art"]}" data-car="{title_attr}">Получить расчёт {ci("arrow")}</button></div>'
     pv_keys = sorted(variants.keys(), key=int)
     last_variant = variants[pv_keys[-1]]
     term_keys = sorted(last_variant['terms'].keys(), key=int)
     pv_buttons = "".join(f'<button data-pv="{k}" class="{"is-active" if i==len(pv_keys)-1 else ""}">{VARIANT_LABELS.get(k, k+"%")}</button>' for i,k in enumerate(pv_keys))
     term_buttons = "".join(f'<button data-term="{k}" class="{"is-active" if i==len(term_keys)-1 else ""}">{TERM_LABELS.get(k, k+" мес")}</button>' for i,k in enumerate(term_keys))
-    return f'''<div class="dl-calc" data-car-data='{build_calculator_data(car)}' data-art="{car['art']}" data-car="{title_attr}">
+    return f'''{head}
+  <div class="dl-calc" data-car-data='{build_calculator_data(car)}' data-art="{car['art']}" data-car="{title_attr}">
     <div class="dl-field">
-      <span class="dl-label">Первоначальный взнос</span>
-      <div class="dl-seg dl-seg--pv" style="grid-template-columns:repeat({len(pv_keys)},1fr)">{pv_buttons}</div>
+      <span class="dl-label dl-label--row">{ci('coins')}Первоначальный взнос<span class="dl-info-dot">{ci('info')}</span></span>
+      <div class="dl-field__row">
+        <div class="dl-seg dl-seg--pv" style="grid-template-columns:repeat({len(pv_keys)},1fr)">{pv_buttons}</div>
+        <div class="dl-field__hint">≈ <span data-out="pv-hint">-</span><br>от стоимости авто</div>
+      </div>
     </div>
     <div class="dl-field">
-      <span class="dl-label">Срок договора</span>
-      <div class="dl-seg dl-seg--term" style="grid-template-columns:repeat({len(term_keys)},1fr)">{term_buttons}</div>
+      <span class="dl-label dl-label--row">{ci('calendar')}Срок договора<span class="dl-info-dot">{ci('info')}</span></span>
+      <div class="dl-field__row">
+        <div class="dl-seg dl-seg--term" style="grid-template-columns:repeat({len(term_keys)},1fr)">{term_buttons}</div>
+        <div class="dl-tip"><span class="dl-tip__ico">{ci('shield-percent')}</span><span>Чем больше срок, тем комфортнее платёж</span></div>
+      </div>
     </div>
     <div class="dl-result">
-      <div class="dl-result__cell"><span class="dl-result__num" data-out="day">-</span><span class="dl-result__unit">в день</span></div>
-      <div class="dl-result__cell is-main"><span class="dl-result__num" data-out="week">-</span><span class="dl-result__unit">в неделю</span></div>
-      <div class="dl-result__cell"><span class="dl-result__num" data-out="month">-</span><span class="dl-result__unit">в месяц</span></div>
+      <div class="dl-result__cell"><span class="dl-result__ico">{ci('calendar')}</span><span class="dl-result__num" data-out="day">-</span><span class="dl-result__unit">в день</span></div>
+      <div class="dl-result__cell is-main"><span class="dl-result__ico">{ci('chart')}</span><span class="dl-result__num" data-out="week">-</span><span class="dl-result__unit">в неделю</span></div>
+      <div class="dl-result__cell"><span class="dl-result__ico">{ci('wallet')}</span><span class="dl-result__num" data-out="month">-</span><span class="dl-result__unit">в месяц</span></div>
     </div>
-    <div class="dl-pv-sum" data-out="pv-sum"></div>
-    <button class="dl-btn dl-btn--calc-cta" type="button">Забронировать</button>
-  </div>'''
+    <div class="dl-pv-sum-row">
+      <span class="dl-pv-sum-row__ico">{ci('pie')}</span>
+      <div><div class="dl-pv-sum" data-out="pv-sum"></div><div class="dl-pv-sum__note">Окончательные условия уточнит менеджер</div></div>
+    </div>
+    <button class="dl-btn dl-btn--calc-cta" type="button">Получить расчёт {ci('arrow')}</button>
+  </div>
+  <div class="dl-calc-trust">
+    <div class="dl-calc-trust__item">{ci('car')}<span>Без скрытых платежей</span></div>
+    <div class="dl-calc-trust__item">{ci('document')}<span>Нужен только паспорт и права</span></div>
+    <div class="dl-calc-trust__item">{ci('shield-check')}<span>Одобрение до 92%</span></div>
+  </div>
+  <div class="dl-calc-fineprint">{ci('lock')}<span>Ваши данные под защитой. Мы свяжемся с вами и предложим лучшие условия.</span></div>'''
 
 def render_related(car, all_cars, slugs_by_art):
     others = [c for c in all_cars if c['art'] != car['art']]
@@ -498,7 +542,6 @@ PAGE_TEMPLATE = '''<!DOCTYPE html>
 
     <aside class="dl-detail-side">
       <div class="dl-card dl-calc-card">
-        <h2 class="dl-h2" style="margin-top:0">Рассчитайте платёж</h2>
         {calculator}
       </div>
     </aside>
