@@ -185,7 +185,6 @@ def render_hero_banner(car, min_week, slug):
     )
     return f'''<div class="dl-hero-banner">
     <div class="dl-hero-banner__main">
-      <div class="dl-hero-banner__eyebrow">Драйв Лизинг · Иркутск</div>
       <h2 class="dl-hero-banner__title">{html.escape(title)}: {price_html}</h2>
       <p class="dl-hero-banner__sub">{html.escape(hook)}</p>
     </div>
