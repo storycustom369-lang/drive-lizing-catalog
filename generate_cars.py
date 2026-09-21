@@ -94,6 +94,7 @@ def render_gallery(photos, title):
     <button class="dl-gallery__nav is-next" aria-label="Следующее фото"><svg viewBox="0 0 24 24" fill="none"><path d="M9 18l6-6-6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
     <div class="dl-gallery__dots">{dots}</div>
     <div class="dl-gallery__count">1 / {len(photos)}</div>
+    <button class="dl-gallery__expand" type="button" aria-label="Открыть на весь экран"><svg viewBox="0 0 24 24" fill="none"><path d="M9 3H5a2 2 0 00-2 2v4M15 3h4a2 2 0 012 2v4M9 21H5a2 2 0 01-2-2v-4M15 21h4a2 2 0 002-2v-4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
   </div>'''
 
 def render_thumbs(photos, title):
@@ -105,6 +106,14 @@ def render_thumbs(photos, title):
     )
     return f'<div class="dl-thumbs">{thumbs}</div>'
 
+SPEC_ICONS = {
+    "Год выпуска": "calendar",
+    "Пробег": "compass",
+    "Цвет": "droplet",
+    "Двигатель": "gear",
+    "Тип кузова": "car",
+}
+
 def render_specs(spec_d, year):
     rows = []
     if year: rows.append(("Год выпуска", str(year)))
@@ -112,7 +121,11 @@ def render_specs(spec_d, year):
     if spec_d['color']: rows.append(("Цвет", spec_d['color']))
     if spec_d['engine']: rows.append(("Двигатель", spec_d['engine']))
     if spec_d['body']: rows.append(("Тип кузова", spec_d['body']))
-    cells = "".join(f'<div class="dl-specs__cell"><span class="dl-specs__val">{html.escape(v)}</span><span class="dl-specs__label">{html.escape(k)}</span></div>' for k,v in rows)
+    cells = "".join(
+        f'<div class="dl-specs__cell"><span class="dl-specs__ico"><img src="../../images/icons3d/{SPEC_ICONS[k]}.png" alt="" loading="lazy"></span>'
+        f'<div><span class="dl-specs__val">{html.escape(v)}</span><span class="dl-specs__label">{html.escape(k)}</span></div></div>'
+        for k, v in rows
+    )
     return f'<div class="dl-specs">{cells}</div>'
 
 def render_komplekt(items):
@@ -127,13 +140,30 @@ BADGE_ICONS = [
 ]
 BADGE_COLORS = ['blue', 'teal', 'amber', 'violet']
 
+BADGE2_ICONS = [
+    '<path d="M12 3l7 3v6c0 5-3 8.5-7 9.5-4-1-7-4.5-7-9.5V6l7-3z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M9 12l2 2 4-4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>',
+    '<ellipse cx="12" cy="7" rx="6" ry="2.4" stroke="currentColor" stroke-width="1.7"/><path d="M6 7v4c0 1.3 2.7 2.4 6 2.4s6-1.1 6-2.4V7" stroke="currentColor" stroke-width="1.7"/><path d="M6 11v4c0 1.3 2.7 2.4 6 2.4s6-1.1 6-2.4v-4" stroke="currentColor" stroke-width="1.7"/>',
+    '<rect x="5" y="3" width="14" height="18" rx="2" stroke="currentColor" stroke-width="1.7"/><path d="M8 8h8M8 12h8M8 16h5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/>',
+    '<path d="M4 9.5l8-5 8 5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/><path d="M5 9.5v8.5M9.5 9.5v8.5M14.5 9.5v8.5M19 9.5v8.5" stroke="currentColor" stroke-width="1.7"/><path d="M4 19.5h16" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/><path d="M4 3.5l16 17" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/>',
+]
+
+BADGE_ITEMS = [
+    ('92% одобрение', 'Реальные клиенты'),
+    ('Взнос от 0%', 'Гибкие условия'),
+    ('По 2 документам', 'Быстрое оформление'),
+    ('Без банка', 'Решение от нас'),
+]
+
+BADGE3_ICON_IMAGES = ['locked', 'coin', 'document', 'bank']
+
 def render_badges2():
-    items = ['92% одобрение', 'Взнос от 0%', 'По 2 документам', 'Без банка']
-    chips = "".join(
-        f'<span class="dl-badge2 dl-badge2--{BADGE_COLORS[i]}"><span class="dl-badge2__ico">{BADGE_ICONS[i]}</span>{html.escape(t)}</span>'
-        for i, t in enumerate(items)
+    cards = "".join(
+        f'<div class="dl-badge3 dl-badge3--{BADGE_COLORS[i]}">'
+        f'<span class="dl-badge3__ico"><img src="../../images/icons3d/{BADGE3_ICON_IMAGES[i]}.png" alt="" loading="lazy"></span>'
+        f'<div class="dl-badge3__text"><b>{html.escape(t)}</b><span>{html.escape(s)}</span></div></div>'
+        for i, (t, s) in enumerate(BADGE_ITEMS)
     )
-    return f'<div class="dl-badges-row">{chips}</div>'
+    return f'<div class="dl-badges-grid">{cards}</div>'
 
 HERO_HOOKS = [
     "Забирайте на этой неделе, документы за один визит",
@@ -143,9 +173,9 @@ HERO_HOOKS = [
 ]
 
 HERO_POINTS = [
-    ("Проверенные авто", '<path d="M4 16l4-9h8l4 9" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><path d="M2 16h20M6 16v3M18 16v3" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/><path d="M9 10.5l2 2 4-4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>'),
-    ("Прозрачный договор", '<path d="M6 3h9l3 3v15H6z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><path d="M15 3v3h3" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><path d="M9 12h6M9 16h6" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/>'),
-    ("Поддержка на всех этапах", '<path d="M4 16l1.4-5A2 2 0 017.3 9.5h9.4a2 2 0 011.9 1.5L20 16" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><path d="M3 16h18v3a1 1 0 01-1 1h-1a1 1 0 01-1-1v-1H6v1a1 1 0 01-1 1H4a1 1 0 01-1-1v-3z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><circle cx="7.5" cy="16" r="1.2" fill="currentColor"/><circle cx="16.5" cy="16" r="1.2" fill="currentColor"/>'),
+    ("Проверенные авто", "car"),
+    ("Прозрачный договор", "document"),
+    ("Поддержка на всех этапах", "heart"),
 ]
 
 HERO_TAGLINES = [
@@ -180,8 +210,8 @@ def render_hero_banner(car, min_week, slug):
     hook = HERO_HOOKS[idx]
     price_html = f'от <em>{fmt_money(min_week)}</em> в неделю' if min_week is not None else 'цена <em>по запросу</em>'
     points = "".join(
-        f'<div class="dl-hero-banner__point"><span class="dl-hero-banner__point-ico dl-hero-banner__point-ico--{BADGE_COLORS[i % len(BADGE_COLORS)]}"><svg viewBox="0 0 24 24" fill="none">{icon}</svg></span><span class="dl-hero-banner__point-text">{html.escape(t)}</span></div>'
-        for i, (t, icon) in enumerate(HERO_POINTS)
+        f'<div class="dl-hero-banner__point"><span class="dl-hero-banner__point-ico"><img src="../../images/icons3d/{icon}.png" alt="" loading="lazy"></span><span class="dl-hero-banner__point-text">{html.escape(t)}</span></div>'
+        for t, icon in HERO_POINTS
     )
     return f'''<div class="dl-hero-banner">
     <div class="dl-hero-banner__main">
@@ -444,13 +474,9 @@ PAGE_TEMPLATE = '''<!DOCTYPE html>
 
   <div class="dl-hero-section">
     <div class="dl-hero-section__inner">
-      <div class="dl-hero-top">
-        <div class="dl-hero-top__main">
-          <h1 class="dl-h1"><em>{title}</em> в лизинг и аренду с выкупом в Иркутске</h1>
-          {subtitle}
-        </div>
-        {hero_top_right}
-      </div>
+      <h1 class="dl-h1">{title}</h1>
+      <p class="dl-h1-sub2">В лизинг и аренду с выкупом в Иркутске</p>
+      {subtitle}
 
       {badges}
     </div>
@@ -463,10 +489,10 @@ PAGE_TEMPLATE = '''<!DOCTYPE html>
 
       {hero_banner}
 
-      <h2 class="dl-h2">Характеристики</h2>
+      <div class="dl-heading"><h2 class="dl-h2" style="margin:0">Характеристики</h2><a class="dl-heading__link" href="#komplekt">Все характеристики<svg viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></a></div>
       {specs}
 
-      <h2 class="dl-h2">Комплектация</h2>
+      <h2 class="dl-h2" id="komplekt">Комплектация</h2>
       {komplekt}
 
       <h2 class="dl-h2">Описание</h2>
@@ -515,6 +541,14 @@ PAGE_TEMPLATE = '''<!DOCTYPE html>
 
 <div class="dl-modal-backdrop" id="dlModalBackdrop" hidden>
   <div class="dl-modal" id="dlModal"></div>
+</div>
+
+<div class="dl-lightbox" id="dlLightbox" hidden>
+  <button class="dl-lightbox__close" id="dlLightboxClose" aria-label="Закрыть">&times;</button>
+  <button class="dl-lightbox__nav is-prev" id="dlLightboxPrev" aria-label="Предыдущее фото"><svg viewBox="0 0 24 24" fill="none"><path d="M15 18l-6-6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+  <img class="dl-lightbox__img" id="dlLightboxImg" src="" alt="">
+  <button class="dl-lightbox__nav is-next" id="dlLightboxNext" aria-label="Следующее фото"><svg viewBox="0 0 24 24" fill="none"><path d="M9 18l6-6-6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+  <div class="dl-lightbox__count" id="dlLightboxCount"></div>
 </div>
 
 <script src="../../assets/car-page.js"></script>

@@ -169,6 +169,44 @@
     document.body.style.overflow = "hidden";
   }
 
+  // --- Лайтбокс на весь экран ---
+  var lightbox = document.getElementById("dlLightbox");
+  var lightboxImg = document.getElementById("dlLightboxImg");
+  var lightboxCount = document.getElementById("dlLightboxCount");
+  var lightboxClose = document.getElementById("dlLightboxClose");
+  var lightboxPrev = document.getElementById("dlLightboxPrev");
+  var lightboxNext = document.getElementById("dlLightboxNext");
+  var lbSrcs = [];
+  var lbIdx = 0;
+  var lbOnChange = null;
+  function lbRender(){
+    lightboxImg.src = lbSrcs[lbIdx];
+    if (lightboxCount) lightboxCount.textContent = (lbIdx + 1) + " / " + lbSrcs.length;
+  }
+  function openLightbox(srcs, startIdx, onChange){
+    if (!lightbox) return;
+    lbSrcs = srcs; lbIdx = startIdx; lbOnChange = onChange || null;
+    lbRender();
+    lightbox.hidden = false;
+    document.body.style.overflow = "hidden";
+  }
+  function closeLightbox(){
+    if (!lightbox) return;
+    lightbox.hidden = true;
+    document.body.style.overflow = "";
+  }
+  if (lightboxClose) lightboxClose.addEventListener("click", closeLightbox);
+  if (lightbox) lightbox.addEventListener("click", function(e){ if (e.target === lightbox) closeLightbox(); });
+  if (lightboxPrev) lightboxPrev.addEventListener("click", function(){ lbIdx = (lbIdx - 1 + lbSrcs.length) % lbSrcs.length; lbRender(); if (lbOnChange) lbOnChange(lbIdx); });
+  if (lightboxNext) lightboxNext.addEventListener("click", function(){ lbIdx = (lbIdx + 1) % lbSrcs.length; lbRender(); if (lbOnChange) lbOnChange(lbIdx); });
+  document.addEventListener("keydown", function(e){
+    if (lightbox && !lightbox.hidden) {
+      if (e.key === "Escape") closeLightbox();
+      if (e.key === "ArrowLeft" && lightboxPrev) lightboxPrev.click();
+      if (e.key === "ArrowRight" && lightboxNext) lightboxNext.click();
+    }
+  });
+
   // --- Галерея: свайп/стрелки/точки/миниатюры ---
   document.querySelectorAll(".dl-gallery").forEach(function(g){
     var track = g.querySelector(".dl-gallery__track");
@@ -190,6 +228,11 @@
     if (next) next.addEventListener("click", function(){ idx = (idx + 1) % slides.length; render(); });
     dots.forEach(function(d, i){ d.addEventListener("click", function(){ idx = i; render(); }); });
     thumbs.forEach(function(t, i){ t.addEventListener("click", function(){ idx = i; render(); }); });
+    var expandBtn = g.querySelector(".dl-gallery__expand");
+    if (expandBtn) expandBtn.addEventListener("click", function(){
+      var srcs = Array.prototype.map.call(slides, function(s){ var img = s.querySelector("img"); return img ? img.src : ""; });
+      openLightbox(srcs, idx, function(newIdx){ idx = newIdx; render(); });
+    });
     // свайп на тач-устройствах
     var startX = null;
     track.addEventListener("touchstart", function(e){ startX = e.touches[0].clientX; }, {passive:true});
