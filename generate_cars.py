@@ -375,7 +375,7 @@ def render_calculator(car):
       <p class="dl-calc-head__sub">Подберите условия и узнайте, сколько платить</p>
     </div>
     <div class="dl-calc-head__note">
-      <span class="dl-calc-head__note-ico">{ci('calculator')}</span>
+      <span class="dl-calc-head__note-ico"><img src="../../images/icons3d/calc-icon.png" alt="" loading="lazy"></span>
       <span>Прозрачные условия,<br>без скрытых платежей</span>
     </div>
   </div>'''
@@ -400,7 +400,7 @@ def render_calculator(car):
       <span class="dl-label dl-label--row">{ci('calendar')}Срок договора<span class="dl-info-dot">{ci('info')}</span></span>
       <div class="dl-field__row">
         <div class="dl-seg dl-seg--term" style="grid-template-columns:repeat({len(term_keys)},1fr)">{term_buttons}</div>
-        <div class="dl-tip"><span class="dl-tip__ico">{ci('shield-percent')}</span><span>Чем больше срок, тем комфортнее платёж</span></div>
+        <div class="dl-tip"><span class="dl-tip__ico"><img src="../../images/icons3d/shield-pct-icon.png" alt="" loading="lazy"></span><span>Чем больше срок, тем комфортнее платёж</span></div>
       </div>
     </div>
     <div class="dl-result">
@@ -409,7 +409,7 @@ def render_calculator(car):
       <div class="dl-result__cell"><span class="dl-result__ico">{ci('wallet')}</span><span class="dl-result__num" data-out="month">-</span><span class="dl-result__unit">в месяц</span></div>
     </div>
     <div class="dl-pv-sum-row">
-      <span class="dl-pv-sum-row__ico">{ci('pie')}</span>
+      <span class="dl-pv-sum-row__ico"><img src="../../images/icons3d/pie-icon.png" alt="" loading="lazy"></span>
       <div><div class="dl-pv-sum" data-out="pv-sum"></div><div class="dl-pv-sum__note">Окончательные условия уточнит менеджер</div></div>
     </div>
     <button class="dl-btn dl-btn--calc-cta" type="button">Получить расчёт {ci('arrow')}</button>
