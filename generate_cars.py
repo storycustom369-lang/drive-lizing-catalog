@@ -154,7 +154,7 @@ BADGE_ITEMS = [
     ('Без банка', 'Решение от нас'),
 ]
 
-BADGE3_ICON_IMAGES = ['locked', 'coin', 'document', 'bank']
+BADGE3_ICON_IMAGES = ['shield', 'coin', 'document', 'bank']
 
 def render_badges2():
     cards = "".join(
