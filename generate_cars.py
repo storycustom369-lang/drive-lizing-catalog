@@ -275,13 +275,22 @@ OWN_STEPS = [
     ("Становитесь владельцем", "После последнего платежа автомобиль переходит в вашу собственность."),
 ]
 
+OWN_ICONS = [
+    '<path d="M21 3L3 10l7 3 3 7 8-17z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><path d="M10 13l6-6" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/>',
+    '<path d="M12 21s7-6.1 7-11.5a7 7 0 10-14 0C5 14.9 12 21 12 21z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><path d="M9.5 9.5l1.7 1.7 3.3-3.3" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>',
+    '<rect x="2.5" y="5.5" width="19" height="13" rx="2" stroke="currentColor" stroke-width="1.7"/><circle cx="8.5" cy="12" r="2" stroke="currentColor" stroke-width="1.5"/><path d="M13 10.5h6M13 13.5h4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>',
+    '<path d="M6 3h9l3 3v15H6z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><path d="M15 3v3h3" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><path d="M9 12h6M9 16h4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/>',
+    '<rect x="3" y="5" width="18" height="16" rx="2" stroke="currentColor" stroke-width="1.7"/><path d="M3 9.5h18M8 3v4M16 3v4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/><circle cx="8" cy="14" r="1.3" fill="currentColor"/><circle cx="12" cy="14" r="1.3" fill="currentColor"/><circle cx="16" cy="14" r="1.3" fill="currentColor"/>',
+    '<circle cx="8" cy="15" r="4" stroke="currentColor" stroke-width="1.7"/><path d="M11 12l9-9M17 6l2 2M14 9l2 2" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>',
+]
+
 def render_how_to_own():
     items = "".join(
-        f'<li class="dl-steps__item"><span class="dl-steps__num"></span><div class="dl-steps__body">'
-        f'<div class="dl-steps__title">{html.escape(t)}</div><div class="dl-steps__text">{html.escape(d)}</div></div></li>'
-        for t, d in OWN_STEPS
+        f'<div class="dl-why-item"><div class="dl-why-item__ico dl-why-item__ico--{BADGE_COLORS[i % len(BADGE_COLORS)]}"><svg viewBox="0 0 24 24" fill="none">{OWN_ICONS[i]}</svg></div>'
+        f'<div><div class="dl-why-item__title">{html.escape(t)}</div><div class="dl-why-item__text">{html.escape(d)}</div></div></div>'
+        for i, (t, d) in enumerate(OWN_STEPS)
     )
-    return f'<ol class="dl-steps">{items}</ol>'
+    return f'<div class="dl-steps-grid">{items}</div>'
 
 TERMS_ICONS = [
     '<svg viewBox="0 0 24 24" fill="none"><rect x="3" y="5" width="18" height="16" rx="2" stroke="currentColor" stroke-width="1.8"/><path d="M3 9.5h18M8 3v4M16 3v4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>',
