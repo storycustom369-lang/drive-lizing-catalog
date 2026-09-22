@@ -262,21 +262,6 @@ def render_description(car, spec_d, art_idx_seed):
     parts.append(closer)
     return f'<p class="dl-description">{" ".join(parts)}</p>'
 
-WHY_CARDS = [
-    ("Без банка и скоринга", "Решение по машине принимаем сами, не банк, поэтому не смотрим кредитную историю и официальный доход."),
-    ("Прозрачный расчёт", "Один и тот же коэффициент к цене авто в зависимости от взноса: 2.3 без взноса, 1.8 при 20%. Без скрытых надбавок."),
-    ("Свой автопарк, не посредники", "100+ автомобилей у партнёра с 7-летней историей на рынке и 400+ отзывами. Машина реальная, не с чужого объявления."),
-    ("Работаем с физ. и юр. лицами", "Те же условия для ИП и организаций: не нужно искать отдельного лизингодателя под бизнес."),
-]
-
-def render_why_choose():
-    items = "".join(
-        f'<div class="dl-why-item"><div class="dl-why-item__ico dl-why-item__ico--{BADGE_COLORS[i]}"><svg viewBox="0 0 24 24" fill="none">{BADGE_ICONS[i]}</svg></div>'
-        f'<div><div class="dl-why-item__title">{html.escape(t)}</div><div class="dl-why-item__text">{html.escape(d)}</div></div></div>'
-        for i, (t, d) in enumerate(WHY_CARDS)
-    )
-    return f'<div class="dl-why-list">{items}</div>'
-
 REASONS_ITEMS = [
     ("reason-shield", "Даже если банк отказал", "Не ограничиваемся банковским решением. Рассматриваем вашу ситуацию и подбираем доступный вариант получения автомобиля."),
     ("reason-doc-car", "Подбираем не только авто, но и решение", "Аренда с выкупом, лизинг и другие варианты оформления: подберём оптимальный вариант под вашу ситуацию."),
@@ -327,7 +312,6 @@ def render_how_to_own():
         for i, (icon, (t, d)) in enumerate(zip(STEP_ICON_FILES, OWN_STEPS))
     )
     return f'''<div class="dl-conditions">
-    <div class="dl-conditions__eyebrow">Драйв Лизинг</div>
     <h2 class="dl-conditions__heading">Какие <span>условия?</span></h2>
     <p class="dl-conditions__sub">Простой и понятный процесс: от заявки до вашего автомобиля.</p>
     <div class="dl-conditions__list">{rows}</div>
@@ -572,9 +556,6 @@ PAGE_TEMPLATE = '''<!DOCTYPE html>
 <div class="dl-wrap">
   {how_to_own}
 
-  <h2 class="dl-h2">Почему выгодно выбрать аренду с выкупом у нас</h2>
-  {why_choose}
-
   <div class="dl-heading"><h2>Другие машины в наличии</h2></div>
   {related}
 
@@ -662,7 +643,6 @@ def main():
             komplekt=render_komplekt(komplekt_items(c['komplekt'])),
             description=render_description(c, spec_d, c['art']),
             reasons=render_reasons(),
-            why_choose=render_why_choose(),
             how_to_own=render_how_to_own(),
             calculator=render_calculator(c),
             related=render_related(c, cars, slugs_by_art),
