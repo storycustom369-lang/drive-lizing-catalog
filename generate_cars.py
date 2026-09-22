@@ -262,21 +262,6 @@ def render_description(car, spec_d, art_idx_seed):
     parts.append(closer)
     return f'<p class="dl-description">{" ".join(parts)}</p>'
 
-def render_location_promo():
-    return '''<a class="dl-location-promo" href="https://driveleasing38.ru/" target="_blank" rel="noopener">
-    <img src="../../images/site/hero-bg.webp" alt="Озеро Байкал рядом с Иркутском">
-    <div class="dl-location-promo__inner">
-      <div class="dl-location-promo__badge">
-        <svg viewBox="0 0 24 24" fill="none"><path d="M12 21s7-6.1 7-11.5a7 7 0 10-14 0C5 14.9 12 21 12 21z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><circle cx="12" cy="9.5" r="2.3" stroke="currentColor" stroke-width="1.8"/></svg>
-        <div><b>Иркутск</b><span>рядом с Байкалом</span></div>
-      </div>
-      <div class="dl-location-promo__foot">
-        <span>Удобное расположение и живописные маршруты рядом</span>
-        <span class="dl-location-promo__arrow"><svg viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-      </div>
-    </div>
-  </a>'''
-
 WHY_CARDS = [
     ("Без банка и скоринга", "Решение по машине принимаем сами, не банк, поэтому не смотрим кредитную историю и официальный доход."),
     ("Прозрачный расчёт", "Один и тот же коэффициент к цене авто в зависимости от взноса: 2.3 без взноса, 1.8 при 20%. Без скрытых надбавок."),
@@ -294,8 +279,8 @@ def render_why_choose():
 
 REASONS_ITEMS = [
     ("reason-shield", "Даже если банк отказал", "Не ограничиваемся банковским решением. Рассматриваем вашу ситуацию и подбираем доступный вариант получения автомобиля."),
-    ("reason-doc-car", "Подбираем не только авто, но и решение", "Аренда с выкупом, лизинг и другие варианты оформления — подберём оптимальный вариант под вашу ситуацию."),
-    ("reason-car", "Большой выбор автомобилей", "Автомобили в наличии у нас и проверенных партнёров. Если нужного варианта нет — поможем подобрать другой."),
+    ("reason-doc-car", "Подбираем не только авто, но и решение", "Аренда с выкупом, лизинг и другие варианты оформления: подберём оптимальный вариант под вашу ситуацию."),
+    ("reason-car", "Большой выбор автомобилей", "Автомобили в наличии у нас и проверенных партнёров. Если нужного варианта нет, поможем подобрать другой."),
     ("reason-briefcase", "Для себя, работы и бизнеса", "Работаем с физлицами, ИП и компаниями. Подберём автомобиль для личных поездок, работы или бизнеса."),
 ]
 
@@ -307,9 +292,9 @@ def render_reasons():
     )
     return f'''<div class="dl-reasons">
     <h2 class="dl-reasons__heading">Почему обращаются<br><span>в Драйв Лизинг</span></h2>
-    <p class="dl-reasons__sub">Мы не просто выдаём автомобили — мы находим решение для вашей ситуации.</p>
+    <p class="dl-reasons__sub">Мы не просто выдаём автомобили, мы находим решение для вашей ситуации.</p>
     <div class="dl-reasons__grid">{items}</div>
-    <div class="dl-reasons__tagline"><span></span>Драйв Лизинг — пора ехать<span></span></div>
+    <div class="dl-reasons__tagline"><span></span>Драйв Лизинг. Пора ехать<span></span></div>
   </div>'''
 
 OWN_STEPS = [
@@ -330,13 +315,23 @@ OWN_ICONS = [
     '<circle cx="8" cy="15" r="4" stroke="currentColor" stroke-width="1.7"/><path d="M11 12l9-9M17 6l2 2M14 9l2 2" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>',
 ]
 
+STEP_ICON_FILES = ['step1-plane', 'step2-doc-check', 'step3-id-person', 'step4-doc-pencil', 'step5-calendar-clock', 'step6-car-key']
+
 def render_how_to_own():
-    items = "".join(
-        f'<div class="dl-why-item"><div class="dl-why-item__ico dl-why-item__ico--{BADGE_COLORS[i % len(BADGE_COLORS)]}"><svg viewBox="0 0 24 24" fill="none">{OWN_ICONS[i]}</svg></div>'
-        f'<div><div class="dl-why-item__title">{html.escape(t)}</div><div class="dl-why-item__text">{html.escape(d)}</div></div></div>'
-        for i, (t, d) in enumerate(OWN_STEPS)
+    rows = "".join(
+        f'<div class="dl-conditions__row">'
+        f'<div class="dl-conditions__num">{i+1}</div>'
+        f'<div class="dl-conditions__ico"><img src="../../images/icons3d/{icon}.png" alt="" loading="lazy"></div>'
+        f'<div class="dl-conditions__body"><div class="dl-conditions__title">{html.escape(t)}</div><div class="dl-conditions__text">{html.escape(d)}</div></div>'
+        f'</div>'
+        for i, (icon, (t, d)) in enumerate(zip(STEP_ICON_FILES, OWN_STEPS))
     )
-    return f'<div class="dl-steps-grid">{items}</div>'
+    return f'''<div class="dl-conditions">
+    <div class="dl-conditions__eyebrow">Драйв Лизинг</div>
+    <h2 class="dl-conditions__heading">Какие <span>условия?</span></h2>
+    <p class="dl-conditions__sub">Простой и понятный процесс: от заявки до вашего автомобиля.</p>
+    <div class="dl-conditions__list">{rows}</div>
+  </div>'''
 
 TERMS_ICONS = [
     '<svg viewBox="0 0 24 24" fill="none"><rect x="3" y="5" width="18" height="16" rx="2" stroke="currentColor" stroke-width="1.8"/><path d="M3 9.5h18M8 3v4M16 3v4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>',
@@ -574,14 +569,11 @@ PAGE_TEMPLATE = '''<!DOCTYPE html>
   </div>
 </div>
 
-{location_promo}
-
 <div class="dl-wrap">
+  {how_to_own}
+
   <h2 class="dl-h2">Почему выгодно выбрать аренду с выкупом у нас</h2>
   {why_choose}
-
-  <h2 class="dl-h2">Как стать владельцем</h2>
-  {how_to_own}
 
   <div class="dl-heading"><h2>Другие машины в наличии</h2></div>
   {related}
@@ -670,7 +662,6 @@ def main():
             komplekt=render_komplekt(komplekt_items(c['komplekt'])),
             description=render_description(c, spec_d, c['art']),
             reasons=render_reasons(),
-            location_promo=render_location_promo(),
             why_choose=render_why_choose(),
             how_to_own=render_how_to_own(),
             calculator=render_calculator(c),
