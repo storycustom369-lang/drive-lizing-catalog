@@ -730,7 +730,7 @@ PAGE_TEMPLATE = '''<!DOCTYPE html>
         </div>
       </div>
       <div class="dl-footer__promo">
-        <div class="dl-footer__promo-text">Больше, чем просто автомобили.<br><span>Свобода передвижения</span></div>
+        <div class="dl-footer__promo-text">Уезжайте на новом автомобиле<br><span>уже сегодня</span></div>
         <img src="../../images/icons3d/footer-promo-car.png" alt="">
       </div>
     </div>
