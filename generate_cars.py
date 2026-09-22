@@ -94,11 +94,19 @@ def build_calculator_data(car):
     # JSON blob embedded per-page for the small vanilla-JS toggle script
     return json.dumps(car['variants'], ensure_ascii=False)
 
+def photo_rel(p):
+    """Путь к фото для car-page HTML (относительно cars/<slug>/). Абсолютные URL (сторонние стоковые фото) не трогаем — иначе '../../' ломает ссылку."""
+    return p if p.startswith('http') else f"../../{p}"
+
+def photo_abs(p):
+    """Абсолютный URL фото для og:image / schema.org."""
+    return p if p.startswith('http') else f"{SITE_URL}/{p}"
+
 def render_gallery(photos, title):
     if not photos:
         return '<div class="dl-gallery__empty">Фото уточняйте у менеджера</div>'
     slides = "".join(
-        f'<div class="dl-gallery__slide"><img src="../../{p}" alt="{html.escape(title)}, фото {i+1}" loading="{"eager" if i==0 else "lazy"}"></div>'
+        f'<div class="dl-gallery__slide"><img src="{photo_rel(p)}" alt="{html.escape(title)}, фото {i+1}" loading="{"eager" if i==0 else "lazy"}"></div>'
         for i, p in enumerate(photos)
     )
     dots = "".join(f'<button class="dl-gallery__dot{" is-active" if i==0 else ""}" data-i="{i}" aria-label="Фото {i+1}"></button>' for i in range(len(photos)))
@@ -115,7 +123,7 @@ def render_thumbs(photos, title):
     if not photos or len(photos) < 2:
         return ''
     thumbs = "".join(
-        f'<button class="dl-thumb{" is-active" if i==0 else ""}" data-i="{i}"><img src="../../{p}" alt="{html.escape(title)}, миниатюра {i+1}" loading="lazy"></button>'
+        f'<button class="dl-thumb{" is-active" if i==0 else ""}" data-i="{i}"><img src="{photo_rel(p)}" alt="{html.escape(title)}, миниатюра {i+1}" loading="lazy"></button>'
         for i, p in enumerate(photos)
     )
     return f'<div class="dl-thumbs">{thumbs}</div>'
@@ -487,7 +495,7 @@ def render_related(car, all_cars, slugs_by_art):
             price = min_week_price(c)
         except Exception:
             pass
-        img = f'<img src="../../{photo}" alt="{html.escape(car_title(c))}" loading="lazy">' if photo else ''
+        img = f'<img src="{photo_rel(photo)}" alt="{html.escape(car_title(c))}" loading="lazy">' if photo else ''
         price_html = f'от <b>{fmt_money(price)}</b> / нед.' if price else 'Цена по запросу'
         count_html = (
             f'<span class="dl-related2__count"><svg viewBox="0 0 24 24" fill="none"><rect x="3" y="6" width="18" height="14" rx="2" stroke="currentColor" stroke-width="1.8"/><path d="M8 6l1.5-2h5L16 6" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><circle cx="12" cy="13" r="3.2" stroke="currentColor" stroke-width="1.8"/></svg>1/{photo_count}</span>'
@@ -541,7 +549,7 @@ def render_schema(car, url, slug, min_week):
         "@context": "https://schema.org",
         "@type": "Product",
         "name": f"{title} в лизинг в Иркутске",
-        "image": [f"{SITE_URL}/{p}" for p in car['photos'][:5]] if car.get('photos') else [f"{SITE_URL}/logo.png"],
+        "image": [photo_abs(p) for p in car['photos'][:5]] if car.get('photos') else [f"{SITE_URL}/logo.png"],
         "description": f"{title}, {car.get('spec') or ''}. Лизинг и аренда с выкупом в Иркутске от Драйв Лизинг.",
         "brand": {"@type": "Brand", "name": car['marka'].strip()},
         "sku": car['art'],
@@ -694,7 +702,7 @@ def main():
         spec_d = parse_spec(c.get('spec'))
         min_week = min_week_price(c)
         canonical = f"{SITE_URL}/cars/{slug}/"
-        og_image = f"{SITE_URL}/{c['photos'][0]}" if c.get('photos') else f"{SITE_URL}/logo.png"
+        og_image = photo_abs(c['photos'][0]) if c.get('photos') else f"{SITE_URL}/logo.png"
         price_bit = f" от {fmt_money(min_week)}/нед" if min_week is not None else ""
         title_tag = f"{title} в лизинг в Иркутске без банка{price_bit} · Драйв Лизинг"
         price_sentence = f" Платёж от {fmt_money(min_week)} в неделю." if min_week is not None else " Точная цена по запросу у менеджера."
