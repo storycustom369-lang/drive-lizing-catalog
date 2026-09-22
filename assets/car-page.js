@@ -393,6 +393,9 @@
     var outWeek = calc.querySelector('[data-out="week"]');
     var outMonth = calc.querySelector('[data-out="month"]');
     var outPvSum = calc.querySelector('[data-out="pv-sum"]');
+    var saveBanner = calc.querySelector('[data-out="save-banner"]');
+    var saveAmount = calc.querySelector('[data-out="save-amount"]');
+    var saveSub = calc.querySelector('[data-out="save-sub"]');
 
     calc.querySelectorAll(".dl-hint__btn").forEach(function(btn){
       btn.addEventListener("click", function(e){
@@ -428,6 +431,29 @@
       if (outWeek) outWeek.textContent = fmt(t.week);
       if (outMonth) outMonth.textContent = fmt(t.month);
       if (outPvSum) outPvSum.textContent = variant.pv > 0 ? "Первоначальный взнос: " + fmt(variant.pv) : "Без первоначального взноса";
+
+      if (saveBanner) {
+        var pvKeys = Object.keys(data).map(Number).sort(function(a, b){ return a - b; });
+        var curPvNum = Number(pv);
+        var nextPvNum = null;
+        for (var i = 0; i < pvKeys.length; i++) {
+          if (pvKeys[i] > curPvNum) { nextPvNum = pvKeys[i]; break; }
+        }
+        var saveWeek = 0;
+        if (nextPvNum !== null) {
+          var nextVariant = data[String(nextPvNum)];
+          var nextTermKey = nextVariant.terms[terms] ? terms : Object.keys(nextVariant.terms)[0];
+          var nextT = nextVariant.terms[nextTermKey];
+          if (nextT) saveWeek = t.week - nextT.week;
+        }
+        if (nextPvNum !== null && saveWeek > 0) {
+          saveBanner.hidden = false;
+          if (saveAmount) saveAmount.textContent = "Экономьте " + fmt(saveWeek) + " в неделю";
+          if (saveSub) saveSub.textContent = "при взносе от " + nextPvNum + "%";
+        } else {
+          saveBanner.hidden = true;
+        }
+      }
     }
 
     // Слайдер с фиксированными точками (ПВ / срок) — тянется, но встаёт только на конкретные значения

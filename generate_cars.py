@@ -452,6 +452,7 @@ def render_calculator(car):
     term_keys = sorted(last_variant['terms'].keys(), key=int)
     pv_slider = render_slider('pv', pv_keys, VARIANT_LABELS, '%')
     term_slider = render_slider('term', term_keys, TERM_LABELS, ' мес')
+    lease_note = '<div class="dl-calc-lease-note">Автомобиль по лизинговой программе: суммы ориентировочные, точный расчёт подготовит менеджер.</div>' if car.get('isLeaseProgram') else ''
     return f'''{head}
   <div class="dl-calc" data-car-data='{build_calculator_data(car)}' data-art="{car['art']}" data-car="{title_attr}">
     <div class="dl-field">
@@ -467,6 +468,13 @@ def render_calculator(car):
       <div class="dl-result__cell is-main"><span class="dl-result__ico">{ci('chart')}</span><span class="dl-result__num" data-out="week">-</span><span class="dl-result__unit-row"><span class="dl-result__unit">в неделю</span><button type="button" class="dl-hint__btn" aria-label="Как считается сумма за неделю">{ci('info')}</button></span><div class="dl-hint__pop dl-hint__pop--week">Сумма указана за 7 дней, среднее значение. Платёж за конкретную неделю может немного отличаться в зависимости от дат вашего графика.</div></div>
       <div class="dl-result__cell"><span class="dl-result__ico">{ci('wallet')}</span><span class="dl-result__num" data-out="month">-</span><span class="dl-result__unit-row"><span class="dl-result__unit">в месяц</span><button type="button" class="dl-hint__btn" aria-label="Как считается сумма за месяц">{ci('info')}</button></span><div class="dl-hint__pop dl-hint__pop--month">Сумма указана за 30 дней. При оплате календарным месяцем цена меняется в зависимости от количества дней: недостающие или лишние дни распределяются равными долями к платежу.</div></div>
     </div>
+    <div class="dl-calc-save" data-out="save-banner" hidden>
+      <div class="dl-calc-save__text">
+        <b data-out="save-amount">Экономьте 0 ₽</b>
+        <span data-out="save-sub">в неделю при большем взносе</span>
+      </div>
+      <div class="dl-calc-save__ico">%</div>
+    </div>
     <div class="dl-pv-sum-row">
       <span class="dl-pv-sum-row__ico"><img src="../../images/icons3d/pie-icon.png" alt="" loading="lazy"></span>
       <div><div class="dl-pv-sum" data-out="pv-sum"></div><div class="dl-pv-sum__note">Окончательные условия уточнит менеджер</div></div>
@@ -476,13 +484,11 @@ def render_calculator(car):
   <div class="dl-calc-note">
     <b>Вы пока ничего не платите</b>
     <span>Заявка ни к чему не обязывает. Менеджер свяжется и обсудит с вами точные условия бронирования.</span>
-  </div>'''
+  </div>{lease_note}'''
 
 def render_related(car, all_cars, slugs_by_art):
     title_attr = html.escape(car_title(car)).replace('"', '&quot;')
-    available_count = len([c for c in all_cars if not c.get('isIssued')])
-    stat_floor = (available_count // 5) * 5  # округляем вниз, чтобы "Более N" не устаревало при продаже пары машин
-    others = [c for c in all_cars if c['art'] != car['art'] and not c.get('isIssued')]
+    others = [c for c in all_cars if c['art'] != car['art']]
     # prefer same bucket, then fill with anything else
     same_bucket = [c for c in others if c.get('bucket') == car.get('bucket')]
     pool = same_bucket if len(same_bucket) >= 4 else others
@@ -543,7 +549,7 @@ def render_related(car, all_cars, slugs_by_art):
         </div>
       </div>
       <button type="button" class="dl-btn dl-related2__cta-btn" data-art="{car['art']}" data-car="{title_attr}">Подобрать автомобиль {ci('arrow')}</button>
-      <div class="dl-related2__cta-stat"><svg viewBox="0 0 24 24" fill="none"><path d="M16 11a4 4 0 10-4-4M6 11a3 3 0 100-6 3 3 0 000 6z" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/><path d="M2 20c.6-3.4 3-5.5 6-5.5M14 20c-.4-3.9 2.4-7 7-7" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg><div><b>Более {stat_floor}</b><span>автомобилей в наличии</span></div></div>
+      <div class="dl-related2__cta-stat"><svg viewBox="0 0 24 24" fill="none"><path d="M16 11a4 4 0 10-4-4M6 11a3 3 0 100-6 3 3 0 000 6z" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/><path d="M2 20c.6-3.4 3-5.5 6-5.5M14 20c-.4-3.9 2.4-7 7-7" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg><div><b>Более 60</b><span>автомобилей в наличии</span></div></div>
     </div>
   </div>'''
 
@@ -683,6 +689,17 @@ PAGE_TEMPLATE = '''<!DOCTYPE html>
       <div class="dl-footer__brand">
         <a href="../../" class="dl-footer__logo"><img src="../../logo.png" alt="Драйв Лизинг"><span>Драйв Лизинг</span></a>
         <p class="dl-footer__tagline">Лизинг и аренда автомобилей с выкупом в Иркутске. Без банка, по 2 документам, для физ. и юр. лиц.</p>
+        <div class="dl-footer__social">
+          <a class="dl-footer__social-btn" href="https://t.me/avtohere38" target="_blank" rel="noopener">
+            <span class="dl-footer__social-ico"><svg viewBox="0 0 24 24" fill="none"><path d="M17.53 7.2L15.4 17.6c-.16.72-.58.9-1.18.56l-3.26-2.4-1.57 1.51c-.17.18-.32.33-.66.33l.24-3.36 6.1-5.51c.27-.24-.06-.37-.41-.13l-7.54 4.75-3.25-1.02c-.7-.22-.72-.7.15-1.04l12.7-4.9c.59-.22 1.1.14.9 1.05z" fill="currentColor"/></svg></span>
+            <span class="dl-footer__social-label">Telegram</span>
+          </a>
+          <a class="dl-footer__social-btn" href="https://max.ru/u/f9LHodD0cOJwdXPtIRKpSznrrNNKwx-l7-HcyIykYTEMu3kGUgp9u4vTgm8" target="_blank" rel="noopener">
+            <span class="dl-footer__social-ico"><img src="../../images/icons3d/max-badge.png" alt="MAX"></span>
+            <span class="dl-footer__social-label">MAX</span>
+          </a>
+          <a class="dl-footer__updates" href="https://t.me/avtohere38" target="_blank" rel="noopener">Будьте в курсе наших новостей<svg viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+        </div>
       </div>
       <div>
         <div class="dl-footer__col-title">Навигация</div>
@@ -694,15 +711,36 @@ PAGE_TEMPLATE = '''<!DOCTYPE html>
       <div>
         <div class="dl-footer__col-title">Контакты</div>
         <div class="dl-footer__contacts">
-          <a href="tel:+79950527683">+7 995 052-76-83</a>
-          <span>г. Иркутск, ул. Байкальская, 208</span>
-          <a href="https://t.me/avtohere38" target="_blank" rel="noopener">Telegram</a>
-          <a href="https://max.ru/u/f9LHodD0cOJwdXPtIRKpSznrrNNKwx-l7-HcyIykYTEMu3kGUgp9u4vTgm8" target="_blank" rel="noopener">MAX</a>
+          <div class="dl-footer__contact-item">
+            <span class="dl-footer__contact-badge"><svg viewBox="0 0 24 24" fill="none"><path d="M6.6 10.8c1.3 2.5 3.1 4.3 5.6 5.6l1.9-1.9c.3-.3.7-.4 1-.2 1 .3 2.1.5 3.2.5.6 0 1 .4 1 1V19c0 .6-.4 1-1 1C10.5 20 4 13.5 4 5.7c0-.6.4-1 1-1h3.2c.6 0 1 .4 1 1 0 1.1.2 2.2.5 3.2.1.4 0 .7-.2 1l-1.9 1.9z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg></span>
+            <div class="dl-footer__contact-body"><a href="tel:+79950527683">+7 995 052-76-83</a><div class="dl-footer__contact-sub">Ежедневно с 9:00 до 21:00</div></div>
+          </div>
+          <div class="dl-footer__contact-item">
+            <span class="dl-footer__contact-badge"><svg viewBox="0 0 24 24" fill="none"><path d="M12 21s7-6.5 7-11.5A7 7 0 105 9.5C5 14.5 12 21 12 21z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><circle cx="12" cy="9.5" r="2.3" stroke="currentColor" stroke-width="1.6"/></svg></span>
+            <div class="dl-footer__contact-body"><div>г. Иркутск, ул. Байкальская, 208</div><div class="dl-footer__contact-sub">Офис и выдача автомобилей</div></div>
+          </div>
+          <div class="dl-footer__contact-item">
+            <span class="dl-footer__contact-badge"><svg viewBox="0 0 24 24" fill="none"><path d="M17.53 7.2L15.4 17.6c-.16.72-.58.9-1.18.56l-3.26-2.4-1.57 1.51c-.17.18-.32.33-.66.33l.24-3.36 6.1-5.51c.27-.24-.06-.37-.41-.13l-7.54 4.75-3.25-1.02c-.7-.22-.72-.7.15-1.04l12.7-4.9c.59-.22 1.1.14.9 1.05z" fill="currentColor"/></svg></span>
+            <div class="dl-footer__contact-body"><a href="https://t.me/avtohere38" target="_blank" rel="noopener">Telegram</a><div class="dl-footer__contact-sub">Написать нам</div></div>
+          </div>
+          <div class="dl-footer__contact-item">
+            <span class="dl-footer__contact-badge"><img src="../../images/icons3d/max-badge.png" alt=""></span>
+            <div class="dl-footer__contact-body"><a href="https://max.ru/u/f9LHodD0cOJwdXPtIRKpSznrrNNKwx-l7-HcyIykYTEMu3kGUgp9u4vTgm8" target="_blank" rel="noopener">MAX</a><div class="dl-footer__contact-sub">Написать нам</div></div>
+          </div>
         </div>
+      </div>
+      <div class="dl-footer__promo">
+        <div class="dl-footer__promo-text">Больше, чем просто автомобили.<br><span>Свобода передвижения</span></div>
+        <img src="../../images/icons3d/cta-car.png" alt="">
       </div>
     </div>
     <div class="dl-footer__bottom">
       <span>© 2026 Драйв Лизинг, Иркутск.</span>
+      <div class="dl-footer__bottom-right">
+        <span>Работаем с физ. и юр. лицами</span>
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 21s-7-4.3-9.5-8.8C.8 8.7 2.3 5 5.8 5c2 0 3.4 1.3 4.2 2.5C10.8 6.3 12.2 5 14.2 5c3.5 0 5 3.7 3.3 7.2C19 16.7 12 21 12 21z"/></svg>
+        <span>С заботой о ваших поездках</span>
+      </div>
     </div>
   </div>
 </footer>
