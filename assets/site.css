@@ -17,15 +17,8 @@ html{overflow-x:hidden;}
 body{
   margin:0;
   background-color:var(--surface-page);
-  background-image:
-    linear-gradient(to bottom, rgba(244,246,249,0) 0%, rgba(244,246,249,.25) 35%, rgba(244,246,249,.7) 65%, var(--surface-page) 100%),
-    url('../images/site/page-bg.webp');
-  background-size:100% 980px, 100% 760px;
-  background-position:top, top;
-  background-repeat:no-repeat, no-repeat;
   color:var(--navy);font-family:'Golos Text',Arial,sans-serif;
 }
-@media (max-width:640px){body{background-size:100% 760px, 100% 560px;}}
 h1,h2,h3,.dl-num,.dl-btn,.dl-pill,.dl-title{font-family:'Onest',Arial,sans-serif;}
 .dl-wrap{max-width:1180px;margin:0 auto;padding:0 24px 64px;}
 .dl-sticky{position:sticky;top:0;z-index:40;background:var(--surface);border-bottom:1px solid var(--border);}
@@ -326,7 +319,7 @@ h1,h2,h3,.dl-num,.dl-btn,.dl-pill,.dl-title{font-family:'Onest',Arial,sans-serif
   .dl-badge3__text span{font-size:10.5px;}
 }
 
-.dl-hero-banner{margin:18px 0 24px;background:linear-gradient(120deg, var(--navy) 0%, var(--blue-dark) 100%);border-radius:14px;padding:20px 24px;position:relative;overflow:hidden;isolation:isolate;display:flex;align-items:center;justify-content:space-between;gap:28px;flex-wrap:wrap;}
+.dl-hero-banner{margin:18px 0 24px;background:linear-gradient(120deg, rgba(27,67,92,.85) 0%, rgba(37,87,199,.8) 100%), url('../images/site/page-bg.webp') center/cover no-repeat;border-radius:14px;padding:20px 24px;position:relative;overflow:hidden;isolation:isolate;display:flex;align-items:center;justify-content:space-between;gap:28px;flex-wrap:wrap;}
 .dl-hero-banner::before{content:"";position:absolute;inset:0;background:linear-gradient(115deg, rgba(255,255,255,.22) 0%, rgba(255,255,255,0) 28%, rgba(255,255,255,0) 62%, rgba(255,255,255,.08) 100%);pointer-events:none;z-index:1;}
 .dl-hero-banner::after{content:"";position:absolute;top:-60%;left:-10%;width:36%;height:220%;background:linear-gradient(100deg, rgba(255,255,255,0) 0%, rgba(255,255,255,.22) 50%, rgba(255,255,255,0) 100%);transform:rotate(18deg) translateX(-160%);pointer-events:none;z-index:1;animation:dlHeroShine 5.5s ease-in-out infinite;}
 @keyframes dlHeroShine{
