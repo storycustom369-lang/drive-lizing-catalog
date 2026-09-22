@@ -123,11 +123,11 @@ def card_day_at_max_term(car):
     t = variant['terms'][max_term]
     return t
 
-def render_catalog_grid(cars, slugs_by_art):
-    """Статический (пререндеренный) список карточек для <div id="dlGrid"> в catalog.html.
-    JS всё равно перестраивает грид на любое взаимодействие (innerHTML='' + rebuild), поэтому
-    здесь не нужна интерактивность — только валидный HTML с реальными <a href> на страницы
-    машин, чтобы поисковый бот видел контент и ссылки, даже если не выполняет JS."""
+def render_catalog_grid(cars, slugs_by_art, base=''):
+    """Статический (пререндеренный) список карточек. Используется и для <div id="dlGrid">
+    в catalog.html (base=''), и для страниц-лендингов по маркам/кузовам (base='../../') —
+    в обоих случаях интерактивность не нужна, только валидный HTML с реальными <a href>
+    на страницы машин, чтобы поисковый бот видел контент и ссылки, даже не выполняя JS."""
     cards = []
     for car in cars:
         slug = slugs_by_art.get(car['art'], '')
@@ -137,7 +137,8 @@ def render_catalog_grid(cars, slugs_by_art):
         art_html = ''
         if photos:
             count_badge = f'<span class="dl-gallery__count">1 / {len(photos)}</span>' if len(photos) > 1 else ''
-            art_html = f'<img src="{html.escape(photos[0])}" alt="{html.escape(title)}, фото 1" loading="lazy">{count_badge}'
+            photo0 = photo_rel(photos[0]) if base else photos[0]
+            art_html = f'<img src="{html.escape(photo0)}" alt="{html.escape(title)}, фото 1" loading="lazy">{count_badge}'
         lease_badge = f'<div class="dl-lease-badge">{LEASE_ICON_SVG}<span>Лизинговая программа</span></div>' if car.get('isLeaseProgram') else ''
         issued_stamp = '<div class="dl-issued-stamp">Выдана</div>' if car.get('isIssued') else ''
         lease_tag = f'<div class="dl-card__lease-tag">{LEASE_ICON_SVG}<span>Лизинговая программа</span></div>' if car.get('isLeaseProgram') else ''
@@ -149,10 +150,10 @@ def render_catalog_grid(cars, slugs_by_art):
             cta_html = '<button type="button" class="dl-btn dl-btn--disabled" disabled>Забронирован</button>'
         elif t:
             price_html = f'<div class="dl-price-row"><span class="dl-price-label">от</span><span class="dl-num">{fmt_money(t["day"])}</span><span class="dl-price-label">/день</span></div>'
-            cta_html = f'<a class="dl-btn" href="cars/{slug}/">Подробнее и расчёт</a>' if slug else '<span class="dl-btn dl-btn--disabled">Подробнее и расчёт</span>'
+            cta_html = f'<a class="dl-btn" href="{base}cars/{slug}/">Подробнее и расчёт</a>' if slug else '<span class="dl-btn dl-btn--disabled">Подробнее и расчёт</span>'
         else:
             price_html = '<div class="dl-unavail-note">Автомобиль выдан клиенту, сейчас недоступен</div>'
-            cta_html = '<a class="dl-btn" href="catalog.html">Похожий автомобиль</a>'
+            cta_html = f'<a class="dl-btn" href="{base}catalog.html">Похожий автомобиль</a>'
 
         cards.append(
             f'<div class="dl-card">'
@@ -164,6 +165,143 @@ def render_catalog_grid(cars, slugs_by_art):
             f'</div></div>'
         )
     return ''.join(cards)
+
+def plural_ru(n, one, few, many):
+    n_abs = abs(n) % 100
+    n1 = n_abs % 10
+    if 10 < n_abs < 20:
+        return many
+    if n1 == 1:
+        return one
+    if 2 <= n1 <= 4:
+        return few
+    return many
+
+LISTING_PAGE_TEMPLATE = '''<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{title_tag}</title>
+<meta name="description" content="{meta_desc}">
+<link rel="canonical" href="{canonical}">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="ru_RU">
+<meta property="og:site_name" content="Драйв Лизинг">
+<meta property="og:title" content="{title_tag}">
+<meta property="og:description" content="{meta_desc}">
+<meta property="og:url" content="{canonical}">
+<link rel="icon" type="image/png" href="../../favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Onest:wght@500;600;700;800&family=Golos+Text:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="../../assets/site.css">
+<script type="application/ld+json">{breadcrumb_schema}</script>
+</head>
+<body>
+<div class="dl-topbar">
+  <div class="dl-topbar__inner">
+    <a href="../../" class="dl-topbar__logo">
+      <img src="../../logo.png" alt="Драйв Лизинг" class="dl-topbar__logo-img">
+      <div class="dl-topbar__logo-text">
+        <div class="dl-topbar__slogan">Помогаем получить автомобиль, <em>даже если банк отказал</em></div>
+        <div class="dl-topbar__caption">Работаем с физ. и юр. лицами</div>
+      </div>
+    </a>
+  </div>
+</div>
+
+<div class="dl-wrap">
+  <nav class="dl-breadcrumb" aria-label="Хлебные крошки">
+    <a href="../../">Главная</a><span>/</span>
+    <a href="../../catalog.html">Каталог</a><span>/</span>
+    <span>{crumb_name}</span>
+  </nav>
+
+  <div class="dl-heading" style="margin-top:20px;">
+    <h1 style="font-size:24px;font-weight:800;margin:0;color:var(--navy);font-family:'Onest',Arial,sans-serif;">{h1}</h1>
+  </div>
+  <p style="font-size:14px;color:var(--navy-soft);line-height:1.6;max-width:680px;margin:10px 0 28px;">{intro}</p>
+
+  <div class="dl-grid">{grid}</div>
+  {empty_block}
+
+  <p style="margin:28px 0 0;"><a href="../../catalog.html" style="color:var(--blue);font-weight:600;text-decoration:none;font-size:14px;">← Смотреть весь каталог ({total} автомобилей)</a></p>
+</div>
+
+{footer}
+
+{cookie_banner}
+<script src="../../assets/car-page.js"></script>
+</body>
+</html>
+'''
+
+def render_listing_page(h1, title_tag, meta_desc, intro, crumb_name, canonical, cars_subset, slugs_by_art, total):
+    grid = render_catalog_grid(cars_subset, slugs_by_art, base='../../')
+    empty_block = '' if cars_subset else '<div class="dl-empty">Пока нет автомобилей в этой категории — уточните у менеджера.</div>'
+    breadcrumb_schema = json.dumps({
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+            {"@type": "ListItem", "position": 1, "name": "Главная", "item": f"{SITE_URL}/"},
+            {"@type": "ListItem", "position": 2, "name": "Каталог", "item": f"{SITE_URL}/catalog.html"},
+            {"@type": "ListItem", "position": 3, "name": crumb_name, "item": canonical},
+        ]
+    }, ensure_ascii=False)
+    return LISTING_PAGE_TEMPLATE.format(
+        title_tag=html.escape(title_tag),
+        meta_desc=html.escape(meta_desc),
+        canonical=canonical,
+        breadcrumb_schema=breadcrumb_schema,
+        crumb_name=html.escape(crumb_name),
+        h1=html.escape(h1),
+        intro=html.escape(intro),
+        grid=grid,
+        empty_block=empty_block,
+        total=total,
+        footer=FOOTER_HTML,
+        cookie_banner=COOKIE_BANNER_HTML,
+    )
+
+def write_brand_links(cars, brand_slugs, kuzov_slugs):
+    """Пишет блок ссылок 'Марки авто' / 'Тип кузова' между маркерами в catalog.html —
+    внутренние ссылки на страницы-лендинги, чтобы они были доступны роботу не только
+    через sitemap, но и прямым переходом с каталога (плюс якорный текст = название марки)."""
+    brands_present = sorted(brand_slugs.keys())
+    kuzov_present = [k for k in KUZOV_LABELS if any((c.get('kuzov') or '').strip() == k for c in cars)]
+
+    brand_pills = ''.join(
+        f'<a class="dl-links-pill" href="marki/{brand_slugs[m]}/">{html.escape(m)}</a>' for m in brands_present
+    )
+    kuzov_pills = ''.join(
+        f'<a class="dl-links-pill" href="kuzov/{kuzov_slugs[k]}/">{html.escape(KUZOV_LABELS[k])}</a>' for k in kuzov_present
+    )
+    block = f'''<section class="dl-links-block">
+  <div class="dl-links-block__inner">
+    <div class="dl-links-block__group">
+      <div class="dl-links-block__title">Марки авто в наличии</div>
+      <div class="dl-links-block__pills">{brand_pills}</div>
+    </div>
+    <div class="dl-links-block__group">
+      <div class="dl-links-block__title">По типу кузова</div>
+      <div class="dl-links-block__pills">{kuzov_pills}</div>
+    </div>
+  </div>
+</section>'''
+
+    path = CATALOG_HTML
+    text = open(path, encoding='utf-8').read()
+    new_text, n = re.subn(
+        r'<!-- BRAND_LINKS_START -->.*?<!-- BRAND_LINKS_END -->',
+        f'<!-- BRAND_LINKS_START -->\n{block}\n<!-- BRAND_LINKS_END -->',
+        text, count=1, flags=re.S,
+    )
+    if n != 1:
+        raise RuntimeError('Не нашёл <!-- BRAND_LINKS_START/END --> в catalog.html')
+    if new_text != text:
+        open(path, 'w', encoding='utf-8').write(new_text)
+        print(f"catalog.html: ссылки на {len(brands_present)} марок и {len(kuzov_present)} типов кузова обновлены")
 
 def photo_rel(p):
     """Путь к фото для car-page HTML (относительно cars/<slug>/). Абсолютные URL (сторонние стоковые фото) не трогаем — иначе '../../' ломает ссылку."""
@@ -624,7 +762,7 @@ def render_related(car, all_cars, slugs_by_art):
     </div>
   </div>'''
 
-def render_schema(car, url, slug, min_week):
+def render_schema(car, url, slug, min_week, marka_slug):
     title = car_title(car)
     data = {
         "@context": "https://schema.org",
@@ -650,7 +788,7 @@ def render_schema(car, url, slug, min_week):
         "itemListElement": [
             {"@type": "ListItem", "position": 1, "name": "Главная", "item": f"{SITE_URL}/"},
             {"@type": "ListItem", "position": 2, "name": "Каталог", "item": f"{SITE_URL}/catalog.html"},
-            {"@type": "ListItem", "position": 3, "name": car['marka'].strip(), "item": f"{SITE_URL}/catalog.html"},
+            {"@type": "ListItem", "position": 3, "name": car['marka'].strip(), "item": f"{SITE_URL}/marki/{marka_slug}/"},
             {"@type": "ListItem", "position": 4, "name": car['model'].strip(), "item": url},
         ]
     }
@@ -659,102 +797,7 @@ def render_schema(car, url, slug, min_week):
         f'<script type="application/ld+json">{json.dumps(breadcrumb, ensure_ascii=False)}</script>'
     )
 
-PAGE_TEMPLATE = '''<!DOCTYPE html>
-<html lang="ru">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>{title_tag}</title>
-<meta name="description" content="{meta_desc}">
-<link rel="canonical" href="{canonical}">
-<meta property="og:type" content="product">
-<meta property="og:locale" content="ru_RU">
-<meta property="og:site_name" content="Драйв Лизинг">
-<meta property="og:title" content="{title_tag}">
-<meta property="og:description" content="{meta_desc}">
-<meta property="og:url" content="{canonical}">
-<meta property="og:image" content="{og_image}">
-<meta name="twitter:card" content="summary_large_image">
-<link rel="icon" type="image/png" href="../../favicon.png">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Onest:wght@500;600;700;800&family=Golos+Text:wght@400;500;600;700&family=Caveat:wght@600;700&display=swap">
-<link rel="stylesheet" href="../../assets/site.css">
-{schema}
-</head>
-<body>
-<div class="dl-topbar">
-  <div class="dl-topbar__inner">
-    <a href="../../" class="dl-topbar__logo">
-      <img src="../../logo.png" alt="Драйв Лизинг" class="dl-topbar__logo-img">
-      <div class="dl-topbar__logo-text">
-        <div class="dl-topbar__slogan">Помогаем получить автомобиль, <em>даже если банк отказал</em></div>
-        <div class="dl-topbar__caption">Работаем с физ. и юр. лицами</div>
-      </div>
-    </a>
-  </div>
-</div>
-
-<div class="dl-wrap">
-  <nav class="dl-breadcrumb" aria-label="Хлебные крошки">
-    <a href="../../">Главная</a><span>/</span>
-    <a href="../../catalog.html">Каталог</a><span>/</span>
-    <a href="../../catalog.html">{marka}</a><span>/</span>
-    <span>{model}</span>
-  </nav>
-
-  <div class="dl-hero-section">
-    <div class="dl-hero-section__inner">
-      <h1 class="dl-h1">{title}</h1>
-      <p class="dl-h1-sub2">В лизинг и аренду с выкупом в Иркутске</p>
-      {subtitle}
-
-      {badges}
-    </div>
-  </div>
-
-  <div class="dl-detail-grid">
-    <div class="dl-detail-main">
-      <div class="dl-card__art dl-detail-gallery">{gallery}</div>
-      {thumbs}
-
-      {hero_banner}
-
-      <div class="dl-heading"><h2 class="dl-h2" style="margin:0">Характеристики</h2><a class="dl-heading__link" href="#komplekt">Все характеристики<svg viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></a></div>
-      {specs}
-
-      <h2 class="dl-h2" id="komplekt">Комплектация</h2>
-      {komplekt}
-
-      <h2 class="dl-h2">Описание</h2>
-      {description}
-
-      {reasons}
-    </div>
-
-    <aside class="dl-detail-side">
-      <div class="dl-calc-sticky">
-        <div class="dl-card dl-calc-card" id="calc">
-          {calculator}
-        </div>
-        <a class="dl-sample-doc" href="../../documents/dl-sample-agreement.pdf" target="_blank" rel="noopener">
-          <span class="dl-sample-doc__ico"><svg viewBox="0 0 24 24" fill="none"><path d="M12 3v12m0 0l-4-4m4 4l4-4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><path d="M4 17v2a2 2 0 002 2h12a2 2 0 002-2v-2" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-          <span>Скачать образец договора</span>
-        </a>
-      </div>
-    </aside>
-  </div>
-</div>
-
-<div class="dl-wrap">
-  {how_to_own}
-
-  {channel_promo}
-
-  {related}
-</div>
-
-<footer class="dl-footer">
+FOOTER_HTML = '''<footer class="dl-footer">
   <div class="dl-footer__inner">
     <div class="dl-footer__top">
       <div class="dl-footer__brand">
@@ -810,7 +853,109 @@ PAGE_TEMPLATE = '''<!DOCTYPE html>
       </div>
     </div>
   </div>
-</footer>
+</footer>'''
+
+COOKIE_BANNER_HTML = '''<div class="dl-cookie-banner" id="dlCookieBanner" hidden>
+  <p>Сайт использует cookies для аналитики. Продолжая пользоваться сайтом, вы соглашаетесь с <a href="../../privacy.html">политикой конфиденциальности</a>.</p>
+  <button type="button" class="dl-cookie-banner__btn" id="dlCookieAccept">Принять</button>
+</div>'''
+
+PAGE_TEMPLATE = '''<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{title_tag}</title>
+<meta name="description" content="{meta_desc}">
+<link rel="canonical" href="{canonical}">
+<meta property="og:type" content="product">
+<meta property="og:locale" content="ru_RU">
+<meta property="og:site_name" content="Драйв Лизинг">
+<meta property="og:title" content="{title_tag}">
+<meta property="og:description" content="{meta_desc}">
+<meta property="og:url" content="{canonical}">
+<meta property="og:image" content="{og_image}">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" type="image/png" href="../../favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Onest:wght@500;600;700;800&family=Golos+Text:wght@400;500;600;700&family=Caveat:wght@600;700&display=swap">
+<link rel="stylesheet" href="../../assets/site.css">
+{schema}
+</head>
+<body>
+<div class="dl-topbar">
+  <div class="dl-topbar__inner">
+    <a href="../../" class="dl-topbar__logo">
+      <img src="../../logo.png" alt="Драйв Лизинг" class="dl-topbar__logo-img">
+      <div class="dl-topbar__logo-text">
+        <div class="dl-topbar__slogan">Помогаем получить автомобиль, <em>даже если банк отказал</em></div>
+        <div class="dl-topbar__caption">Работаем с физ. и юр. лицами</div>
+      </div>
+    </a>
+  </div>
+</div>
+
+<div class="dl-wrap">
+  <nav class="dl-breadcrumb" aria-label="Хлебные крошки">
+    <a href="../../">Главная</a><span>/</span>
+    <a href="../../catalog.html">Каталог</a><span>/</span>
+    <a href="../../marki/{marka_slug}/">{marka}</a><span>/</span>
+    <span>{model}</span>
+  </nav>
+
+  <div class="dl-hero-section">
+    <div class="dl-hero-section__inner">
+      <h1 class="dl-h1">{title}</h1>
+      <p class="dl-h1-sub2">В лизинг и аренду с выкупом в Иркутске</p>
+      {subtitle}
+
+      {badges}
+    </div>
+  </div>
+
+  <div class="dl-detail-grid">
+    <div class="dl-detail-main">
+      <div class="dl-card__art dl-detail-gallery">{gallery}</div>
+      {thumbs}
+
+      {hero_banner}
+
+      <div class="dl-heading"><h2 class="dl-h2" style="margin:0">Характеристики</h2><a class="dl-heading__link" href="#komplekt">Все характеристики<svg viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></a></div>
+      {specs}
+
+      <h2 class="dl-h2" id="komplekt">Комплектация</h2>
+      {komplekt}
+
+      <h2 class="dl-h2">Описание</h2>
+      {description}
+
+      {reasons}
+    </div>
+
+    <aside class="dl-detail-side">
+      <div class="dl-calc-sticky">
+        <div class="dl-card dl-calc-card" id="calc">
+          {calculator}
+        </div>
+        <a class="dl-sample-doc" href="../../documents/dl-sample-agreement.pdf" target="_blank" rel="noopener">
+          <span class="dl-sample-doc__ico"><svg viewBox="0 0 24 24" fill="none"><path d="M12 3v12m0 0l-4-4m4 4l4-4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><path d="M4 17v2a2 2 0 002 2h12a2 2 0 002-2v-2" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+          <span>Скачать образец договора</span>
+        </a>
+      </div>
+    </aside>
+  </div>
+</div>
+
+<div class="dl-wrap">
+  {how_to_own}
+
+  {channel_promo}
+
+  {related}
+</div>
+
+{footer}
 
 <div class="dl-modal-backdrop" id="dlModalBackdrop" hidden>
   <div class="dl-modal" id="dlModal"></div>
@@ -824,15 +969,17 @@ PAGE_TEMPLATE = '''<!DOCTYPE html>
   <div class="dl-lightbox__count" id="dlLightboxCount"></div>
 </div>
 
-<div class="dl-cookie-banner" id="dlCookieBanner" hidden>
-  <p>Сайт использует cookies для аналитики. Продолжая пользоваться сайтом, вы соглашаетесь с <a href="../../privacy.html">политикой конфиденциальности</a>.</p>
-  <button type="button" class="dl-cookie-banner__btn" id="dlCookieAccept">Принять</button>
-</div>
+{cookie_banner}
 
 <script src="../../assets/car-page.js"></script>
 </body>
 </html>
 '''
+
+KUZOV_LABELS = {
+    'седан': 'Седан', 'кроссовер': 'Кроссовер', 'минивэн': 'Минивэн',
+    'универсал': 'Универсал', 'кейкар': 'Кей-кар', 'пикап': 'Пикап', 'фургон': 'Фургон',
+}
 
 def main():
     cars = load_cars()
@@ -847,8 +994,12 @@ def main():
         used.add(slug)
         slugs_by_art[c['art']] = slug
 
+    brand_slugs = {m: slugify(m) for m in sorted(set(c['marka'].strip() for c in cars))}
+    kuzov_slugs = {k: slugify(k) for k in KUZOV_LABELS}
+
     write_slugs_to_catalog(cars, slugs_by_art)
     write_catalog_grid(cars, slugs_by_art)
+    write_brand_links(cars, brand_slugs, kuzov_slugs)
 
     os.makedirs(CARS_DIR, exist_ok=True)
     urls = []
@@ -865,13 +1016,15 @@ def main():
         title_tag = f"{title} в лизинг в Иркутске без банка{price_bit} · Драйв Лизинг"
         price_sentence = f" Платёж от {fmt_money(min_week)} в неделю." if min_week is not None else " Точная цена по запросу у менеджера."
         meta_desc = f"{title}, {spec_d['raw']}. Лизинг и аренда с выкупом в Иркутске, взнос от 0%, оформление по 2 документам.{price_sentence}"
+        marka_slug = brand_slugs[c['marka'].strip()]
         html_out = PAGE_TEMPLATE.format(
             title_tag=html.escape(title_tag),
             meta_desc=html.escape(meta_desc),
             canonical=canonical,
             og_image=og_image,
-            schema=render_schema(c, canonical, slug, min_week),
+            schema=render_schema(c, canonical, slug, min_week, marka_slug),
             marka=html.escape(c['marka'].strip()),
+            marka_slug=marka_slug,
             model=html.escape(c['model'].strip()),
             title=html.escape(title),
             title_js=html.escape(title).replace('"','&quot;'),
@@ -890,10 +1043,65 @@ def main():
             calculator=render_calculator(c),
             related=render_related(c, cars, slugs_by_art),
             art=html.escape(c['art']),
+            footer=FOOTER_HTML,
+            cookie_banner=COOKIE_BANNER_HTML,
         )
         with open(os.path.join(outdir, "index.html"), "w", encoding="utf-8") as f:
             f.write(html_out)
         urls.append(canonical)
+
+    # Лендинги по маркам
+    listing_urls = []
+    MARKI_DIR = os.path.join(BASE_DIR, "marki")
+    for marka, mslug in sorted(brand_slugs.items()):
+        subset = [c for c in cars if c['marka'].strip() == marka]
+        outdir = os.path.join(MARKI_DIR, mslug)
+        os.makedirs(outdir, exist_ok=True)
+        canonical = f"{SITE_URL}/marki/{mslug}/"
+        n = len(subset)
+        noun = plural_ru(n, 'автомобиль', 'автомобиля', 'автомобилей')
+        html_out = render_listing_page(
+            h1=f"{marka} в лизинг и аренду с выкупом в Иркутске",
+            title_tag=f"{marka} в лизинг и аренду с выкупом в Иркутске · Драйв Лизинг",
+            meta_desc=f"{marka} в лизинг и аренду с выкупом в Иркутске. {n} {noun} {marka} в наличии и под заказ, взнос от 0%, оформление по 2 документам, без банка.",
+            intro=f"{n} {noun} {marka} в наличии и под заказ. Взнос от 0%, оформление по 2 документам, без банка — те же условия, что и на весь каталог.",
+            crumb_name=marka,
+            canonical=canonical,
+            cars_subset=subset,
+            slugs_by_art=slugs_by_art,
+            total=len(cars),
+        )
+        with open(os.path.join(outdir, "index.html"), "w", encoding="utf-8") as f:
+            f.write(html_out)
+        listing_urls.append(canonical)
+
+    # Лендинги по типу кузова
+    KUZOV_DIR = os.path.join(BASE_DIR, "kuzov")
+    for kuzov_key, klabel in KUZOV_LABELS.items():
+        subset = [c for c in cars if (c.get('kuzov') or '').strip() == kuzov_key]
+        if not subset:
+            continue
+        kslug = kuzov_slugs[kuzov_key]
+        outdir = os.path.join(KUZOV_DIR, kslug)
+        os.makedirs(outdir, exist_ok=True)
+        canonical = f"{SITE_URL}/kuzov/{kslug}/"
+        n = len(subset)
+        noun = plural_ru(n, 'автомобиль', 'автомобиля', 'автомобилей')
+        klabel_lower = klabel[0].lower() + klabel[1:]
+        html_out = render_listing_page(
+            h1=f"{klabel} в лизинг и аренду с выкупом в Иркутске",
+            title_tag=f"{klabel} в лизинг и аренду с выкупом в Иркутске · Драйв Лизинг",
+            meta_desc=f"{klabel} в лизинг и аренду с выкупом в Иркутске. {n} {noun} этого типа кузова в наличии и под заказ, взнос от 0%, оформление по 2 документам, без банка.",
+            intro=f"{n} {noun} типа «{klabel_lower}» в наличии и под заказ. Взнос от 0%, оформление по 2 документам, без банка — те же условия, что и на весь каталог.",
+            crumb_name=klabel,
+            canonical=canonical,
+            cars_subset=subset,
+            slugs_by_art=slugs_by_art,
+            total=len(cars),
+        )
+        with open(os.path.join(outdir, "index.html"), "w", encoding="utf-8") as f:
+            f.write(html_out)
+        listing_urls.append(canonical)
 
     # sitemap (separate file for review, not overwriting the live one yet)
     sitemap = ['<?xml version="1.0" encoding="UTF-8"?>', '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">']
@@ -902,11 +1110,14 @@ def main():
     sitemap.append(f'  <url><loc>{SITE_URL}/privacy.html</loc><changefreq>monthly</changefreq><priority>0.3</priority></url>')
     for u in urls:
         sitemap.append(f'  <url><loc>{u}</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>')
+    for u in listing_urls:
+        sitemap.append(f'  <url><loc>{u}</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>')
     sitemap.append('</urlset>')
     with open(os.path.join(BASE_DIR, "sitemap_generated.xml"), "w", encoding="utf-8") as f:
         f.write("\n".join(sitemap))
 
     print(f"Сгенерировано страниц: {len(cars)}")
+    print(f"Лендингов по маркам/кузову: {len(listing_urls)}")
     print(f"Пример: cars/{slugs_by_art[cars[0]['art']]}/index.html")
 
 if __name__ == "__main__":
