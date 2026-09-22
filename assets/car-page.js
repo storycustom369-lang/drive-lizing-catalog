@@ -439,16 +439,16 @@
         for (var i = 0; i < pvKeys.length; i++) {
           if (pvKeys[i] > curPvNum) { nextPvNum = pvKeys[i]; break; }
         }
-        var saveWeek = 0;
+        var saveMonth = 0;
         if (nextPvNum !== null) {
           var nextVariant = data[String(nextPvNum)];
           var nextTermKey = nextVariant.terms[terms] ? terms : Object.keys(nextVariant.terms)[0];
           var nextT = nextVariant.terms[nextTermKey];
-          if (nextT) saveWeek = t.week - nextT.week;
+          if (nextT) saveMonth = t.month - nextT.month;
         }
-        if (nextPvNum !== null && saveWeek > 0) {
+        if (nextPvNum !== null && saveMonth > 0) {
           saveBanner.hidden = false;
-          if (saveAmount) saveAmount.textContent = "Экономьте " + fmt(saveWeek) + " в неделю";
+          if (saveAmount) saveAmount.textContent = "Экономьте " + fmt(saveMonth) + " в месяц";
           if (saveSub) saveSub.textContent = "при взносе от " + nextPvNum + "%";
         } else {
           saveBanner.hidden = true;
