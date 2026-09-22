@@ -588,6 +588,8 @@ PAGE_TEMPLATE = '''<!DOCTYPE html>
 
       {hero_banner}
 
+      <a class="dl-mobile-calc-cta" href="#calc">Рассчитать платёж<svg viewBox="0 0 24 24" fill="none"><path d="M12 5v14M5 12l7 7 7-7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+
       <div class="dl-heading"><h2 class="dl-h2" style="margin:0">Характеристики</h2><a class="dl-heading__link" href="#komplekt">Все характеристики<svg viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></a></div>
       {specs}
 
@@ -602,7 +604,7 @@ PAGE_TEMPLATE = '''<!DOCTYPE html>
 
     <aside class="dl-detail-side">
       <div class="dl-calc-sticky">
-        <div class="dl-card dl-calc-card">
+        <div class="dl-card dl-calc-card" id="calc">
           {calculator}
         </div>
         <a class="dl-sample-doc" href="../../documents/dl-sample-agreement.pdf" target="_blank" rel="noopener">
