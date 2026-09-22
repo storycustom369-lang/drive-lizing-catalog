@@ -580,7 +580,7 @@ h1,h2,h3,.dl-num,.dl-btn,.dl-pill,.dl-title{font-family:'Onest',Arial,sans-serif
 .dl-footer__list a:hover{color:var(--blue);}
 .dl-footer__contacts{display:flex;flex-direction:column;gap:16px;}
 .dl-footer__contact-item{display:flex;align-items:flex-start;gap:12px;}
-.dl-footer__contact-badge{flex:none;width:38px;height:38px;border-radius:50%;background:color-mix(in srgb, var(--blue) 10%, var(--surface));display:flex;align-items:center;justify-content:center;}
+.dl-footer__contact-badge{flex:none;width:38px;height:38px;border-radius:12px;background:color-mix(in srgb, var(--blue) 10%, var(--surface));display:flex;align-items:center;justify-content:center;}
 .dl-footer__contact-badge svg{width:18px;height:18px;color:var(--blue);}
 .dl-footer__contact-badge img{width:22px;height:22px;border-radius:6px;display:block;}
 .dl-footer__contact-body a{color:#28405A;text-decoration:none;font-weight:700;font-size:14.5px;}
