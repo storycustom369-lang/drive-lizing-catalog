@@ -392,14 +392,12 @@ def render_calculator(car):
       <span class="dl-label dl-label--row">{ci('coins')}Первоначальный взнос</span>
       <div class="dl-field__row">
         <div class="dl-seg dl-seg--pv" style="grid-template-columns:repeat({len(pv_keys)},1fr)">{pv_buttons}</div>
-        <div class="dl-field__hint">≈ <span data-out="pv-hint">-</span><br>от стоимости авто</div>
       </div>
     </div>
     <div class="dl-field">
       <span class="dl-label dl-label--row">{ci('calendar')}Срок договора</span>
       <div class="dl-field__row">
         <div class="dl-seg dl-seg--term" style="grid-template-columns:repeat({len(term_keys)},1fr)">{term_buttons}</div>
-        <div class="dl-tip"><span class="dl-tip__ico"><img src="../../images/icons3d/shield-pct-icon.png" alt="" loading="lazy"></span><span>Чем больше срок, тем комфортнее платёж</span></div>
       </div>
     </div>
     <div class="dl-result">
