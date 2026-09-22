@@ -388,32 +388,9 @@
     });
   });
 
-  // --- Форма заявки ---
-  document.querySelectorAll(".dl-lead-form").forEach(function(form){
-    form.addEventListener("submit", function(e){
-      e.preventDefault();
-      var btn = form.querySelector("button[type=submit]");
-      var originalText = btn.textContent;
-      btn.disabled = true;
-      btn.textContent = "Отправляем...";
-      var payload = {
-        name: form.name.value,
-        phone: form.phone.value,
-        car: form.dataset.car,
-        art: form.dataset.art,
-        source: "car-page:" + location.pathname
-      };
-      fetch(WORKER_URL, {
-        method: "POST",
-        headers: {"Content-Type": "application/json"},
-        body: JSON.stringify(payload)
-      }).then(function(){
-        form.innerHTML = '<div class="dl-success"><div class="dl-success__title">Заявка отправлена</div><div class="dl-success__text">Менеджер свяжется с вами в ближайшее время.</div></div>';
-      }).catch(function(){
-        btn.disabled = false;
-        btn.textContent = originalText;
-        alert("Не получилось отправить, попробуйте ещё раз или напишите нам напрямую.");
-      });
+  document.querySelectorAll(".dl-related2__cta-btn").forEach(function(btn){
+    btn.addEventListener("click", function(){
+      openBookingModal({ art: btn.dataset.art, carTitle: btn.dataset.car, pv: null, term: null, weekPayment: null, monthPayment: null });
     });
   });
 

@@ -439,6 +439,7 @@ def render_calculator(car):
   </div>'''
 
 def render_related(car, all_cars, slugs_by_art):
+    title_attr = html.escape(car_title(car)).replace('"', '&quot;')
     others = [c for c in all_cars if c['art'] != car['art']]
     # prefer same bucket, then fill with anything else
     same_bucket = [c for c in others if c.get('bucket') == car.get('bucket')]
@@ -499,7 +500,7 @@ def render_related(car, all_cars, slugs_by_art):
           <p class="dl-related2__cta-text">Оставьте заявку, подберём автомобиль под ваши параметры.</p>
         </div>
       </div>
-      <a class="dl-btn dl-related2__cta-btn" href="#leadForm">Подобрать автомобиль {ci('arrow')}</a>
+      <button type="button" class="dl-btn dl-related2__cta-btn" data-art="{car['art']}" data-car="{title_attr}">Подобрать автомобиль {ci('arrow')}</button>
       <div class="dl-related2__cta-stat"><svg viewBox="0 0 24 24" fill="none"><path d="M16 11a4 4 0 10-4-4M6 11a3 3 0 100-6 3 3 0 000 6z" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/><path d="M2 20c.6-3.4 3-5.5 6-5.5M14 20c-.4-3.9 2.4-7 7-7" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg><div><b>Более 100+</b><span>автомобилей в наличии</span></div></div>
     </div>
   </div>'''
@@ -617,24 +618,6 @@ PAGE_TEMPLATE = '''<!DOCTYPE html>
   {how_to_own}
 
   {related}
-
-  <div class="dl-cta" id="leadForm">
-    <div class="dl-cta__inner">
-      <div class="dl-cta__left">
-        <div class="dl-cta__frame">
-          <div class="dl-cta__title">Оставьте заявку на {title}</div>
-          <p class="dl-cta__text">Менеджер свяжется в течение рабочего дня, уточнит детали и оформит документы.</p>
-        </div>
-      </div>
-      <div class="dl-cta__right">
-        <form class="dl-lead-form" data-art="{art}" data-car="{title_js}">
-          <div class="dl-form-field"><input class="dl-form-input" type="text" name="name" placeholder="Имя" required></div>
-          <div class="dl-form-field"><input class="dl-form-input" type="tel" name="phone" placeholder="Телефон" required></div>
-          <button class="dl-btn" type="submit">Отправить заявку</button>
-        </form>
-      </div>
-    </div>
-  </div>
 </div>
 
 <div class="dl-modal-backdrop" id="dlModalBackdrop" hidden>
