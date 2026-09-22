@@ -169,6 +169,145 @@
     document.body.style.overflow = "hidden";
   }
 
+  // --- Модалка "Подобрать автомобиль" (не привязана к конкретной машине) ---
+  function openPickCarModal(){
+    if (!modal || !backdrop) return;
+    modal.innerHTML = "";
+
+    var head = document.createElement("div");
+    head.className = "dl-modal__head";
+    var titleWrap = document.createElement("div");
+    var titleEl = document.createElement("div");
+    titleEl.className = "dl-modal__title";
+    titleEl.textContent = "Подбор автомобиля";
+    var sub = document.createElement("div");
+    sub.style.cssText = "font-size:12px;color:var(--muted);margin-top:4px;";
+    sub.textContent = "Расскажите, что ищете, подберём варианты";
+    titleWrap.appendChild(titleEl);
+    titleWrap.appendChild(sub);
+    var closeBtn = document.createElement("button");
+    closeBtn.className = "dl-modal__close";
+    closeBtn.setAttribute("aria-label", "Закрыть");
+    closeBtn.innerHTML = "&times;";
+    closeBtn.addEventListener("click", closeBookingModal);
+    head.appendChild(titleWrap);
+    head.appendChild(closeBtn);
+    modal.appendChild(head);
+
+    var nameField = document.createElement("div");
+    nameField.className = "dl-form-field";
+    var nameInput = document.createElement("input");
+    nameInput.className = "dl-form-input";
+    nameInput.type = "text";
+    nameInput.placeholder = "Ваше имя";
+    nameField.appendChild(nameInput);
+
+    var phoneField = document.createElement("div");
+    phoneField.className = "dl-form-field";
+    var phoneInput = document.createElement("input");
+    phoneInput.className = "dl-form-input";
+    phoneInput.type = "tel";
+    phoneInput.inputMode = "tel";
+    phoneInput.placeholder = "+7 995 052-76-83";
+    phoneInput.addEventListener("focus", function(){ if (!phoneInput.value) phoneInput.value = "+7 "; });
+    phoneInput.addEventListener("input", function(){
+      var digits = phoneInput.value.replace(/\D/g, "");
+      if (digits.charAt(0) === "7" || digits.charAt(0) === "8") digits = digits.slice(1);
+      phoneInput.value = formatPhone(digits);
+    });
+    phoneInput.addEventListener("keydown", function(e){
+      if ((e.key === "Backspace" || e.key === "Delete") && phoneInput.selectionStart <= 3 && phoneInput.selectionEnd <= 3) e.preventDefault();
+    });
+    phoneField.appendChild(phoneInput);
+
+    var commentField = document.createElement("div");
+    commentField.className = "dl-form-field";
+    var commentInput = document.createElement("textarea");
+    commentInput.className = "dl-form-textarea";
+    commentInput.placeholder = "Например: бюджет до 15 000 ₽ в неделю, кроссовер, взнос 10%";
+    commentField.appendChild(commentInput);
+
+    var consentField = document.createElement("label");
+    consentField.className = "dl-form-consent";
+    var consentInput = document.createElement("input");
+    consentInput.type = "checkbox";
+    var consentText = document.createElement("span");
+    consentText.innerHTML = 'Согласен на <a href="../../privacy.html" target="_blank" rel="noopener">обработку персональных данных</a>';
+    consentField.appendChild(consentInput);
+    consentField.appendChild(consentText);
+    consentInput.addEventListener("change", function(){ consentField.classList.remove("is-error"); });
+
+    var errorMsg = document.createElement("div");
+    errorMsg.className = "dl-form-hint";
+    errorMsg.style.color = "#D14343";
+    errorMsg.hidden = true;
+
+    var submitBtn = document.createElement("button");
+    submitBtn.className = "dl-btn";
+    submitBtn.type = "button";
+    submitBtn.textContent = "Отправить заявку";
+
+    modal.appendChild(nameField);
+    modal.appendChild(phoneField);
+    modal.appendChild(commentField);
+    modal.appendChild(consentField);
+    modal.appendChild(errorMsg);
+    modal.appendChild(submitBtn);
+
+    submitBtn.addEventListener("click", function(){
+      var name = nameInput.value.trim();
+      var phone = phoneInput.value.trim();
+      var phoneDigits = phone.replace(/\D/g, "");
+      if (phoneDigits.length < 11) {
+        errorMsg.textContent = "Укажите полный номер телефона, чтобы мы могли связаться с вами.";
+        errorMsg.hidden = false;
+        phoneInput.focus();
+        return;
+      }
+      if (!consentInput.checked) {
+        errorMsg.textContent = "Нужно согласие на обработку персональных данных.";
+        errorMsg.hidden = false;
+        consentField.classList.add("is-error");
+        return;
+      }
+      errorMsg.hidden = true;
+      submitBtn.disabled = true;
+      submitBtn.textContent = "Отправляем…";
+
+      var payload = {
+        type: "pick_request",
+        name: name,
+        phone: phone,
+        comment: commentInput.value.trim(),
+        createdAt: new Date().toISOString(),
+        source: "car-page:" + location.pathname
+      };
+      fetch(WORKER_URL, {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify(payload)
+      }).then(function(r){
+        if (!r.ok) return Promise.reject(new Error("webhook_failed"));
+        modal.innerHTML = "";
+        modal.appendChild(head);
+        var box = document.createElement("div");
+        box.className = "dl-success";
+        box.innerHTML = '<svg viewBox="0 0 24 24" fill="none"><path d="M12 2L4 5v6c0 5 3.4 9.4 8 11 4.6-1.6 8-6 8-11V5l-8-3z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="M9 12l2 2 4-4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>' +
+          '<div class="dl-success__title">Заявка принята</div>' +
+          '<div class="dl-success__text">Менеджер подберёт варианты под ваш запрос и свяжется с вами в ближайшее время.</div>';
+        modal.appendChild(box);
+      }).catch(function(){
+        submitBtn.disabled = false;
+        submitBtn.textContent = "Отправить заявку";
+        errorMsg.textContent = "Не получилось отправить. Попробуйте ещё раз или напишите нам в Telegram.";
+        errorMsg.hidden = false;
+      });
+    });
+
+    backdrop.hidden = false;
+    document.body.style.overflow = "hidden";
+  }
+
   // --- Лайтбокс на весь экран ---
   var lightbox = document.getElementById("dlLightbox");
   var lightboxImg = document.getElementById("dlLightboxImg");
@@ -389,9 +528,7 @@
   });
 
   document.querySelectorAll(".dl-related2__cta-btn").forEach(function(btn){
-    btn.addEventListener("click", function(){
-      openBookingModal({ art: btn.dataset.art, carTitle: btn.dataset.car, pv: null, term: null, weekPayment: null, monthPayment: null });
-    });
+    btn.addEventListener("click", openPickCarModal);
   });
 
   // --- Карусель "Другие автомобили" ---
