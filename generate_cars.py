@@ -315,6 +315,7 @@ def render_how_to_own():
     <h2 class="dl-conditions__heading">Какие <span>условия?</span></h2>
     <p class="dl-conditions__sub">Простой и понятный процесс: от заявки до вашего автомобиля.</p>
     <div class="dl-conditions__list">{rows}</div>
+    <div class="dl-conditions__tagline"><span></span>Драйв Лизинг. Пора ехать<span></span></div>
   </div>'''
 
 TERMS_ICONS = [
