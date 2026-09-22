@@ -563,7 +563,20 @@ def render_schema(car, url, slug, min_week):
             "availability": "https://schema.org/InStock",
             "areaServed": "Иркутск"
         }
-    return f'<script type="application/ld+json">{json.dumps(data, ensure_ascii=False)}</script>'
+    breadcrumb = {
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+            {"@type": "ListItem", "position": 1, "name": "Главная", "item": f"{SITE_URL}/"},
+            {"@type": "ListItem", "position": 2, "name": "Каталог", "item": f"{SITE_URL}/catalog.html"},
+            {"@type": "ListItem", "position": 3, "name": car['marka'].strip(), "item": f"{SITE_URL}/catalog.html"},
+            {"@type": "ListItem", "position": 4, "name": car['model'].strip(), "item": url},
+        ]
+    }
+    return (
+        f'<script type="application/ld+json">{json.dumps(data, ensure_ascii=False)}</script>\n'
+        f'<script type="application/ld+json">{json.dumps(breadcrumb, ensure_ascii=False)}</script>'
+    )
 
 PAGE_TEMPLATE = '''<!DOCTYPE html>
 <html lang="ru">
@@ -659,6 +672,36 @@ PAGE_TEMPLATE = '''<!DOCTYPE html>
 
   {related}
 </div>
+
+<footer class="dl-footer">
+  <div class="dl-footer__inner">
+    <div class="dl-footer__top">
+      <div class="dl-footer__brand">
+        <a href="../../" class="dl-footer__logo"><img src="../../logo.png" alt="Драйв Лизинг"><span>Драйв Лизинг</span></a>
+        <p class="dl-footer__tagline">Лизинг и аренда автомобилей с выкупом в Иркутске. Без банка, по 2 документам, для физ. и юр. лиц.</p>
+      </div>
+      <div>
+        <div class="dl-footer__col-title">Навигация</div>
+        <ul class="dl-footer__list">
+          <li><a href="../../catalog.html">Каталог автомобилей</a></li>
+          <li><a href="../../privacy.html">Политика конфиденциальности</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="dl-footer__col-title">Контакты</div>
+        <div class="dl-footer__contacts">
+          <a href="tel:+79950527683">+7 995 052-76-83</a>
+          <span>г. Иркутск, ул. Байкальская, 208</span>
+          <a href="https://t.me/avtohere38" target="_blank" rel="noopener">Telegram</a>
+          <a href="https://max.ru/u/f9LHodD0cOJwdXPtIRKpSznrrNNKwx-l7-HcyIykYTEMu3kGUgp9u4vTgm8" target="_blank" rel="noopener">MAX</a>
+        </div>
+      </div>
+    </div>
+    <div class="dl-footer__bottom">
+      <span>© 2026 Драйв Лизинг, Иркутск.</span>
+    </div>
+  </div>
+</footer>
 
 <div class="dl-modal-backdrop" id="dlModalBackdrop" hidden>
   <div class="dl-modal" id="dlModal"></div>
