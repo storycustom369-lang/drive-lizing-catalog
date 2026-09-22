@@ -401,6 +401,8 @@ h1,h2,h3,.dl-num,.dl-btn,.dl-pill,.dl-title{font-family:'Onest',Arial,sans-serif
 .dl-conditions__body{min-width:0;}
 .dl-conditions__title{font-size:15.5px;font-weight:800;color:#0F1E2E;margin-bottom:4px;}
 .dl-conditions__text{font-size:13px;color:var(--navy-soft);line-height:1.5;}
+.dl-conditions__tagline{display:flex;align-items:center;justify-content:center;gap:16px;margin-top:20px;font-family:'Onest',Arial,sans-serif;font-size:11px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);}
+.dl-conditions__tagline span{flex:1;max-width:160px;height:1px;background:var(--border-strong);}
 .dl-conditions__connector{position:absolute;pointer-events:none;}
 .dl-conditions__connector--h{top:50%;left:100%;width:36px;height:15px;transform:translateY(-50%);}
 .dl-conditions__connector--h-left{left:auto;right:100%;transform:translateY(-50%) scaleX(-1);}
