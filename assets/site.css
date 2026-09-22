@@ -47,7 +47,7 @@ h1,h2,h3,.dl-num,.dl-btn,.dl-pill,.dl-title{font-family:'Onest',Arial,sans-serif
 .dl-heading{display:flex;align-items:baseline;justify-content:space-between;gap:12px;margin:28px 0 18px;flex-wrap:wrap;}
 .dl-heading__link{display:inline-flex;align-items:center;gap:5px;font-family:'Onest',Arial,sans-serif;font-size:13px;font-weight:700;color:var(--blue);text-decoration:none;flex:none;}
 .dl-heading__link svg{width:15px;height:15px;}
-.dl-heading h2{font-size:20px;font-weight:600;margin:0;color:var(--navy);}
+.dl-heading h2{font-size:20px;font-weight:600;margin:0;color:#0F1E2E;}
 .dl-count{font-size:13px;color:var(--muted);font-weight:600;}
 .dl-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:18px;}
 .dl-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;overflow:hidden;display:flex;flex-direction:column;box-shadow:0 1px 2px rgba(15,30,59,.04), 0 8px 20px rgba(15,30,59,.05);}
@@ -374,7 +374,7 @@ h1,h2,h3,.dl-num,.dl-btn,.dl-pill,.dl-title{font-family:'Onest',Arial,sans-serif
 .dl-h1{font-family:'Onest',Arial,sans-serif;font-size:clamp(26px,3.6vw,34px);font-weight:800;letter-spacing:-.01em;color:var(--blue);text-transform:uppercase;line-height:1.15;margin:14px 0 6px;text-wrap:balance;}
 .dl-h1-sub2{font-family:'Onest',Arial,sans-serif;font-size:clamp(17px,2.2vw,20px);font-weight:600;color:#000;margin:0 0 6px;line-height:1.3;}
 .dl-h1-subtitle{font-size:14px;color:var(--muted);margin:0 0 20px;}
-.dl-h2{font-family:'Onest',Arial,sans-serif;font-size:15px;font-weight:700;letter-spacing:.02em;text-transform:uppercase;color:var(--navy);margin:32px 0 14px;}
+.dl-h2{font-family:'Onest',Arial,sans-serif;font-size:15px;font-weight:700;letter-spacing:.02em;text-transform:uppercase;color:#0F1E2E;margin:32px 0 14px;}
 
 .dl-description{font-size:14.5px;line-height:1.7;color:var(--navy-soft);}
 
@@ -410,7 +410,6 @@ h1,h2,h3,.dl-num,.dl-btn,.dl-pill,.dl-title{font-family:'Onest',Arial,sans-serif
 .dl-why-item__text{font-size:12px;color:var(--muted);line-height:1.55;}
 
 .dl-reasons{margin:40px 0 8px;}
-.dl-reasons__eyebrow{font-family:'Onest',Arial,sans-serif;font-size:12px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--blue);margin-bottom:10px;}
 .dl-reasons__heading{font-family:'Onest',Arial,sans-serif;font-size:clamp(22px,3.4vw,30px);font-weight:800;line-height:1.2;color:#0F1E2E;margin:0 0 14px;text-transform:uppercase;}
 .dl-reasons__heading span{color:var(--blue);}
 .dl-reasons__sub{font-size:15px;color:var(--navy-soft);line-height:1.55;max-width:560px;margin:0 0 24px;}

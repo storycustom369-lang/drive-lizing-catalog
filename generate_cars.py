@@ -306,7 +306,6 @@ def render_reasons():
         for icon, t, d in REASONS_ITEMS
     )
     return f'''<div class="dl-reasons">
-    <div class="dl-reasons__eyebrow">Драйв Лизинг</div>
     <h2 class="dl-reasons__heading">Почему обращаются<br><span>в Драйв Лизинг</span></h2>
     <p class="dl-reasons__sub">Мы не просто выдаём автомобили — мы находим решение для вашей ситуации.</p>
     <div class="dl-reasons__grid">{items}</div>
