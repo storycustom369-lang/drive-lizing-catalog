@@ -29,7 +29,7 @@
 <meta property="og:locale" content="ru_RU">
 <meta property="og:site_name" content="Драйв Лизинг">
 <meta property="og:title" content="Каталог автомобилей в лизинг · Драйв Лизинг Иркутск">
-<meta property="og:description" content="Более 60 автомобилей в лизинг и аренду с выкупом. Калькулятор платежа в сутки, неделю и месяц.">
+<meta property="og:description" content="Более 55 автомобилей в лизинг и аренду с выкупом. Калькулятор платежа в сутки, неделю и месяц.">
 <meta property="og:url" content="https://driveleasing38.ru/catalog.html">
 <meta property="og:image" content="https://driveleasing38.ru/logo.png">
 <meta name="twitter:card" content="summary_large_image">
@@ -383,7 +383,7 @@ h1,h2,h3,.dl-num,.dl-btn,.dl-pill,.dl-title{font-family:'Onest',Arial,sans-serif
       </div>
     </div>
     <button type="button" class="dl-btn dl-related2__cta-btn" id="dlNotFoundBtn">Подобрать автомобиль <svg viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
-    <div class="dl-related2__cta-stat"><svg viewBox="0 0 24 24" fill="none"><path d="M16 11a4 4 0 10-4-4M6 11a3 3 0 100-6 3 3 0 000 6z" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/><path d="M2 20c.6-3.4 3-5.5 6-5.5M14 20c-.4-3.9 2.4-7 7-7" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg><div><b>Более 60</b><span>автомобилей в наличии</span></div></div>
+    <div class="dl-related2__cta-stat"><svg viewBox="0 0 24 24" fill="none"><path d="M16 11a4 4 0 10-4-4M6 11a3 3 0 100-6 3 3 0 000 6z" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/><path d="M2 20c.6-3.4 3-5.5 6-5.5M14 20c-.4-3.9 2.4-7 7-7" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg><div><b>Более 55</b><span>автомобилей в наличии</span></div></div>
   </div>
 </div>
 
@@ -419,7 +419,7 @@ h1,h2,h3,.dl-num,.dl-btn,.dl-pill,.dl-title{font-family:'Onest',Arial,sans-serif
   };
   var MARQUEE_ITEMS = [
     ['shield','92% одобрений'], ['doc','По 2 документам'], ['swap','Trade-in'],
-    ['car','Более 60 автомобилей'], ['bank','Без банка'], ['star','Новые и с пробегом'],
+    ['car','Более 55 автомобилей'], ['bank','Без банка'], ['star','Новые и с пробегом'],
     ['swap','Аренда авто с выкупом'], ['bank','Лизинг для физ. и юр.лиц']
   ];
   var CAR_PLACEHOLDER = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 13l2-6h14l2 6v5h-3M6 18H3v-5M9 18h6" stroke-linecap="round" stroke-linejoin="round"/><circle cx="7" cy="17" r="1.8"/><circle cx="17" cy="17" r="1.8"/></svg>';
@@ -860,7 +860,8 @@ h1,h2,h3,.dl-num,.dl-btn,.dl-pill,.dl-title{font-family:'Onest',Arial,sans-serif
     var count = document.getElementById('dlCount');
     heading.textContent = BUCKET_TITLES[state.bucket];
 
-    var bySource = state.source === 'all' ? CARS : CARS.filter(function(c){ return state.source === 'lease' ? !!c.isLeaseProgram : !c.isLeaseProgram; });
+    var available = CARS.filter(function(c){ return !c.isIssued; });
+    var bySource = state.source === 'all' ? available : available.filter(function(c){ return state.source === 'lease' ? !!c.isLeaseProgram : !c.isLeaseProgram; });
     var list = state.bucket === 'all' ? bySource : bySource.filter(function(c){ return c.bucket === state.bucket; });
     count.textContent = list.length + (list.length === 1 ? ' автомобиль' : ' автомобилей');
 

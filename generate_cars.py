@@ -442,6 +442,8 @@ def render_calculator(car):
       <span>Прозрачные условия,<br>без скрытых платежей</span>
     </div>
   </div>'''
+    if car.get('isIssued'):
+        return f'{head}<div class="dl-calc-unavailable">Этот автомобиль уже выдан клиенту и недоступен для оформления. Посмотрите похожие варианты в каталоге.<a class="dl-btn dl-btn--calc-cta" href="../../catalog.html" style="text-decoration:none;display:flex;align-items:center;justify-content:center;">Смотреть каталог {ci("arrow")}</a></div>'
     variants = car.get('variants')
     if not variants:
         return f'{head}<div class="dl-calc-unavailable">Точная цена уточняется у менеджера. Оставьте заявку, посчитаем индивидуально.<button class="dl-btn dl-btn--calc-cta" type="button" data-art="{car["art"]}" data-car="{title_attr}">Забронировать {ci("arrow")}</button></div>'
@@ -478,7 +480,9 @@ def render_calculator(car):
 
 def render_related(car, all_cars, slugs_by_art):
     title_attr = html.escape(car_title(car)).replace('"', '&quot;')
-    others = [c for c in all_cars if c['art'] != car['art']]
+    available_count = len([c for c in all_cars if not c.get('isIssued')])
+    stat_floor = (available_count // 5) * 5  # округляем вниз, чтобы "Более N" не устаревало при продаже пары машин
+    others = [c for c in all_cars if c['art'] != car['art'] and not c.get('isIssued')]
     # prefer same bucket, then fill with anything else
     same_bucket = [c for c in others if c.get('bucket') == car.get('bucket')]
     pool = same_bucket if len(same_bucket) >= 4 else others
@@ -539,7 +543,7 @@ def render_related(car, all_cars, slugs_by_art):
         </div>
       </div>
       <button type="button" class="dl-btn dl-related2__cta-btn" data-art="{car['art']}" data-car="{title_attr}">Подобрать автомобиль {ci('arrow')}</button>
-      <div class="dl-related2__cta-stat"><svg viewBox="0 0 24 24" fill="none"><path d="M16 11a4 4 0 10-4-4M6 11a3 3 0 100-6 3 3 0 000 6z" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/><path d="M2 20c.6-3.4 3-5.5 6-5.5M14 20c-.4-3.9 2.4-7 7-7" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg><div><b>Более 60</b><span>автомобилей в наличии</span></div></div>
+      <div class="dl-related2__cta-stat"><svg viewBox="0 0 24 24" fill="none"><path d="M16 11a4 4 0 10-4-4M6 11a3 3 0 100-6 3 3 0 000 6z" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/><path d="M2 20c.6-3.4 3-5.5 6-5.5M14 20c-.4-3.9 2.4-7 7-7" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg><div><b>Более {stat_floor}</b><span>автомобилей в наличии</span></div></div>
     </div>
   </div>'''
 
@@ -560,7 +564,7 @@ def render_schema(car, url, slug, min_week):
             "url": url,
             "priceCurrency": "RUB",
             "price": str(min_week),
-            "availability": "https://schema.org/InStock",
+            "availability": "https://schema.org/OutOfStock" if car.get('isIssued') else "https://schema.org/InStock",
             "areaServed": "Иркутск"
         }
     breadcrumb = {

@@ -29,7 +29,7 @@
 <meta property="og:locale" content="ru_RU">
 <meta property="og:site_name" content="Драйв Лизинг">
 <meta property="og:title" content="Драйв Лизинг · авто в лизинг и аренду с выкупом в Иркутске без банка">
-<meta property="og:description" content="Без первоначального взноса, оформление по 2 документам, 92% одобрений. Более 60 автомобилей в наличии.">
+<meta property="og:description" content="Без первоначального взноса, оформление по 2 документам, 92% одобрений. Более 55 автомобилей в наличии.">
 <meta property="og:url" content="https://driveleasing38.ru/">
 <meta property="og:image" content="https://driveleasing38.ru/logo.png">
 <meta name="twitter:card" content="summary_large_image">
@@ -358,7 +358,7 @@ h1,h2,h3,.dl-num,.dl-btn,.dl-pill,.dl-title{font-family:'Onest',Arial,sans-serif
   };
   var MARQUEE_ITEMS = [
     ['shield','92% одобрений'], ['doc','По 2 документам'], ['swap','Trade-in'],
-    ['car','Более 60 автомобилей'], ['bank','Без банка'], ['star','Новые и с пробегом'],
+    ['car','Более 55 автомобилей'], ['bank','Без банка'], ['star','Новые и с пробегом'],
     ['swap','Аренда авто с выкупом'], ['bank','Лизинг для физ. и юр.лиц']
   ];
   var CAR_PLACEHOLDER = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 13l2-6h14l2 6v5h-3M6 18H3v-5M9 18h6" stroke-linecap="round" stroke-linejoin="round"/><circle cx="7" cy="17" r="1.8"/><circle cx="17" cy="17" r="1.8"/></svg>';
@@ -799,7 +799,8 @@ h1,h2,h3,.dl-num,.dl-btn,.dl-pill,.dl-title{font-family:'Onest',Arial,sans-serif
     var count = document.getElementById('dlCount');
     heading.textContent = BUCKET_TITLES[state.bucket];
 
-    var bySource = state.source === 'all' ? CARS : CARS.filter(function(c){ return state.source === 'lease' ? !!c.isLeaseProgram : !c.isLeaseProgram; });
+    var available = CARS.filter(function(c){ return !c.isIssued; });
+    var bySource = state.source === 'all' ? available : available.filter(function(c){ return state.source === 'lease' ? !!c.isLeaseProgram : !c.isLeaseProgram; });
     var list = state.bucket === 'all' ? bySource : bySource.filter(function(c){ return c.bucket === state.bucket; });
     count.textContent = list.length + (list.length === 1 ? ' автомобиль' : ' автомобилей');
 
