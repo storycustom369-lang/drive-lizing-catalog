@@ -599,4 +599,19 @@
       });
     }
   });
+
+  // --- Cookie-баннер ---
+  (function(){
+    var KEY = "dl_cookie_consent";
+    var banner = document.getElementById("dlCookieBanner");
+    var btn = document.getElementById("dlCookieAccept");
+    if (!banner || !btn) return;
+    var accepted = false;
+    try { accepted = !!localStorage.getItem(KEY); } catch(e){}
+    if (!accepted) banner.hidden = false;
+    btn.addEventListener("click", function(){
+      banner.hidden = true;
+      try { localStorage.setItem(KEY, "1"); } catch(e){}
+    });
+  })();
 })();
