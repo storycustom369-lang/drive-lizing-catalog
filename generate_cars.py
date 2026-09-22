@@ -183,9 +183,15 @@ HERO_HOOKS = [
     "Забирайте уже сегодня, всего по двум документам",
 ]
 
+HERO_POINT_ICONS = {
+    "car": '<path d="M4 16l1.4-5A2 2 0 017.3 9.5h9.4a2 2 0 011.9 1.5L20 16" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><path d="M3 16h18v3a1 1 0 01-1 1h-1a1 1 0 01-1-1v-1H6v1a1 1 0 01-1 1H4a1 1 0 01-1-1v-3z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><circle cx="7.5" cy="16" r="1.1" fill="currentColor"/><circle cx="16.5" cy="16" r="1.1" fill="currentColor"/>',
+    "document": '<rect x="5" y="3" width="14" height="18" rx="2" stroke="currentColor" stroke-width="1.7"/><path d="M8 8h8M8 12h8M8 16h5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/>',
+    "heart": '<path d="M12 20.3c-.3 0-.6-.1-.8-.3C7.2 16.8 3.7 13.7 3.7 9.9 3.7 7.2 5.8 5 8.5 5c1.6 0 3 .8 3.7 2 .7-1.2 2.1-2 3.7-2 2.7 0 4.8 2.2 4.8 4.9 0 3.8-3.5 6.9-7.7 10.1-.2.2-.5.3-.8.3z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/>',
+}
+
 HERO_POINTS = [
     ("Проверенные авто", "car"),
-    ("Прозрачный договор", "document2"),
+    ("Прозрачный договор", "document"),
     ("Поддержка на всех этапах", "heart"),
 ]
 
@@ -221,7 +227,7 @@ def render_hero_banner(car, min_week, slug):
     hook = HERO_HOOKS[idx]
     price_html = f'от <em>{fmt_money(min_week)}</em> в неделю' if min_week is not None else 'цена <em>по запросу</em>'
     points = "".join(
-        f'<div class="dl-hero-banner__point"><span class="dl-hero-banner__point-ico"><img src="../../images/icons3d/{icon}.png" alt="" loading="lazy"></span><span class="dl-hero-banner__point-text">{html.escape(t)}</span></div>'
+        f'<div class="dl-hero-banner__point"><span class="dl-hero-banner__point-ico"><svg viewBox="0 0 24 24" fill="none">{HERO_POINT_ICONS[icon]}</svg></span><span class="dl-hero-banner__point-text">{html.escape(t)}</span></div>'
         for t, icon in HERO_POINTS
     )
     return f'''<div class="dl-hero-banner">
@@ -343,7 +349,7 @@ def render_how_to_own():
 
 MAX_CHANNEL_URL = "https://max.ru/u/f9LHodD0cOJwdXPtIRKpSznrrNNKwx-l7-HcyIykYTEMu3kGUgp9u4vTgm8"
 TG_CHANNEL_URL = "https://t.me/avtohere38"
-TELEGRAM_ICON_SVG = '<svg viewBox="0 0 24 24" width="22" height="22"><circle cx="12" cy="12" r="12" fill="#29A9EB"/><path d="M17.53 7.2L15.4 17.6c-.16.72-.58.9-1.18.56l-3.26-2.4-1.57 1.51c-.17.18-.32.33-.66.33l.24-3.36 6.1-5.51c.27-.24-.06-.37-.41-.13l-7.54 4.75-3.25-1.02c-.7-.22-.72-.7.15-1.04l12.7-4.9c.59-.22 1.1.14.9 1.05z" fill="#fff"/></svg>'
+TELEGRAM_ICON_SVG = '<svg viewBox="0 0 24 24" fill="none"><path d="M17.53 7.2L15.4 17.6c-.16.72-.58.9-1.18.56l-3.26-2.4-1.57 1.51c-.17.18-.32.33-.66.33l.24-3.36 6.1-5.51c.27-.24-.06-.37-.41-.13l-7.54 4.75-3.25-1.02c-.7-.22-.72-.7.15-1.04l12.7-4.9c.59-.22 1.1.14.9 1.05z" fill="#fff"/></svg>'
 
 def render_channel_promo():
     return f'''<div class="dl-promo">
@@ -353,7 +359,7 @@ def render_channel_promo():
       <p class="dl-promo__text">В наших каналах публикуем выгодные автомобили, истории клиентов и полезные советы.</p>
       <div class="dl-promo__links">
         <a class="dl-promo__link dl-promo__link--max" href="{MAX_CHANNEL_URL}" target="_blank" rel="noopener">
-          <img src="../../icon-max.png" alt="" width="22" height="22">
+          <img src="../../images/icons3d/max-badge.png" alt="" width="30" height="30">
           <span>Перейти в MAX</span>
           {ci('arrow')}
         </a>
