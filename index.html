@@ -283,8 +283,11 @@ h1,h2,h3,.dl-num,.dl-btn,.dl-pill,.dl-title{font-family:'Onest',Arial,sans-serif
 .dl-footer__inner{max-width:1180px;margin:0 auto;padding:44px 24px 24px;}
 .dl-footer__top{display:grid;grid-template-columns:1.3fr 1fr 1.2fr 1.1fr;gap:32px;padding-bottom:28px;}
 .dl-footer__brand{min-width:0;}
-.dl-footer__logo{display:flex;align-items:center;text-decoration:none;}
-.dl-footer__logo img{width:72px;height:72px;display:block;}
+.dl-footer__logo{display:flex;align-items:center;gap:10px;text-decoration:none;}
+.dl-footer__logo img{width:auto;height:44px;display:block;}
+.dl-footer__logo-text{display:flex;flex-direction:column;line-height:1.05;font-family:'Onest',Arial,sans-serif;}
+.dl-footer__logo-title{font-weight:800;font-size:18px;color:#021B43;letter-spacing:.01em;}
+.dl-footer__logo-sub{font-weight:700;font-size:11px;color:#697F9A;letter-spacing:.14em;margin-top:2px;}
 .dl-footer__tagline{margin:12px 0 18px;font-size:13.5px;line-height:1.55;color:var(--navy-soft);max-width:260px;}
 .dl-footer__social{display:flex;align-items:flex-start;gap:12px;}
 .dl-footer__social-btn{display:flex;flex-direction:column;align-items:center;gap:6px;text-decoration:none;}
@@ -1443,7 +1446,7 @@ h1,h2,h3,.dl-num,.dl-btn,.dl-pill,.dl-title{font-family:'Onest',Arial,sans-serif
   <div class="dl-footer__inner">
     <div class="dl-footer__top">
       <div class="dl-footer__brand">
-        <a href="/" class="dl-footer__logo"><img src="logo.png" alt="Драйв Лизинг"></a>
+        <a href="/" class="dl-footer__logo"><img src="images/icons3d/logo-icon.png" alt="Драйв Лизинг"><span class="dl-footer__logo-text"><span class="dl-footer__logo-title">ДРАЙВ</span><span class="dl-footer__logo-sub">ЛИЗИНГ</span></span></a>
         <p class="dl-footer__tagline">Лизинг и аренда автомобилей с выкупом в Иркутске. Без банка, по 2 документам, для физ. и юр. лиц.</p>
         <div class="dl-footer__social">
           <a class="dl-footer__social-btn" href="https://t.me/avtohere38" target="_blank" rel="noopener">
