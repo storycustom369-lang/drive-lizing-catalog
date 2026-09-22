@@ -690,15 +690,11 @@ PAGE_TEMPLATE = '''<!DOCTYPE html>
         <a href="../../" class="dl-footer__logo"><img src="../../images/icons3d/logo-icon.png" alt="Драйв Лизинг"><span class="dl-footer__logo-text"><span class="dl-footer__logo-title">ДРАЙВ</span><span class="dl-footer__logo-sub">ЛИЗИНГ</span></span></a>
         <p class="dl-footer__tagline">Лизинг и аренда автомобилей с выкупом в Иркутске. Без банка, по 2 документам, для физ. и юр. лиц.</p>
         <div class="dl-footer__social">
-          <a class="dl-footer__social-btn" href="https://t.me/avtohere38" target="_blank" rel="noopener">
-            <span class="dl-footer__social-ico"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="12" fill="#29A9EB"/><path d="M17.53 7.2L15.4 17.6c-.16.72-.58.9-1.18.56l-3.26-2.4-1.57 1.51c-.17.18-.32.33-.66.33l.24-3.36 6.1-5.51c.27-.24-.06-.37-.41-.13l-7.54 4.75-3.25-1.02c-.7-.22-.72-.7.15-1.04l12.7-4.9c.59-.22 1.1.14.9 1.05z" fill="#fff"/></svg></span>
-            <span class="dl-footer__social-label">Telegram</span>
-          </a>
-          <a class="dl-footer__social-btn" href="https://max.ru/u/f9LHodD0cOJwdXPtIRKpSznrrNNKwx-l7-HcyIykYTEMu3kGUgp9u4vTgm8" target="_blank" rel="noopener">
-            <span class="dl-footer__social-ico"><img src="../../images/icons3d/max-badge.png" alt="MAX"></span>
-            <span class="dl-footer__social-label">MAX</span>
-          </a>
           <a class="dl-footer__updates" href="https://t.me/avtohere38" target="_blank" rel="noopener">Будьте в курсе наших новостей<svg viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+          <div class="dl-footer__social-icons">
+            <a class="dl-footer__social-ico" href="https://t.me/avtohere38" target="_blank" rel="noopener" aria-label="Telegram"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="12" fill="#29A9EB"/><path d="M17.53 7.2L15.4 17.6c-.16.72-.58.9-1.18.56l-3.26-2.4-1.57 1.51c-.17.18-.32.33-.66.33l.24-3.36 6.1-5.51c.27-.24-.06-.37-.41-.13l-7.54 4.75-3.25-1.02c-.7-.22-.72-.7.15-1.04l12.7-4.9c.59-.22 1.1.14.9 1.05z" fill="#fff"/></svg></a>
+            <a class="dl-footer__social-ico" href="https://max.ru/u/f9LHodD0cOJwdXPtIRKpSznrrNNKwx-l7-HcyIykYTEMu3kGUgp9u4vTgm8" target="_blank" rel="noopener" aria-label="MAX"><img src="../../images/icons3d/max-badge.png" alt="MAX"></a>
+          </div>
         </div>
       </div>
       <div>
@@ -721,11 +717,11 @@ PAGE_TEMPLATE = '''<!DOCTYPE html>
           </div>
           <div class="dl-footer__contact-item">
             <span class="dl-footer__contact-badge"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="12" fill="#29A9EB"/><path d="M17.53 7.2L15.4 17.6c-.16.72-.58.9-1.18.56l-3.26-2.4-1.57 1.51c-.17.18-.32.33-.66.33l.24-3.36 6.1-5.51c.27-.24-.06-.37-.41-.13l-7.54 4.75-3.25-1.02c-.7-.22-.72-.7.15-1.04l12.7-4.9c.59-.22 1.1.14.9 1.05z" fill="#fff"/></svg></span>
-            <div class="dl-footer__contact-body"><a href="https://t.me/avtohere38" target="_blank" rel="noopener">Telegram</a><div class="dl-footer__contact-sub">Написать нам</div></div>
+            <div class="dl-footer__contact-body"><a href="https://t.me/avtohere38" target="_blank" rel="noopener">Telegram<div class="dl-footer__contact-sub">Написать нам</div></a></div>
           </div>
           <div class="dl-footer__contact-item">
             <span class="dl-footer__contact-badge"><img src="../../images/icons3d/max-badge.png" alt=""></span>
-            <div class="dl-footer__contact-body"><a href="https://max.ru/u/f9LHodD0cOJwdXPtIRKpSznrrNNKwx-l7-HcyIykYTEMu3kGUgp9u4vTgm8" target="_blank" rel="noopener">MAX</a><div class="dl-footer__contact-sub">Написать нам</div></div>
+            <div class="dl-footer__contact-body"><a href="https://max.ru/u/f9LHodD0cOJwdXPtIRKpSznrrNNKwx-l7-HcyIykYTEMu3kGUgp9u4vTgm8" target="_blank" rel="noopener">MAX<div class="dl-footer__contact-sub">Написать нам</div></a></div>
           </div>
         </div>
       </div>
