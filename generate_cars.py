@@ -62,6 +62,23 @@ def write_slugs_to_catalog(cars, slugs_by_art):
         open(CATALOG_HTML, 'w', encoding='utf-8').write(new_text)
         print("catalog.html: обновлены слаги для", len(cars), "машин")
 
+def write_catalog_grid(cars, slugs_by_art):
+    """Пишет статический список карточек в <div id="dlGrid"></div> catalog.html,
+    чтобы поисковые боты видели реальный контент и ссылки на карточки машин
+    в исходном HTML, а не только после выполнения JS."""
+    text = open(CATALOG_HTML, encoding='utf-8').read()
+    grid_html = render_catalog_grid(cars, slugs_by_art)
+    new_text, n = re.subn(
+        r'<div class="dl-grid" id="dlGrid">.*?</div>\s*(?=<div class="dl-empty")',
+        f'<div class="dl-grid" id="dlGrid">{grid_html}</div>\n  ',
+        text, count=1, flags=re.S,
+    )
+    if n != 1:
+        raise RuntimeError('Не нашёл <div class="dl-grid" id="dlGrid">...</div> в catalog.html')
+    if new_text != text:
+        open(CATALOG_HTML, 'w', encoding='utf-8').write(new_text)
+        print("catalog.html: пререндерен статический грид,", len(cars), "карточек")
+
 def fmt_money(n):
     return f"{n:,}".replace(",", " ") + " ₽"
 
@@ -93,6 +110,60 @@ def car_title(car):
 def build_calculator_data(car):
     # JSON blob embedded per-page for the small vanilla-JS toggle script
     return json.dumps(car['variants'], ensure_ascii=False)
+
+LEASE_ICON_SVG = '<svg viewBox="0 0 24 24" fill="none"><path d="M12 2L4 5v6c0 5 3.4 9.4 8 11 4.6-1.6 8-6 8-11V5l-8-3z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M12 8v4M12 15.5v.01" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>'
+
+def card_day_at_max_term(car):
+    """Зеркалит cardDayAtMaxTerm() из JS каталога: карточка показывает цену на максимальном ПВ (20%) и максимальном сроке (самый низкий платёж)."""
+    variants = car.get('variants') or {}
+    variant = variants.get('20') or (list(variants.values())[0] if variants else None)
+    if not variant or not variant.get('terms'):
+        return None
+    max_term = max(variant['terms'].keys(), key=int)
+    t = variant['terms'][max_term]
+    return t
+
+def render_catalog_grid(cars, slugs_by_art):
+    """Статический (пререндеренный) список карточек для <div id="dlGrid"> в catalog.html.
+    JS всё равно перестраивает грид на любое взаимодействие (innerHTML='' + rebuild), поэтому
+    здесь не нужна интерактивность — только валидный HTML с реальными <a href> на страницы
+    машин, чтобы поисковый бот видел контент и ссылки, даже если не выполняет JS."""
+    cards = []
+    for car in cars:
+        slug = slugs_by_art.get(car['art'], '')
+        title = car_title(car)
+        spec = html.escape(car.get('spec') or car.get('kuzov') or '')
+        photos = car.get('photos') or []
+        art_html = ''
+        if photos:
+            count_badge = f'<span class="dl-gallery__count">1 / {len(photos)}</span>' if len(photos) > 1 else ''
+            art_html = f'<img src="{html.escape(photos[0])}" alt="{html.escape(title)}, фото 1" loading="lazy">{count_badge}'
+        lease_badge = f'<div class="dl-lease-badge">{LEASE_ICON_SVG}<span>Лизинговая программа</span></div>' if car.get('isLeaseProgram') else ''
+        issued_stamp = '<div class="dl-issued-stamp">Выдана</div>' if car.get('isIssued') else ''
+        lease_tag = f'<div class="dl-card__lease-tag">{LEASE_ICON_SVG}<span>Лизинговая программа</span></div>' if car.get('isLeaseProgram') else ''
+        komplekt_html = f'<div class="dl-komplekt">{html.escape(car["komplekt"])}</div>' if car.get('komplekt') else ''
+
+        t = card_day_at_max_term(car)
+        if car.get('isIssued'):
+            price_html = '<div class="dl-unavail-note">Автомобиль выдан клиенту, сейчас недоступен</div>'
+            cta_html = '<button type="button" class="dl-btn dl-btn--disabled" disabled>Забронирован</button>'
+        elif t:
+            price_html = f'<div class="dl-price-row"><span class="dl-price-label">от</span><span class="dl-num">{fmt_money(t["day"])}</span><span class="dl-price-label">/день</span></div>'
+            cta_html = f'<a class="dl-btn" href="cars/{slug}/">Подробнее и расчёт</a>' if slug else '<span class="dl-btn dl-btn--disabled">Подробнее и расчёт</span>'
+        else:
+            price_html = '<div class="dl-unavail-note">Автомобиль выдан клиенту, сейчас недоступен</div>'
+            cta_html = '<a class="dl-btn" href="catalog.html">Похожий автомобиль</a>'
+
+        cards.append(
+            f'<div class="dl-card">'
+            f'<div class="dl-card__art">{art_html}{lease_badge}{issued_stamp}</div>'
+            f'<div class="dl-card__body">{lease_tag}'
+            f'<div class="dl-title">{html.escape(title)}</div>'
+            f'<div class="dl-spec">{spec}</div>'
+            f'{komplekt_html}{price_html}{cta_html}'
+            f'</div></div>'
+        )
+    return ''.join(cards)
 
 def photo_rel(p):
     """Путь к фото для car-page HTML (относительно cars/<slug>/). Абсолютные URL (сторонние стоковые фото) не трогаем — иначе '../../' ломает ссылку."""
@@ -772,6 +843,7 @@ def main():
         slugs_by_art[c['art']] = slug
 
     write_slugs_to_catalog(cars, slugs_by_art)
+    write_catalog_grid(cars, slugs_by_art)
 
     os.makedirs(CARS_DIR, exist_ok=True)
     urls = []

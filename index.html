@@ -190,6 +190,14 @@ h1,h2,h3,.dl-num,.dl-btn,.dl-pill,.dl-title{font-family:'Onest',Arial,sans-serif
   .dl-topbar__review-logo{height:11px;}
   .dl-topbar__review-logo--avito{height:9px;}
 }
+.dl-seo-h1{max-width:1180px;margin:0 auto;padding:18px 24px 2px;background:var(--surface);}
+.dl-seo-h1 h1{font-family:'Onest',Arial,sans-serif;font-size:21px;font-weight:800;color:var(--navy);margin:0 0 6px;line-height:1.25;}
+.dl-seo-h1 p{font-size:13px;color:var(--navy-soft);margin:0;max-width:620px;line-height:1.5;}
+@media (max-width:640px){
+  .dl-seo-h1{padding:14px 16px 2px;}
+  .dl-seo-h1 h1{font-size:16px;}
+  .dl-seo-h1 p{font-size:12px;}
+}
 .dl-marquee--top{background:var(--surface);border-bottom:1px solid var(--border);}
 .dl-marquee--top .dl-marquee__item{color:var(--navy);}
 .dl-marquee--top .dl-marquee__item svg{filter:none;}
@@ -279,7 +287,18 @@ h1,h2,h3,.dl-num,.dl-btn,.dl-pill,.dl-title{font-family:'Onest',Arial,sans-serif
   .dl-cta__left{padding:28px 22px;}
   .dl-cta__right{padding:26px 22px;}
 }
-.dl-footer{margin-top:56px;background:var(--surface);border-top:1px solid var(--border);color:var(--navy-soft);font-family:'Onest',Arial,sans-serif;}
+.dl-seo-block{margin-top:56px;background:var(--surface);padding:40px 24px;border-top:1px solid var(--border);}
+.dl-seo-block__inner{max-width:1180px;margin:0 auto;}
+.dl-seo-block h2{font-family:'Onest',Arial,sans-serif;font-size:22px;font-weight:800;color:var(--navy);margin:0 0 20px;}
+.dl-seo-block__cols{display:grid;grid-template-columns:1fr 1fr;gap:28px;}
+.dl-seo-block__cols h3{font-family:'Onest',Arial,sans-serif;font-size:16px;font-weight:700;color:var(--navy);margin:0 0 8px;}
+.dl-seo-block__cols p{font-size:14px;line-height:1.6;color:var(--navy-soft);margin:0;}
+@media (max-width:640px){
+  .dl-seo-block{padding:28px 16px;margin-top:36px;}
+  .dl-seo-block h2{font-size:18px;margin-bottom:16px;}
+  .dl-seo-block__cols{grid-template-columns:1fr;gap:20px;}
+}
+.dl-footer{background:var(--surface);border-top:1px solid var(--border);color:var(--navy-soft);font-family:'Onest',Arial,sans-serif;}
 .dl-footer__inner{max-width:1180px;margin:0 auto;padding:44px 24px 24px;}
 .dl-footer__top{display:grid;grid-template-columns:1.3fr 1fr 1.2fr 1.1fr;gap:32px;padding-bottom:28px;}
 .dl-footer__brand{min-width:0;}
@@ -329,8 +348,6 @@ h1,h2,h3,.dl-num,.dl-btn,.dl-pill,.dl-title{font-family:'Onest',Arial,sans-serif
 }
 </style>
 
-<h2 class="sr-only" style="position:absolute;width:1px;height:1px;overflow:hidden;">Драйв Лизинг · автомобили в лизинг и рассрочку</h2>
-
 <div class="dl-topbar">
   <div class="dl-topbar__inner">
     <div class="dl-topbar__logo">
@@ -345,6 +362,11 @@ h1,h2,h3,.dl-num,.dl-btn,.dl-pill,.dl-title{font-family:'Onest',Arial,sans-serif
       <div class="dl-topbar__reviews-text">Более 400 отзывов на <img src="icon-2gis.webp" alt="2ГИС" class="dl-topbar__review-logo"><img src="icon-avito.png" alt="Авито" class="dl-topbar__review-logo dl-topbar__review-logo--avito"></div>
     </div>
   </div>
+</div>
+
+<div class="dl-seo-h1">
+  <h1>Аренда авто с выкупом и лизинг в Иркутске</h1>
+  <p>Без банка, взнос от 0%, оформление по 2 документам. Новые автомобили под заказ и с пробегом — для физических и юридических лиц.</p>
 </div>
 
 <div class="dl-marquee dl-marquee--top">
@@ -1439,6 +1461,22 @@ h1,h2,h3,.dl-num,.dl-btn,.dl-pill,.dl-title{font-family:'Onest',Arial,sans-serif
   window.addEventListener('resize', syncStickyOffset);
 })();
 </script>
+
+<section class="dl-seo-block">
+  <div class="dl-seo-block__inner">
+    <h2>Аренда и лизинг авто в Иркутске: как это работает</h2>
+    <div class="dl-seo-block__cols">
+      <div>
+        <h3>Аренда авто с выкупом</h3>
+        <p>Для частных лиц: берёте автомобиль в аренду с правом выкупа без банка, первоначальный взнос от 0%. Оформление по 2 документам, решение по заявке за 1 день. В наличии больше 60 автомобилей — новые под заказ и с пробегом.</p>
+      </div>
+      <div>
+        <h3>Лизинг для юридических лиц</h3>
+        <p>Для компаний: лизинг автомобилей на тех же условиях, что и для физлиц — без банка, взнос от 0%, срок договора до 60 месяцев. Подходит, чтобы обновить или расширить автопарк без разовой крупной траты.</p>
+      </div>
+    </div>
+  </div>
+</section>
 
 <footer class="dl-footer">
   <div class="dl-footer__inner">
