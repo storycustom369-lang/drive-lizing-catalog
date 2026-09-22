@@ -307,8 +307,8 @@ h1,h2,h3,.dl-num,.dl-btn,.dl-pill,.dl-title{font-family:'Onest',Arial,sans-serif
 .dl-related2__count{position:absolute;bottom:10px;right:10px;display:flex;align-items:center;gap:4px;background:rgba(15,20,30,.62);color:#fff;font-size:11px;font-weight:600;padding:4px 9px;border-radius:999px;}
 .dl-related2__count svg{width:13px;height:13px;}
 .dl-related2__body{padding:14px 16px 16px;display:flex;flex-direction:column;gap:3px;flex:1;}
-.dl-related2__title{font-size:15.5px;font-weight:800;color:#0F1E2E;}
-.dl-related2__spec{font-size:12px;color:var(--muted);}
+.dl-related2__title{font-size:15.5px;font-weight:800;color:#0F1E2E;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.dl-related2__spec{font-size:12px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
 .dl-related2__price{font-size:14px;color:var(--navy-soft);margin-top:3px;}
 .dl-related2__price b{color:var(--blue);font-size:17px;font-weight:800;}
 .dl-related2__more{margin-top:auto;padding-top:10px;border-top:1px solid var(--border);display:flex;align-items:center;gap:5px;font-size:13px;font-weight:700;color:var(--blue);}
