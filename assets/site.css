@@ -319,7 +319,7 @@ h1,h2,h3,.dl-num,.dl-btn,.dl-pill,.dl-title{font-family:'Onest',Arial,sans-serif
   .dl-badge3__text span{font-size:10.5px;}
 }
 
-.dl-hero-banner{margin:18px 0 24px;background:linear-gradient(100deg, rgba(15,30,46,.9) 0%, rgba(19,45,79,.68) 40%, rgba(37,87,199,.4) 100%), url('../images/site/page-bg.webp') center 35%/cover no-repeat;border-radius:14px;padding:20px 24px;position:relative;overflow:hidden;isolation:isolate;display:flex;align-items:center;justify-content:space-between;gap:28px;flex-wrap:wrap;}
+.dl-hero-banner{margin:18px 0 24px;background:linear-gradient(100deg, rgba(15,30,46,.55) 0%, rgba(19,45,79,.32) 45%, rgba(37,87,199,.12) 100%), url('../images/site/page-bg.webp') center 35%/cover no-repeat;border-radius:14px;padding:20px 24px;position:relative;overflow:hidden;isolation:isolate;display:flex;align-items:center;justify-content:space-between;gap:28px;flex-wrap:wrap;}
 .dl-hero-banner::before{content:"";position:absolute;inset:0;background:linear-gradient(115deg, rgba(255,255,255,.22) 0%, rgba(255,255,255,0) 28%, rgba(255,255,255,0) 62%, rgba(255,255,255,.08) 100%);pointer-events:none;z-index:1;}
 .dl-hero-banner::after{content:"";position:absolute;top:-60%;left:-10%;width:36%;height:220%;background:linear-gradient(100deg, rgba(255,255,255,0) 0%, rgba(255,255,255,.22) 50%, rgba(255,255,255,0) 100%);transform:rotate(18deg) translateX(-160%);pointer-events:none;z-index:1;animation:dlHeroShine 5.5s ease-in-out infinite;}
 @keyframes dlHeroShine{
@@ -328,9 +328,9 @@ h1,h2,h3,.dl-num,.dl-btn,.dl-pill,.dl-title{font-family:'Onest',Arial,sans-serif
 }
 @media (prefers-reduced-motion: reduce){.dl-hero-banner::after{animation:none;transform:rotate(18deg) translateX(40%);}}
 .dl-hero-banner__main{position:relative;z-index:2;flex:1;min-width:220px;}
-.dl-hero-banner__title{font-family:'Onest',Arial,sans-serif;font-size:clamp(16px,2.1vw,19px);font-weight:600;color:#fff;line-height:1.3;margin:0;text-wrap:balance;}
+.dl-hero-banner__title{font-family:'Onest',Arial,sans-serif;font-size:clamp(16px,2.1vw,19px);font-weight:600;color:#fff;line-height:1.3;margin:0;text-wrap:balance;text-shadow:0 1px 8px rgba(0,0,0,.4);}
 .dl-hero-banner__title em{font-style:normal;font-weight:800;font-variant-numeric:tabular-nums;}
-.dl-hero-banner__sub{font-family:'Onest',Arial,sans-serif;font-size:12px;color:rgba(255,255,255,.6);margin:6px 0 0;}
+.dl-hero-banner__sub{font-family:'Onest',Arial,sans-serif;font-size:12px;color:rgba(255,255,255,.85);margin:6px 0 0;text-shadow:0 1px 6px rgba(0,0,0,.4);}
 .dl-hero-banner__points{position:relative;z-index:2;display:flex;align-items:flex-start;gap:20px;flex-wrap:wrap;}
 .dl-hero-banner__point{display:flex;flex-direction:row;align-items:flex-start;gap:10px;max-width:120px;min-width:0;}
 .dl-hero-banner__point-ico{
