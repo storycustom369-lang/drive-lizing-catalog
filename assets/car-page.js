@@ -258,6 +258,19 @@
     var outPvSum = calc.querySelector('[data-out="pv-sum"]');
     var outPvHint = calc.querySelector('[data-out="pv-hint"]');
 
+    calc.querySelectorAll(".dl-hint__btn").forEach(function(btn){
+      btn.addEventListener("click", function(e){
+        e.stopPropagation();
+        var cell = btn.closest(".dl-result__cell");
+        var wasOpen = cell.classList.contains("is-hint-open");
+        calc.querySelectorAll(".dl-result__cell.is-hint-open").forEach(function(c){ c.classList.remove("is-hint-open"); });
+        if (!wasOpen) cell.classList.add("is-hint-open");
+      });
+    });
+    document.addEventListener("click", function(){
+      calc.querySelectorAll(".dl-result__cell.is-hint-open").forEach(function(c){ c.classList.remove("is-hint-open"); });
+    });
+
     function fmt(n){ return n.toLocaleString("ru-RU") + " ₽"; }
 
     function currentPv(){

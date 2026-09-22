@@ -381,7 +381,7 @@ def render_calculator(car):
   </div>'''
     variants = car.get('variants')
     if not variants:
-        return f'{head}<div class="dl-calc-unavailable">Точная цена уточняется у менеджера. Оставьте заявку, посчитаем индивидуально.<button class="dl-btn dl-btn--calc-cta" type="button" data-art="{car["art"]}" data-car="{title_attr}">Получить расчёт {ci("arrow")}</button></div>'
+        return f'{head}<div class="dl-calc-unavailable">Точная цена уточняется у менеджера. Оставьте заявку, посчитаем индивидуально.<button class="dl-btn dl-btn--calc-cta" type="button" data-art="{car["art"]}" data-car="{title_attr}">Забронировать {ci("arrow")}</button></div>'
     pv_keys = sorted(variants.keys(), key=int)
     last_variant = variants[pv_keys[-1]]
     term_keys = sorted(last_variant['terms'].keys(), key=int)
@@ -405,21 +405,19 @@ def render_calculator(car):
     </div>
     <div class="dl-result">
       <div class="dl-result__cell"><span class="dl-result__ico">{ci('calendar')}</span><span class="dl-result__num" data-out="day">-</span><span class="dl-result__unit">в день</span></div>
-      <div class="dl-result__cell is-main"><span class="dl-result__ico">{ci('chart')}</span><span class="dl-result__num" data-out="week">-</span><span class="dl-result__unit">в неделю</span></div>
-      <div class="dl-result__cell"><span class="dl-result__ico">{ci('wallet')}</span><span class="dl-result__num" data-out="month">-</span><span class="dl-result__unit">в месяц</span></div>
+      <div class="dl-result__cell is-main"><span class="dl-result__ico">{ci('chart')}</span><span class="dl-result__num" data-out="week">-</span><span class="dl-result__unit-row"><span class="dl-result__unit">в неделю</span><button type="button" class="dl-hint__btn" aria-label="Как считается сумма за неделю">{ci('info')}</button></span><div class="dl-hint__pop dl-hint__pop--week">Сумма указана за 7 дней, среднее значение. Платёж за конкретную неделю может немного отличаться в зависимости от дат вашего графика.</div></div>
+      <div class="dl-result__cell"><span class="dl-result__ico">{ci('wallet')}</span><span class="dl-result__num" data-out="month">-</span><span class="dl-result__unit-row"><span class="dl-result__unit">в месяц</span><button type="button" class="dl-hint__btn" aria-label="Как считается сумма за месяц">{ci('info')}</button></span><div class="dl-hint__pop dl-hint__pop--month">Сумма указана за 30 дней. При оплате календарным месяцем цена меняется в зависимости от количества дней: недостающие или лишние дни распределяются равными долями к платежу.</div></div>
     </div>
     <div class="dl-pv-sum-row">
       <span class="dl-pv-sum-row__ico"><img src="../../images/icons3d/pie-icon.png" alt="" loading="lazy"></span>
       <div><div class="dl-pv-sum" data-out="pv-sum"></div><div class="dl-pv-sum__note">Окончательные условия уточнит менеджер</div></div>
     </div>
-    <button class="dl-btn dl-btn--calc-cta" type="button">Получить расчёт {ci('arrow')}</button>
+    <button class="dl-btn dl-btn--calc-cta" type="button">Забронировать {ci('arrow')}</button>
   </div>
-  <div class="dl-calc-trust">
-    <div class="dl-calc-trust__item">{ci('car')}<span>Без скрытых платежей</span></div>
-    <div class="dl-calc-trust__item">{ci('document')}<span>Нужен только паспорт и права</span></div>
-    <div class="dl-calc-trust__item">{ci('shield-check')}<span>Одобрение до 92%</span></div>
-  </div>
-  <div class="dl-calc-fineprint">{ci('lock')}<span>Ваши данные под защитой. Мы свяжемся с вами и предложим лучшие условия.</span></div>'''
+  <div class="dl-calc-note">
+    <b>Вы пока ничего не платите</b>
+    <span>Заявка ни к чему не обязывает. Менеджер свяжется и обсудит с вами точные условия бронирования.</span>
+  </div>'''
 
 def render_related(car, all_cars, slugs_by_art):
     others = [c for c in all_cars if c['art'] != car['art']]
@@ -541,8 +539,14 @@ PAGE_TEMPLATE = '''<!DOCTYPE html>
     </div>
 
     <aside class="dl-detail-side">
-      <div class="dl-card dl-calc-card">
-        {calculator}
+      <div class="dl-calc-sticky">
+        <div class="dl-card dl-calc-card">
+          {calculator}
+        </div>
+        <a class="dl-sample-doc" href="../../documents/dl-sample-agreement.pdf" target="_blank" rel="noopener">
+          <span class="dl-sample-doc__ico"><svg viewBox="0 0 24 24" fill="none"><path d="M12 3v12m0 0l-4-4m4 4l4-4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><path d="M4 17v2a2 2 0 002 2h12a2 2 0 002-2v-2" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+          <span>Скачать образец договора</span>
+        </a>
       </div>
     </aside>
   </div>
