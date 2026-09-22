@@ -301,6 +301,14 @@ h1,h2,h3,.dl-num,.dl-btn,.dl-pill,.dl-title{font-family:'Onest',Arial,sans-serif
   .dl-related2__cta-stat{width:100%;}
   .dl-related2__cta-stat div{flex-direction:row;gap:4px;}
 }
+.dl-promo-img{position:relative;margin:40px 0 0;line-height:0;border-radius:24px;overflow:hidden;}
+.dl-promo-img img{display:block;width:100%;height:auto;}
+.dl-promo-img__link{position:absolute;display:block;}
+.dl-promo-img__link--max{left:6.2%;top:58.76%;width:18.96%;height:11.6%;}
+.dl-promo-img__link--tg{left:27.18%;top:58.76%;width:21.18%;height:11.6%;}
+@media (max-width:640px){
+  .dl-promo-img{border-radius:18px;}
+}
 </style>
 
 <h2 class="sr-only" style="position:absolute;width:1px;height:1px;overflow:hidden;">Каталог автомобилей Драйв Лизинг с расчётом еженедельного платежа по каждой категории цен</h2>
@@ -335,6 +343,12 @@ h1,h2,h3,.dl-num,.dl-btn,.dl-pill,.dl-title{font-family:'Onest',Arial,sans-serif
   </div>
   <div class="dl-grid" id="dlGrid"></div>
   <div class="dl-empty" id="dlEmpty" hidden>В этой категории пока нет машин</div>
+
+  <div class="dl-promo-img">
+    <img src="images/promo/banner.webp" alt="Узнавайте первыми о новых предложениях: каналы Драйв Лизинг в MAX и Telegram" loading="lazy" width="1983" height="793">
+    <a class="dl-promo-img__link dl-promo-img__link--max" href="https://max.ru/u/f9LHodD0cOJwdXPtIRKpSznrrNNKwx-l7-HcyIykYTEMu3kGUgp9u4vTgm8" target="_blank" rel="noopener" aria-label="Перейти в MAX"></a>
+    <a class="dl-promo-img__link dl-promo-img__link--tg" href="https://t.me/avtohere38" target="_blank" rel="noopener" aria-label="Перейти в Telegram"></a>
+  </div>
 
   <div class="dl-related2__cta" id="dlCtaSection">
     <div class="dl-related2__cta-left">
