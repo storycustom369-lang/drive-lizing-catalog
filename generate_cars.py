@@ -517,7 +517,7 @@ PAGE_TEMPLATE = '''<!DOCTYPE html>
     <a href="../../" class="dl-topbar__logo">
       <img src="../../logo.png" alt="Драйв Лизинг" class="dl-topbar__logo-img">
       <div class="dl-topbar__logo-text">
-        <div class="dl-topbar__slogan">Уезжайте на новом автомобиле <em>уже сегодня</em></div>
+        <div class="dl-topbar__slogan">Помогаем получить автомобиль, <em>даже если банк отказал</em></div>
         <div class="dl-topbar__caption">Работаем с физ. и юр. лицами</div>
       </div>
     </a>
