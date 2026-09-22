@@ -319,7 +319,7 @@ h1,h2,h3,.dl-num,.dl-btn,.dl-pill,.dl-title{font-family:'Onest',Arial,sans-serif
   .dl-badge3__text span{font-size:10.5px;}
 }
 
-.dl-hero-banner{margin:18px 0 24px;background:linear-gradient(100deg, rgba(15,30,46,.55) 0%, rgba(19,45,79,.32) 45%, rgba(37,87,199,.12) 100%), url('../images/site/page-bg.webp') center 35%/cover no-repeat;border-radius:14px;padding:20px 24px;position:relative;overflow:hidden;isolation:isolate;display:flex;align-items:center;justify-content:space-between;gap:28px;flex-wrap:wrap;}
+.dl-hero-banner{margin:18px 0 24px;background:linear-gradient(100deg, rgba(15,30,46,.55) 0%, rgba(19,45,79,.32) 45%, rgba(37,87,199,.12) 100%), url('../images/site/page-bg.webp') center 10%/cover no-repeat;border-radius:14px;padding:20px 24px;position:relative;overflow:hidden;isolation:isolate;display:flex;align-items:center;justify-content:space-between;gap:28px;flex-wrap:wrap;}
 .dl-hero-banner::before{content:"";position:absolute;inset:0;background:linear-gradient(115deg, rgba(255,255,255,.22) 0%, rgba(255,255,255,0) 28%, rgba(255,255,255,0) 62%, rgba(255,255,255,.08) 100%);pointer-events:none;z-index:1;}
 .dl-hero-banner::after{content:"";position:absolute;top:-60%;left:-10%;width:36%;height:220%;background:linear-gradient(100deg, rgba(255,255,255,0) 0%, rgba(255,255,255,.22) 50%, rgba(255,255,255,0) 100%);transform:rotate(18deg) translateX(-160%);pointer-events:none;z-index:1;animation:dlHeroShine 5.5s ease-in-out infinite;}
 @keyframes dlHeroShine{
