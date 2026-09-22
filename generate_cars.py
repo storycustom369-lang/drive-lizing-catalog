@@ -476,7 +476,7 @@ def render_related(car, all_cars, slugs_by_art):
       </div>
     </a>''')
     return f'''<div class="dl-related2">
-    <div class="dl-related2__eyebrow">В наличии</div>
+    <div class="dl-related2__eyebrow"><span class="dl-related2__eyebrow-dot"></span>В наличии</div>
     <div class="dl-related2__head">
       <div>
         <h2 class="dl-related2__heading">Другие <span>автомобили</span></h2>
