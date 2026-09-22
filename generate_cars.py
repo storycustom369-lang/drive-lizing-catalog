@@ -349,43 +349,12 @@ def render_how_to_own():
 
 MAX_CHANNEL_URL = "https://max.ru/u/f9LHodD0cOJwdXPtIRKpSznrrNNKwx-l7-HcyIykYTEMu3kGUgp9u4vTgm8"
 TG_CHANNEL_URL = "https://t.me/avtohere38"
-TELEGRAM_ICON_SVG = '<svg viewBox="0 0 24 24" fill="none"><path d="M17.53 7.2L15.4 17.6c-.16.72-.58.9-1.18.56l-3.26-2.4-1.57 1.51c-.17.18-.32.33-.66.33l.24-3.36 6.1-5.51c.27-.24-.06-.37-.41-.13l-7.54 4.75-3.25-1.02c-.7-.22-.72-.7.15-1.04l12.7-4.9c.59-.22 1.1.14.9 1.05z" fill="#fff"/></svg>'
 
 def render_channel_promo():
-    return f'''<div class="dl-promo">
-    <div class="dl-promo__blob" aria-hidden="true"></div>
-    <div class="dl-promo__content">
-      <h2 class="dl-promo__title">Узнавайте первыми<br>о <span>новых предложениях</span></h2>
-      <p class="dl-promo__text">В наших каналах публикуем выгодные автомобили, истории клиентов и полезные советы.</p>
-      <div class="dl-promo__links">
-        <a class="dl-promo__link dl-promo__link--max" href="{MAX_CHANNEL_URL}" target="_blank" rel="noopener">
-          <img src="../../images/icons3d/max-badge.png" alt="" width="30" height="30">
-          <span>Перейти в MAX</span>
-          {ci('arrow')}
-        </a>
-        <a class="dl-promo__link dl-promo__link--tg" href="{TG_CHANNEL_URL}" target="_blank" rel="noopener">
-          {TELEGRAM_ICON_SVG}
-          <span>Перейти в Telegram</span>
-          {ci('arrow')}
-        </a>
-      </div>
-      <div class="dl-promo__trust">
-        <svg viewBox="0 0 24 24" fill="none"><path d="M16 11a4 4 0 10-4-4M6 11a3 3 0 100-6 3 3 0 000 6z" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/><path d="M2 20c.6-3.4 3-5.5 6-5.5M14 20c-.4-3.9 2.4-7 7-7" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        <span>Более 300 человек уже с нами</span>
-      </div>
-    </div>
-    <div class="dl-promo__cards">
-      <img class="dl-promo__card dl-promo__card--a" src="../../images/promo/card-review.jpg" alt="Отзыв клиента Драйв Лизинг о сделке аренды с выкупом" loading="lazy" width="700" height="513">
-      <img class="dl-promo__card dl-promo__card--b" src="../../images/promo/card-honda.jpg" alt="Пример автомобиля в наличии: Honda Fit Shuttle" loading="lazy" width="700" height="589">
-      <img class="dl-promo__max-badge" src="../../icon-max.png" alt="" loading="lazy" aria-hidden="true">
-      <svg class="dl-promo__plane-trail" viewBox="0 0 64 150" fill="none" aria-hidden="true">
-        <path d="M30 40C10 58 4 84 22 96C36 105 46 88 32 82C16 75 10 99 26 115C38 125 30 141 14 150" stroke="#2F6FED" stroke-width="3" stroke-linecap="round" stroke-dasharray="0 9" opacity=".5"/>
-        <g transform="translate(26,0) rotate(35 12 12) scale(1.5)">
-          <path d="M17.53 7.2L15.4 17.6c-.16.72-.58.9-1.18.56l-3.26-2.4-1.57 1.51c-.17.18-.32.33-.66.33l.24-3.36 6.1-5.51c.27-.24-.06-.37-.41-.13l-7.54 4.75-3.25-1.02c-.7-.22-.72-.7.15-1.04l12.7-4.9c.59-.22 1.1.14.9 1.05z" fill="url(#dlPlaneGrad)"/>
-        </g>
-        <defs><linearGradient id="dlPlaneGrad" x1="2" y1="4" x2="20" y2="18" gradientUnits="userSpaceOnUse"><stop stop-color="#6FA8FF"/><stop offset="1" stop-color="#2F6FED"/></linearGradient></defs>
-      </svg>
-    </div>
+    return f'''<div class="dl-promo-img">
+    <img src="../../images/promo/banner.webp" alt="Узнавайте первыми о новых предложениях: каналы Драйв Лизинг в MAX и Telegram" loading="lazy" width="1983" height="793">
+    <a class="dl-promo-img__link dl-promo-img__link--max" href="{MAX_CHANNEL_URL}" target="_blank" rel="noopener" aria-label="Перейти в MAX"></a>
+    <a class="dl-promo-img__link dl-promo-img__link--tg" href="{TG_CHANNEL_URL}" target="_blank" rel="noopener" aria-label="Перейти в Telegram"></a>
   </div>'''
 
 TERMS_ICONS = [
