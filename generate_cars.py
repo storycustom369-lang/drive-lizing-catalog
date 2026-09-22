@@ -341,6 +341,39 @@ def render_how_to_own():
     <div class="dl-conditions__tagline"><span></span>Драйв Лизинг. Пора ехать<span></span></div>
   </div>'''
 
+MAX_CHANNEL_URL = "https://max.ru/u/f9LHodD0cOJwdXPtIRKpSznrrNNKwx-l7-HcyIykYTEMu3kGUgp9u4vTgm8"
+TG_CHANNEL_URL = "https://t.me/avtohere38"
+TELEGRAM_ICON_SVG = '<svg viewBox="0 0 24 24" width="22" height="22"><circle cx="12" cy="12" r="12" fill="#29A9EB"/><path d="M17.53 7.2L15.4 17.6c-.16.72-.58.9-1.18.56l-3.26-2.4-1.57 1.51c-.17.18-.32.33-.66.33l.24-3.36 6.1-5.51c.27-.24-.06-.37-.41-.13l-7.54 4.75-3.25-1.02c-.7-.22-.72-.7.15-1.04l12.7-4.9c.59-.22 1.1.14.9 1.05z" fill="#fff"/></svg>'
+
+def render_channel_promo():
+    return f'''<div class="dl-promo">
+    <div class="dl-promo__blob" aria-hidden="true"></div>
+    <div class="dl-promo__content">
+      <h2 class="dl-promo__title">Узнавайте первыми<br>о <span>новых предложениях</span></h2>
+      <p class="dl-promo__text">В наших каналах публикуем выгодные автомобили, истории клиентов и полезные советы.</p>
+      <div class="dl-promo__links">
+        <a class="dl-promo__link dl-promo__link--max" href="{MAX_CHANNEL_URL}" target="_blank" rel="noopener">
+          <img src="../../icon-max.png" alt="" width="22" height="22">
+          <span>Перейти в MAX</span>
+          {ci('arrow')}
+        </a>
+        <a class="dl-promo__link dl-promo__link--tg" href="{TG_CHANNEL_URL}" target="_blank" rel="noopener">
+          {TELEGRAM_ICON_SVG}
+          <span>Перейти в Telegram</span>
+          {ci('arrow')}
+        </a>
+      </div>
+      <div class="dl-promo__trust">
+        <svg viewBox="0 0 24 24" fill="none"><path d="M16 11a4 4 0 10-4-4M6 11a3 3 0 100-6 3 3 0 000 6z" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/><path d="M2 20c.6-3.4 3-5.5 6-5.5M14 20c-.4-3.9 2.4-7 7-7" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <span>Более 300 человек уже с нами</span>
+      </div>
+    </div>
+    <div class="dl-promo__cards">
+      <img class="dl-promo__card dl-promo__card--a" src="../../images/promo/card-review.jpg" alt="Отзыв клиента Драйв Лизинг о сделке аренды с выкупом" loading="lazy" width="700" height="513">
+      <img class="dl-promo__card dl-promo__card--b" src="../../images/promo/card-honda.jpg" alt="Пример автомобиля в наличии: Honda Fit Shuttle" loading="lazy" width="700" height="589">
+    </div>
+  </div>'''
+
 TERMS_ICONS = [
     '<svg viewBox="0 0 24 24" fill="none"><rect x="3" y="5" width="18" height="16" rx="2" stroke="currentColor" stroke-width="1.8"/><path d="M3 9.5h18M8 3v4M16 3v4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>',
     '<svg viewBox="0 0 24 24" fill="none"><circle cx="7" cy="7" r="3" stroke="currentColor" stroke-width="1.8"/><circle cx="17" cy="17" r="3" stroke="currentColor" stroke-width="1.8"/><path d="M18 6L6 18" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>',
@@ -631,6 +664,8 @@ PAGE_TEMPLATE = '''<!DOCTYPE html>
 <div class="dl-wrap">
   {how_to_own}
 
+  {channel_promo}
+
   {related}
 </div>
 
@@ -702,6 +737,7 @@ def main():
             description=render_description(c, spec_d, c['art']),
             reasons=render_reasons(),
             how_to_own=render_how_to_own(),
+            channel_promo=render_channel_promo(),
             calculator=render_calculator(c),
             related=render_related(c, cars, slugs_by_art),
             art=html.escape(c['art']),
