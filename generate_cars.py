@@ -301,18 +301,22 @@ OWN_ICONS = [
 
 STEP_ICON_FILES = ['step1-plane', 'step2-doc-check', 'step3-id-person', 'step4-doc-pencil', 'step5-calendar-clock', 'step6-car-key']
 
-CONDITIONS_ARROW_RIGHT = '<svg class="dl-conditions__connector dl-conditions__connector--h" viewBox="0 0 40 16" fill="none"><path d="M1 8h30" stroke="#AEBBD4" stroke-width="2" stroke-dasharray="4 4" stroke-linecap="round"/><path d="M25 3l6 5-6 5" stroke="#AEBBD4" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>'
-CONDITIONS_ARROW_DOWN = '<svg class="dl-conditions__connector dl-conditions__connector--v" viewBox="0 0 40 56" fill="none"><path d="M30 1v18c0 9-8 16-17 16H5" stroke="#AEBBD4" stroke-width="2" stroke-dasharray="4 4" stroke-linecap="round"/><path d="M10 30l-6 5 6 5" stroke="#AEBBD4" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>'
+CONDITIONS_ARROW_RIGHT = '<svg class="dl-conditions__connector dl-conditions__connector--h" viewBox="0 0 44 18" fill="none"><path d="M1 9h34" stroke="#8FA0C4" stroke-width="2.5" stroke-dasharray="4.5 4.5" stroke-linecap="round"/><path d="M28 3l8 6-8 6" stroke="#8FA0C4" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>'
+CONDITIONS_ARROW_LEFT = '<svg class="dl-conditions__connector dl-conditions__connector--h dl-conditions__connector--h-left" viewBox="0 0 44 18" fill="none"><path d="M1 9h34" stroke="#8FA0C4" stroke-width="2.5" stroke-dasharray="4.5 4.5" stroke-linecap="round"/><path d="M28 3l8 6-8 6" stroke="#8FA0C4" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>'
+CONDITIONS_ARROW_DOWN = '<svg class="dl-conditions__connector dl-conditions__connector--v" viewBox="0 0 20 44" fill="none"><path d="M10 1v30" stroke="#8FA0C4" stroke-width="2.5" stroke-dasharray="4.5 4.5" stroke-linecap="round"/><path d="M3 27l7 8 7-8" stroke="#8FA0C4" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>'
+
+# Стрелки-коннекторы идут "змейкой": 1-2 вправо, 2-3 вниз, 3-4 влево, 4-5 вниз, 5-6 вправо.
+# Визуально это раскладка 1|2 / 4|3 / 5|6 (порядок карточек 3 и 4 меняется местами через CSS order),
+# поэтому и вертикальные переходы получаются прямыми, без диагоналей.
+CONDITIONS_CONNECTORS = [CONDITIONS_ARROW_RIGHT, CONDITIONS_ARROW_DOWN, CONDITIONS_ARROW_LEFT, CONDITIONS_ARROW_DOWN, CONDITIONS_ARROW_RIGHT, '']
 
 def render_how_to_own():
-    n = len(OWN_STEPS)
     rows = "".join(
         f'<div class="dl-conditions__row">'
         f'<div class="dl-conditions__num">{i+1}</div>'
         f'<div class="dl-conditions__ico"><img src="../../images/icons3d/{icon}.png" alt="" loading="lazy"></div>'
         f'<div class="dl-conditions__body"><div class="dl-conditions__title">{html.escape(t)}</div><div class="dl-conditions__text">{html.escape(d)}</div></div>'
-        + (CONDITIONS_ARROW_RIGHT if i % 2 == 0 and i + 1 < n else '')
-        + (CONDITIONS_ARROW_DOWN if i % 2 == 1 and i + 1 < n - 1 else '')
+        + CONDITIONS_CONNECTORS[i]
         + '</div>'
         for i, (icon, (t, d)) in enumerate(zip(STEP_ICON_FILES, OWN_STEPS))
     )
