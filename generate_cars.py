@@ -292,6 +292,27 @@ def render_why_choose():
     )
     return f'<div class="dl-why-list">{items}</div>'
 
+REASONS_ITEMS = [
+    ("reason-shield", "Даже если банк отказал", "Не ограничиваемся банковским решением. Рассматриваем вашу ситуацию и подбираем доступный вариант получения автомобиля."),
+    ("reason-doc-car", "Подбираем не только авто, но и решение", "Аренда с выкупом, лизинг и другие варианты оформления — подберём оптимальный вариант под вашу ситуацию."),
+    ("reason-car", "Большой выбор автомобилей", "Автомобили в наличии у нас и проверенных партнёров. Если нужного варианта нет — поможем подобрать другой."),
+    ("reason-briefcase", "Для себя, работы и бизнеса", "Работаем с физлицами, ИП и компаниями. Подберём автомобиль для личных поездок, работы или бизнеса."),
+]
+
+def render_reasons():
+    items = "".join(
+        f'<div class="dl-reasons__card"><div class="dl-reasons__ico"><img src="../../images/icons3d/{icon}.png" alt="" loading="lazy"></div>'
+        f'<div class="dl-reasons__title">{html.escape(t)}</div><div class="dl-reasons__text">{html.escape(d)}</div></div>'
+        for icon, t, d in REASONS_ITEMS
+    )
+    return f'''<div class="dl-reasons">
+    <div class="dl-reasons__eyebrow">Драйв Лизинг</div>
+    <h2 class="dl-reasons__heading">Почему обращаются<br><span>в Драйв Лизинг</span></h2>
+    <p class="dl-reasons__sub">Мы не просто выдаём автомобили — мы находим решение для вашей ситуации.</p>
+    <div class="dl-reasons__grid">{items}</div>
+    <div class="dl-reasons__tagline"><span></span>Драйв Лизинг — пора ехать<span></span></div>
+  </div>'''
+
 OWN_STEPS = [
     ("Оставляете заявку", "Выбираете машину на сайте или пишете нам, коротко расскажете, что нужно."),
     ("Проверяем допуск", "Три условия: Иркутск или до 250 км от города, гражданство РФ, стаж от 3 лет."),
@@ -536,6 +557,8 @@ PAGE_TEMPLATE = '''<!DOCTYPE html>
 
       <h2 class="dl-h2">Описание</h2>
       {description}
+
+      {reasons}
     </div>
 
     <aside class="dl-detail-side">
@@ -647,6 +670,7 @@ def main():
             specs=render_specs(spec_d, c.get('year')),
             komplekt=render_komplekt(komplekt_items(c['komplekt'])),
             description=render_description(c, spec_d, c['art']),
+            reasons=render_reasons(),
             location_promo=render_location_promo(),
             why_choose=render_why_choose(),
             how_to_own=render_how_to_own(),
