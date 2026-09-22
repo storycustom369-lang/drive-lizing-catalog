@@ -435,21 +435,18 @@
       if (saveBanner) {
         var pvKeys = Object.keys(data).map(Number).sort(function(a, b){ return a - b; });
         var curPvNum = Number(pv);
-        var nextPvNum = null;
-        for (var i = 0; i < pvKeys.length; i++) {
-          if (pvKeys[i] > curPvNum) { nextPvNum = pvKeys[i]; break; }
-        }
+        var maxPvNum = pvKeys[pvKeys.length - 1];
         var saveMonth = 0;
-        if (nextPvNum !== null) {
-          var nextVariant = data[String(nextPvNum)];
-          var nextTermKey = nextVariant.terms[terms] ? terms : Object.keys(nextVariant.terms)[0];
-          var nextT = nextVariant.terms[nextTermKey];
-          if (nextT) saveMonth = t.month - nextT.month;
+        if (maxPvNum > curPvNum) {
+          var maxVariant = data[String(maxPvNum)];
+          var maxTermKey = maxVariant.terms[terms] ? terms : Object.keys(maxVariant.terms)[0];
+          var maxT = maxVariant.terms[maxTermKey];
+          if (maxT) saveMonth = t.month - maxT.month;
         }
-        if (nextPvNum !== null && saveMonth > 0) {
+        if (maxPvNum > curPvNum && saveMonth > 0) {
           saveBanner.hidden = false;
           if (saveAmount) saveAmount.textContent = "Экономьте " + fmt(saveMonth) + " в месяц";
-          if (saveSub) saveSub.textContent = "при взносе от " + nextPvNum + "%";
+          if (saveSub) saveSub.textContent = "при взносе от " + maxPvNum + "%";
         } else {
           saveBanner.hidden = true;
         }
