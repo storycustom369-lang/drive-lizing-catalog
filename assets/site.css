@@ -271,9 +271,9 @@ h1,h2,h3,.dl-num,.dl-btn,.dl-pill,.dl-title{font-family:'Onest',Arial,sans-serif
 .dl-promo{position:relative;margin:40px 0 8px;overflow:hidden;background:linear-gradient(135deg,#EEF3FF 0%,#F8FAFF 55%,#FFFFFF 100%);border:1px solid var(--border);border-radius:24px;padding:40px 44px;display:flex;flex-direction:row;align-items:center;gap:40px;justify-content:space-between;}
 .dl-promo__blob{position:absolute;top:-90px;right:-60px;width:340px;height:340px;border-radius:50%;background:radial-gradient(circle at 30% 30%, rgba(139,63,224,.16), rgba(47,111,237,.10) 60%, transparent 75%);pointer-events:none;}
 .dl-promo__content{position:relative;flex:1 1 380px;min-width:0;max-width:460px;}
-.dl-promo__title{font-family:'Onest',Arial,sans-serif;font-size:clamp(24px,3vw,32px);font-weight:800;line-height:1.18;color:#0F1E2E;margin:0 0 14px;text-wrap:balance;}
-.dl-promo__title span{color:var(--blue);}
-.dl-promo__text{font-size:14.5px;color:var(--navy-soft);line-height:1.55;margin:0 0 22px;max-width:400px;}
+.dl-promo__title{font-family:'Onest',Arial,sans-serif;font-size:clamp(24px,3vw,32px);font-weight:800;line-height:1.18;color:#0A0D14;margin:0 0 14px;text-wrap:balance;}
+.dl-promo__title span{color:#2F6FED;}
+.dl-promo__text{font-size:14.5px;color:#78839C;line-height:1.55;margin:0 0 22px;max-width:400px;}
 .dl-promo__links{display:flex;flex-wrap:wrap;gap:12px;margin-bottom:20px;}
 .dl-promo__link{display:inline-flex;align-items:center;gap:9px;padding:13px 20px;border-radius:12px;font-family:'Onest',Arial,sans-serif;font-weight:700;font-size:14px;color:#fff;text-decoration:none;white-space:nowrap;transition:filter .15s,transform .15s;}
 .dl-promo__link:hover{filter:brightness(1.08);transform:translateY(-1px);}
@@ -287,12 +287,19 @@ h1,h2,h3,.dl-num,.dl-btn,.dl-pill,.dl-title{font-family:'Onest',Arial,sans-serif
 .dl-promo__card{position:absolute;width:62%;height:auto;border-radius:16px;box-shadow:0 16px 34px rgba(15,30,59,.16);display:block;}
 .dl-promo__card--a{left:0;top:6px;z-index:2;transform:rotate(-4deg);}
 .dl-promo__card--b{right:0;bottom:0;z-index:1;transform:rotate(4deg);}
+.dl-promo__max-badge{position:absolute;top:-30px;left:34%;width:56px;height:56px;border-radius:14px;box-shadow:0 10px 22px rgba(59,60,220,.35);transform:rotate(-6deg);z-index:3;display:block;}
+.dl-promo__plane-trail{position:absolute;top:-6px;right:-30px;width:58px;height:132px;z-index:3;pointer-events:none;}
 @media (max-width:900px){
   .dl-promo{gap:20px;padding:28px;}
   .dl-promo__content{flex:1 1 auto;max-width:none;}
   .dl-promo__cards{flex:0 1 220px;min-width:150px;height:190px;}
   .dl-promo__title{font-size:22px;}
   .dl-promo__text{font-size:13px;margin-bottom:16px;}
+  .dl-promo__max-badge{width:42px;height:42px;top:-22px;border-radius:11px;}
+  .dl-promo__plane-trail{width:42px;height:96px;top:-4px;right:-22px;}
+}
+@media (max-width:640px){
+  .dl-promo__max-badge,.dl-promo__plane-trail{display:none;}
 }
 @media (max-width:640px){
   .dl-promo{padding:20px 16px;border-radius:18px;gap:12px;}
