@@ -465,8 +465,7 @@ def render_related(car, all_cars, slugs_by_art):
         cards.append(f'''<a class="dl-related2__card" href="../{slug}/">
       <div class="dl-related2__art">
         {img}
-        <div class="dl-related2__badges"><span class="dl-related2__badge">Без банка</span><span class="dl-related2__badge">ПВ от 0%</span></div>
-        <span class="dl-related2__heart" role="button" tabindex="0" aria-label="В избранное"><svg viewBox="0 0 24 24" fill="none"><path d="M12 20.5s-7.5-4.6-10-9.3C.6 7.8 2.3 4.5 5.7 4c2-.3 3.9.6 5 2.2a5.7 5.7 0 015-2.2c3.4.5 5.1 3.8 3.7 7.2-2.5 4.7-10 9.3-10 9.3z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg></span>
+        <div class="dl-related2__badges"><span class="dl-related2__badge dl-related2__badge--blue">Без банка</span><span class="dl-related2__badge dl-related2__badge--teal">ПВ от 0%</span></div>
         {count_html}
       </div>
       <div class="dl-related2__body">
@@ -490,6 +489,7 @@ def render_related(car, all_cars, slugs_by_art):
       </div>
     </div>
     <div class="dl-related2__track">{"".join(cards)}</div>
+    <div class="dl-related2__dots"></div>
     <div class="dl-related2__cta">
       <div class="dl-related2__cta-left">
         <div class="dl-related2__cta-car"><img src="../../images/icons3d/cta-car.png" alt="" loading="lazy"></div>

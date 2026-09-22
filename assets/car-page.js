@@ -421,6 +421,8 @@
   document.querySelectorAll(".dl-related2__track").forEach(function(track){
     var section = track.closest(".dl-related2");
     if (!section) return;
+    var cards = Array.prototype.slice.call(track.querySelectorAll(".dl-related2__card"));
+
     section.querySelectorAll(".dl-related2__nav-btn").forEach(function(btn){
       btn.addEventListener("click", function(){
         var card = track.querySelector(".dl-related2__card");
@@ -428,18 +430,36 @@
         track.scrollBy({ left: step * Number(btn.dataset.dir), behavior: "smooth" });
       });
     });
-  });
 
-  // --- Избранное на карточках (визуально, без сохранения) ---
-  document.querySelectorAll(".dl-related2__heart").forEach(function(heart){
-    function toggle(e){
-      e.preventDefault();
-      e.stopPropagation();
-      heart.classList.toggle("is-active");
+    // Точки-пагинация (мобильная карусель): по одной на карточку, активная — ближайшая к началу видимой области
+    var dotsWrap = section.querySelector(".dl-related2__dots");
+    if (dotsWrap && cards.length > 1) {
+      var dots = cards.map(function(card, i){
+        var dot = document.createElement("button");
+        dot.type = "button";
+        dot.className = "dl-related2__dot" + (i === 0 ? " is-active" : "");
+        dot.setAttribute("aria-label", "Автомобиль " + (i + 1));
+        dot.addEventListener("click", function(){
+          track.scrollTo({ left: card.offsetLeft, behavior: "smooth" });
+        });
+        dotsWrap.appendChild(dot);
+        return dot;
+      });
+      var ticking = false;
+      track.addEventListener("scroll", function(){
+        if (ticking) return;
+        ticking = true;
+        requestAnimationFrame(function(){
+          var pos = track.scrollLeft;
+          var closest = 0, closestDist = Infinity;
+          cards.forEach(function(card, i){
+            var dist = Math.abs(card.offsetLeft - pos);
+            if (dist < closestDist) { closestDist = dist; closest = i; }
+          });
+          dots.forEach(function(dot, i){ dot.classList.toggle("is-active", i === closest); });
+          ticking = false;
+        });
+      });
     }
-    heart.addEventListener("click", toggle);
-    heart.addEventListener("keydown", function(e){
-      if (e.key === "Enter" || e.key === " ") toggle(e);
-    });
   });
 })();
