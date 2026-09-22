@@ -104,14 +104,22 @@
   <div class="dl-calc" data-car-data='{"10": {"label": "ПВ 10%", "pv": 162600, "total": 3252000, "terms": {"36": {"day": 2970, "week": 20789, "month": 90333}, "48": {"day": 2227, "week": 15592, "month": 67750}, "60": {"day": 1782, "week": 12473, "month": 54200}}}, "20": {"label": "ПВ 20%", "pv": 325200, "total": 2926800, "terms": {"36": {"day": 2673, "week": 18710, "month": 81300}, "48": {"day": 2005, "week": 14033, "month": 60975}, "60": {"day": 1604, "week": 11226, "month": 48780}}}}' data-art="ДЛ-046" data-car="Lada Vesta">
     <div class="dl-field">
       <span class="dl-label dl-label--row"><svg viewBox="0 0 24 24" fill="none"><ellipse cx="12" cy="7" rx="6" ry="2.3" stroke="currentColor" stroke-width="1.6"/><path d="M6 7v4c0 1.3 2.7 2.3 6 2.3s6-1 6-2.3V7" stroke="currentColor" stroke-width="1.6"/><path d="M6 11v4c0 1.3 2.7 2.3 6 2.3s6-1 6-2.3v-4" stroke="currentColor" stroke-width="1.6"/></svg>Первоначальный взнос</span>
-      <div class="dl-field__row">
-        <div class="dl-seg dl-seg--pv" style="grid-template-columns:repeat(2,1fr)"><button data-pv="10" class="">ПВ 10%</button><button data-pv="20" class="is-active">ПВ 20%</button></div>
+      <div class="dl-slider dl-slider--pv" data-slider="pv">
+        <div class="dl-slider__rail">
+          <div class="dl-slider__fill" style="width:100.0000%"></div>
+          <div class="dl-slider__thumb" style="left:100.0000%"></div>
+        </div>
+        <div class="dl-slider__labels"><button type="button" class="dl-slider__label" data-pv="10">ПВ 10%</button><button type="button" class="dl-slider__label is-active" data-pv="20">ПВ 20%</button></div>
       </div>
     </div>
     <div class="dl-field">
       <span class="dl-label dl-label--row"><svg viewBox="0 0 24 24" fill="none"><rect x="3" y="5" width="18" height="16" rx="2" stroke="currentColor" stroke-width="1.6"/><path d="M3 9.5h18M8 3v4M16 3v4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>Срок договора</span>
-      <div class="dl-field__row">
-        <div class="dl-seg dl-seg--term" style="grid-template-columns:repeat(3,1fr)"><button data-term="36" class="">36 мес</button><button data-term="48" class="">48 мес</button><button data-term="60" class="is-active">60 мес</button></div>
+      <div class="dl-slider dl-slider--term" data-slider="term">
+        <div class="dl-slider__rail">
+          <div class="dl-slider__fill" style="width:100.0000%"></div>
+          <div class="dl-slider__thumb" style="left:100.0000%"></div>
+        </div>
+        <div class="dl-slider__labels"><button type="button" class="dl-slider__label" data-term="36">36 мес</button><button type="button" class="dl-slider__label" data-term="48">48 мес</button><button type="button" class="dl-slider__label is-active" data-term="60">60 мес</button></div>
       </div>
     </div>
     <div class="dl-result">

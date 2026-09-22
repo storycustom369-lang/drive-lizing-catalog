@@ -104,14 +104,22 @@
   <div class="dl-calc" data-car-data='{"0": {"label": "Без ПВ", "pv": 0, "total": 5520000, "terms": {"12": {"day": 15123, "week": 105863, "month": 460000}, "24": {"day": 7562, "week": 52932, "month": 230000}, "36": {"day": 5041, "week": 35288, "month": 153333}}}, "10": {"label": "ПВ 10%", "pv": 240000, "total": 4800000, "terms": {"12": {"day": 13151, "week": 92055, "month": 400000}, "24": {"day": 6575, "week": 46027, "month": 200000}, "36": {"day": 4384, "week": 30685, "month": 133333}}}, "20": {"label": "ПВ 20%", "pv": 480000, "total": 4320000, "terms": {"12": {"day": 11836, "week": 82849, "month": 360000}, "24": {"day": 5918, "week": 41425, "month": 180000}, "36": {"day": 3945, "week": 27616, "month": 120000}}}}' data-art="ДЛ-012" data-car="Haval Jolion MAX">
     <div class="dl-field">
       <span class="dl-label dl-label--row"><svg viewBox="0 0 24 24" fill="none"><ellipse cx="12" cy="7" rx="6" ry="2.3" stroke="currentColor" stroke-width="1.6"/><path d="M6 7v4c0 1.3 2.7 2.3 6 2.3s6-1 6-2.3V7" stroke="currentColor" stroke-width="1.6"/><path d="M6 11v4c0 1.3 2.7 2.3 6 2.3s6-1 6-2.3v-4" stroke="currentColor" stroke-width="1.6"/></svg>Первоначальный взнос</span>
-      <div class="dl-field__row">
-        <div class="dl-seg dl-seg--pv" style="grid-template-columns:repeat(3,1fr)"><button data-pv="0" class="">Без ПВ</button><button data-pv="10" class="">ПВ 10%</button><button data-pv="20" class="is-active">ПВ 20%</button></div>
+      <div class="dl-slider dl-slider--pv" data-slider="pv">
+        <div class="dl-slider__rail">
+          <div class="dl-slider__fill" style="width:100.0000%"></div>
+          <div class="dl-slider__thumb" style="left:100.0000%"></div>
+        </div>
+        <div class="dl-slider__labels"><button type="button" class="dl-slider__label" data-pv="0">Без ПВ</button><button type="button" class="dl-slider__label" data-pv="10">ПВ 10%</button><button type="button" class="dl-slider__label is-active" data-pv="20">ПВ 20%</button></div>
       </div>
     </div>
     <div class="dl-field">
       <span class="dl-label dl-label--row"><svg viewBox="0 0 24 24" fill="none"><rect x="3" y="5" width="18" height="16" rx="2" stroke="currentColor" stroke-width="1.6"/><path d="M3 9.5h18M8 3v4M16 3v4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>Срок договора</span>
-      <div class="dl-field__row">
-        <div class="dl-seg dl-seg--term" style="grid-template-columns:repeat(3,1fr)"><button data-term="12" class="">12 мес</button><button data-term="24" class="">24 мес</button><button data-term="36" class="is-active">36 мес</button></div>
+      <div class="dl-slider dl-slider--term" data-slider="term">
+        <div class="dl-slider__rail">
+          <div class="dl-slider__fill" style="width:100.0000%"></div>
+          <div class="dl-slider__thumb" style="left:100.0000%"></div>
+        </div>
+        <div class="dl-slider__labels"><button type="button" class="dl-slider__label" data-term="12">12 мес</button><button type="button" class="dl-slider__label" data-term="24">24 мес</button><button type="button" class="dl-slider__label is-active" data-term="36">36 мес</button></div>
       </div>
     </div>
     <div class="dl-result">

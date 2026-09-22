@@ -120,11 +120,17 @@ h1,h2,h3,.dl-num,.dl-btn,.dl-pill,.dl-title{font-family:'Onest',Arial,sans-serif
 .dl-label{display:block;font-size:15px;font-weight:700;color:#0F1E2E;margin-bottom:8px;}
 .dl-label--row{display:flex;align-items:center;gap:7px;}
 .dl-label--row svg{width:15px;height:15px;color:var(--blue);flex:none;}
-.dl-field__row{display:flex;align-items:center;gap:10px;}
-.dl-field__row .dl-seg{flex:1;min-width:0;}
-.dl-seg{display:grid;gap:6px;background:var(--surface-tint);border-radius:999px;padding:4px;}
-.dl-seg button{border:none;background:transparent;color:var(--navy-soft);font-weight:700;font-size:13px;padding:9px 6px;border-radius:999px;cursor:pointer;font-family:'Onest',Arial,sans-serif;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-.dl-seg button.is-active{background:var(--blue);color:#fff;}
+.dl-slider{width:100%;user-select:none;-webkit-user-select:none;}
+.dl-slider__rail{position:relative;height:6px;background:var(--surface-tint);border-radius:999px;margin:0 3px 16px;}
+.dl-slider__fill{position:absolute;top:0;left:0;height:100%;background:var(--blue);border-radius:999px;transition:width .18s ease;pointer-events:none;}
+.dl-slider.is-dragging .dl-slider__fill,.dl-slider.is-dragging .dl-slider__thumb{transition:none;}
+.dl-slider__thumb{position:absolute;top:50%;left:0;width:22px;height:22px;background:#fff;border:3px solid var(--blue);border-radius:50%;transform:translate(-50%,-50%);box-shadow:0 2px 8px rgba(15,30,59,.18);cursor:grab;touch-action:none;transition:left .18s ease;}
+.dl-slider__thumb:active{cursor:grabbing;}
+.dl-slider__labels{display:flex;justify-content:space-between;gap:4px;}
+.dl-slider__label{flex:none;border:none;background:none;padding:2px 3px;font-family:'Onest',Arial,sans-serif;font-size:12.5px;font-weight:700;color:var(--navy-soft);cursor:pointer;white-space:nowrap;}
+.dl-slider__label:first-child{margin-left:-3px;}
+.dl-slider__label:last-child{margin-right:-3px;}
+.dl-slider__label.is-active{color:var(--blue);}
 .dl-pv-sum{font-size:14px;color:#0F1E2E;font-weight:700;}
 .dl-pv-sum__note{font-size:10.5px;color:var(--muted);font-weight:600;margin-top:1px;}
 .dl-pv-sum-row{display:flex;align-items:center;gap:10px;padding:12px 0;border-top:1px solid var(--border);margin-top:4px;}

@@ -366,6 +366,22 @@ CALC_ICONS = {
 def ci(name):
     return f'<svg viewBox="0 0 24 24" fill="none">{CALC_ICONS[name]}</svg>'
 
+def render_slider(kind, keys, labels_map, suffix):
+    n = len(keys)
+    active_i = n - 1
+    pct = (active_i / (n - 1) * 100) if n > 1 else 0
+    labels_html = "".join(
+        f'<button type="button" class="dl-slider__label{" is-active" if i == active_i else ""}" data-{kind}="{k}">{labels_map.get(k, k + suffix)}</button>'
+        for i, k in enumerate(keys)
+    )
+    return f'''<div class="dl-slider dl-slider--{kind}" data-slider="{kind}">
+        <div class="dl-slider__rail">
+          <div class="dl-slider__fill" style="width:{pct:.4f}%"></div>
+          <div class="dl-slider__thumb" style="left:{pct:.4f}%"></div>
+        </div>
+        <div class="dl-slider__labels">{labels_html}</div>
+      </div>'''
+
 def render_calculator(car):
     title_attr = html.escape(car_title(car)).replace('"', '&quot;')
     head = f'''<div class="dl-calc-head">
@@ -384,21 +400,17 @@ def render_calculator(car):
     pv_keys = sorted(variants.keys(), key=int)
     last_variant = variants[pv_keys[-1]]
     term_keys = sorted(last_variant['terms'].keys(), key=int)
-    pv_buttons = "".join(f'<button data-pv="{k}" class="{"is-active" if i==len(pv_keys)-1 else ""}">{VARIANT_LABELS.get(k, k+"%")}</button>' for i,k in enumerate(pv_keys))
-    term_buttons = "".join(f'<button data-term="{k}" class="{"is-active" if i==len(term_keys)-1 else ""}">{TERM_LABELS.get(k, k+" мес")}</button>' for i,k in enumerate(term_keys))
+    pv_slider = render_slider('pv', pv_keys, VARIANT_LABELS, '%')
+    term_slider = render_slider('term', term_keys, TERM_LABELS, ' мес')
     return f'''{head}
   <div class="dl-calc" data-car-data='{build_calculator_data(car)}' data-art="{car['art']}" data-car="{title_attr}">
     <div class="dl-field">
       <span class="dl-label dl-label--row">{ci('coins')}Первоначальный взнос</span>
-      <div class="dl-field__row">
-        <div class="dl-seg dl-seg--pv" style="grid-template-columns:repeat({len(pv_keys)},1fr)">{pv_buttons}</div>
-      </div>
+      {pv_slider}
     </div>
     <div class="dl-field">
       <span class="dl-label dl-label--row">{ci('calendar')}Срок договора</span>
-      <div class="dl-field__row">
-        <div class="dl-seg dl-seg--term" style="grid-template-columns:repeat({len(term_keys)},1fr)">{term_buttons}</div>
-      </div>
+      {term_slider}
     </div>
     <div class="dl-result">
       <div class="dl-result__cell"><span class="dl-result__ico">{ci('calendar')}</span><span class="dl-result__num" data-out="day">-</span><span class="dl-result__unit">в день</span></div>

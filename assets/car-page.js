@@ -250,13 +250,10 @@
   // --- Калькулятор платежа ---
   document.querySelectorAll(".dl-calc").forEach(function(calc){
     var data = JSON.parse(calc.dataset.carData);
-    var pvButtons = calc.querySelectorAll(".dl-seg--pv button");
-    var termButtons = calc.querySelectorAll(".dl-seg--term button");
     var outDay = calc.querySelector('[data-out="day"]');
     var outWeek = calc.querySelector('[data-out="week"]');
     var outMonth = calc.querySelector('[data-out="month"]');
     var outPvSum = calc.querySelector('[data-out="pv-sum"]');
-    var outPvHint = calc.querySelector('[data-out="pv-hint"]');
 
     calc.querySelectorAll(".dl-hint__btn").forEach(function(btn){
       btn.addEventListener("click", function(e){
@@ -274,11 +271,11 @@
     function fmt(n){ return n.toLocaleString("ru-RU") + " ₽"; }
 
     function currentPv(){
-      var active = calc.querySelector(".dl-seg--pv button.is-active");
+      var active = calc.querySelector(".dl-slider--pv .dl-slider__label.is-active");
       return active ? active.dataset.pv : Object.keys(data)[0];
     }
     function currentTerm(){
-      var active = calc.querySelector(".dl-seg--term button.is-active");
+      var active = calc.querySelector(".dl-slider--term .dl-slider__label.is-active");
       var pv = currentPv();
       return active ? active.dataset.term : Object.keys(data[pv].terms)[0];
     }
@@ -292,22 +289,81 @@
       if (outWeek) outWeek.textContent = fmt(t.week);
       if (outMonth) outMonth.textContent = fmt(t.month);
       if (outPvSum) outPvSum.textContent = variant.pv > 0 ? "Первоначальный взнос: " + fmt(variant.pv) : "Без первоначального взноса";
-      if (outPvHint) outPvHint.textContent = variant.pv > 0 ? fmt(variant.pv) : "0 ₽";
     }
-    pvButtons.forEach(function(b){
-      b.addEventListener("click", function(){
-        pvButtons.forEach(function(x){ x.classList.remove("is-active"); });
-        b.classList.add("is-active");
-        update();
+
+    // Слайдер с фиксированными точками (ПВ / срок) — тянется, но встаёт только на конкретные значения
+    function setupSlider(root){
+      var rail = root.querySelector(".dl-slider__rail");
+      var fill = root.querySelector(".dl-slider__fill");
+      var thumb = root.querySelector(".dl-slider__thumb");
+      var labels = Array.prototype.slice.call(root.querySelectorAll(".dl-slider__label"));
+      var n = labels.length;
+
+      function pctForIndex(i){ return n > 1 ? (i / (n - 1)) * 100 : 0; }
+      function paint(i){
+        var pct = pctForIndex(i);
+        fill.style.width = pct + "%";
+        thumb.style.left = pct + "%";
+        labels.forEach(function(l, li){ l.classList.toggle("is-active", li === i); });
+      }
+      function activeIndex(){
+        var i = n - 1;
+        labels.forEach(function(l, li){ if (l.classList.contains("is-active")) i = li; });
+        return i;
+      }
+      function setIndex(i){
+        i = Math.max(0, Math.min(n - 1, i));
+        var changed = i !== activeIndex();
+        paint(i);
+        if (changed) update();
+      }
+      function indexFromClientX(clientX){
+        var rect = rail.getBoundingClientRect();
+        var pct = rect.width ? (clientX - rect.left) / rect.width * 100 : 0;
+        pct = Math.max(0, Math.min(100, pct));
+        return Math.round(pct / 100 * (n - 1));
+      }
+
+      labels.forEach(function(l, i){
+        l.addEventListener("click", function(){ setIndex(i); });
       });
-    });
-    termButtons.forEach(function(b){
-      b.addEventListener("click", function(){
-        termButtons.forEach(function(x){ x.classList.remove("is-active"); });
-        b.classList.add("is-active");
-        update();
+
+      var dragging = false;
+      function onMove(e){
+        if (!dragging) return;
+        var clientX = e.touches ? e.touches[0].clientX : e.clientX;
+        paint(indexFromClientX(clientX));
+        e.preventDefault();
+      }
+      function onEnd(e){
+        if (!dragging) return;
+        dragging = false;
+        root.classList.remove("is-dragging");
+        var clientX = e.changedTouches ? e.changedTouches[0].clientX : e.clientX;
+        setIndex(indexFromClientX(clientX));
+        document.removeEventListener("mousemove", onMove);
+        document.removeEventListener("mouseup", onEnd);
+        document.removeEventListener("touchmove", onMove);
+        document.removeEventListener("touchend", onEnd);
+      }
+      function onStart(e){
+        dragging = true;
+        root.classList.add("is-dragging");
+        onMove(e);
+        document.addEventListener("mousemove", onMove);
+        document.addEventListener("mouseup", onEnd);
+        document.addEventListener("touchmove", onMove, {passive:false});
+        document.addEventListener("touchend", onEnd);
+        e.preventDefault();
+      }
+      thumb.addEventListener("mousedown", onStart);
+      thumb.addEventListener("touchstart", onStart, {passive:false});
+      rail.addEventListener("click", function(e){
+        if (e.target === thumb) return;
+        setIndex(indexFromClientX(e.clientX));
       });
-    });
+    }
+    calc.querySelectorAll(".dl-slider").forEach(setupSlider);
     var ctaBtn = calc.querySelector(".dl-btn--calc-cta");
     if (ctaBtn) ctaBtn.addEventListener("click", function(){
       var pv = currentPv();
