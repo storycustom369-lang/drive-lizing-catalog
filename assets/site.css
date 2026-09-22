@@ -299,9 +299,6 @@ h1,h2,h3,.dl-num,.dl-btn,.dl-pill,.dl-title{font-family:'Onest',Arial,sans-serif
   .dl-promo__plane-trail{width:42px;height:96px;top:-4px;right:-22px;}
 }
 @media (max-width:640px){
-  .dl-promo__max-badge,.dl-promo__plane-trail{display:none;}
-}
-@media (max-width:640px){
   .dl-promo{padding:20px 16px;border-radius:18px;gap:12px;}
   .dl-promo__title{font-size:17px;margin-bottom:8px;}
   .dl-promo__text{display:none;}
@@ -312,6 +309,8 @@ h1,h2,h3,.dl-num,.dl-btn,.dl-pill,.dl-title{font-family:'Onest',Arial,sans-serif
   .dl-promo__trust{font-size:10.5px;gap:5px;}
   .dl-promo__trust svg{width:14px;height:14px;}
   .dl-promo__cards{flex:0 0 118px;min-width:0;height:150px;}
+  .dl-promo__max-badge{width:28px;height:28px;top:-13px;left:32%;border-radius:8px;box-shadow:0 5px 11px rgba(59,60,220,.35);}
+  .dl-promo__plane-trail{width:24px;height:62px;top:-2px;right:-14px;}
 }
 @media (max-width:400px){
   .dl-promo__cards{flex-basis:98px;height:128px;}
