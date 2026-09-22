@@ -48,6 +48,20 @@ def load_cars():
     m = re.search(r'var CARS = (\[.*?\]);', text, re.S)
     return json.loads(m.group(1))
 
+def write_slugs_to_catalog(cars, slugs_by_art):
+    """Прописывает car.slug в CARS внутри catalog.html, чтобы карточки каталога
+    могли вести на cars/<slug>/ (единственный источник правды для слага - slugify() выше)."""
+    text = open(CATALOG_HTML, encoding='utf-8').read()
+    for c in cars:
+        c['slug'] = slugs_by_art[c['art']]
+    new_blob = json.dumps(cars, ensure_ascii=False)
+    new_text, n = re.subn(r'var CARS = \[.*?\];', 'var CARS = ' + new_blob + ';', text, count=1, flags=re.S)
+    if n != 1:
+        raise RuntimeError("Не нашёл var CARS = [...]; в catalog.html, слаги не записаны")
+    if new_text != text:
+        open(CATALOG_HTML, 'w', encoding='utf-8').write(new_text)
+        print("catalog.html: обновлены слаги для", len(cars), "машин")
+
 def fmt_money(n):
     return f"{n:,}".replace(",", " ") + " ₽"
 
@@ -649,6 +663,8 @@ def main():
             slug += "-2"
         used.add(slug)
         slugs_by_art[c['art']] = slug
+
+    write_slugs_to_catalog(cars, slugs_by_art)
 
     os.makedirs(CARS_DIR, exist_ok=True)
     urls = []
