@@ -279,7 +279,6 @@ def render_reasons():
     <h2 class="dl-reasons__heading">Почему обращаются<br><span>в Драйв Лизинг</span></h2>
     <p class="dl-reasons__sub">Мы не просто выдаём автомобили, мы находим решение для вашей ситуации.</p>
     <div class="dl-reasons__grid">{items}</div>
-    <div class="dl-reasons__tagline"><span></span>Драйв Лизинг. Пора ехать<span></span></div>
   </div>'''
 
 OWN_STEPS = [
@@ -390,14 +389,14 @@ def render_calculator(car):
     return f'''{head}
   <div class="dl-calc" data-car-data='{build_calculator_data(car)}' data-art="{car['art']}" data-car="{title_attr}">
     <div class="dl-field">
-      <span class="dl-label dl-label--row">{ci('coins')}Первоначальный взнос<span class="dl-info-dot">{ci('info')}</span></span>
+      <span class="dl-label dl-label--row">{ci('coins')}Первоначальный взнос</span>
       <div class="dl-field__row">
         <div class="dl-seg dl-seg--pv" style="grid-template-columns:repeat({len(pv_keys)},1fr)">{pv_buttons}</div>
         <div class="dl-field__hint">≈ <span data-out="pv-hint">-</span><br>от стоимости авто</div>
       </div>
     </div>
     <div class="dl-field">
-      <span class="dl-label dl-label--row">{ci('calendar')}Срок договора<span class="dl-info-dot">{ci('info')}</span></span>
+      <span class="dl-label dl-label--row">{ci('calendar')}Срок договора</span>
       <div class="dl-field__row">
         <div class="dl-seg dl-seg--term" style="grid-template-columns:repeat({len(term_keys)},1fr)">{term_buttons}</div>
         <div class="dl-tip"><span class="dl-tip__ico"><img src="../../images/icons3d/shield-pct-icon.png" alt="" loading="lazy"></span><span>Чем больше срок, тем комфортнее платёж</span></div>
