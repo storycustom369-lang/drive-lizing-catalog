@@ -288,7 +288,7 @@ h1,h2,h3,.dl-num,.dl-btn,.dl-pill,.dl-title{font-family:'Onest',Arial,sans-serif
 .dl-related2__nav-btn svg{width:17px;height:17px;}
 .dl-related2__viewall{display:inline-flex;align-items:center;gap:6px;background:color-mix(in srgb, var(--blue) 10%, var(--surface));color:var(--blue);font-weight:700;font-size:13px;padding:10px 16px;border-radius:999px;text-decoration:none;white-space:nowrap;}
 .dl-related2__viewall svg{width:14px;height:14px;}
-.dl-related2__track{display:flex;gap:18px;overflow-x:auto;scroll-snap-type:x proximity;padding-bottom:8px;margin:0 -2px;scrollbar-width:none;}
+.dl-related2__track{display:flex;align-items:flex-start;gap:18px;overflow-x:auto;scroll-snap-type:x proximity;padding-bottom:8px;margin:0 -2px;scrollbar-width:none;}
 .dl-related2__track::-webkit-scrollbar{display:none;}
 .dl-related2__dots{display:none;justify-content:center;align-items:center;gap:7px;margin:4px 0 2px;}
 .dl-related2__dot{width:7px;height:7px;border-radius:50%;background:var(--border-strong);border:none;padding:0;cursor:pointer;}
