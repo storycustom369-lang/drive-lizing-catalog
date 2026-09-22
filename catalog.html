@@ -276,6 +276,31 @@ h1,h2,h3,.dl-num,.dl-btn,.dl-pill,.dl-title{font-family:'Onest',Arial,sans-serif
   .dl-cta__left{padding:28px 22px;}
   .dl-cta__right{padding:26px 22px;}
 }
+
+.dl-related2__cta{margin-top:28px;background:linear-gradient(120deg, color-mix(in srgb, var(--blue) 9%, var(--surface)) 0%, var(--surface) 65%);border-radius:24px;padding:22px 32px;display:flex;align-items:center;justify-content:space-between;gap:24px;flex-wrap:wrap;box-shadow:0 1px 2px rgba(15,30,59,.03);}
+.dl-related2__cta-left{display:flex;align-items:center;gap:16px;flex:1;min-width:280px;}
+.dl-related2__cta-car{flex:none;width:104px;}
+.dl-related2__cta-car img{width:100%;height:auto;display:block;}
+.dl-related2__cta-check{flex:none;width:30px;height:30px;border-radius:50%;background:var(--blue);color:#fff;display:flex;align-items:center;justify-content:center;}
+.dl-related2__cta-check svg{width:16px;height:16px;}
+.dl-related2__cta-body{min-width:0;}
+.dl-related2__cta-title{font-size:16px;font-weight:800;color:#0F1E2E;}
+.dl-related2__cta-text{margin:3px 0 0;color:var(--navy-soft);font-size:13.5px;}
+.dl-related2__cta-btn{flex:none;width:auto;margin-top:0;white-space:nowrap;display:inline-flex;align-items:center;gap:8px;padding:14px 24px;text-decoration:none;}
+.dl-related2__cta-btn svg{width:16px;height:16px;flex:none;}
+.dl-related2__cta-stat{flex:none;display:flex;align-items:center;gap:10px;}
+.dl-related2__cta-stat svg{flex:none;width:22px;height:22px;color:var(--blue);}
+.dl-related2__cta-stat div{display:flex;flex-direction:column;line-height:1.35;}
+.dl-related2__cta-stat b{font-size:13.5px;font-weight:800;color:#0F1E2E;}
+.dl-related2__cta-stat span{font-size:11.5px;color:var(--muted);}
+@media (max-width:640px){
+  .dl-related2__cta{padding:18px;gap:14px;}
+  .dl-related2__cta-left{min-width:0;}
+  .dl-related2__cta-car{width:78px;}
+  .dl-related2__cta-btn{width:100%;justify-content:center;}
+  .dl-related2__cta-stat{width:100%;}
+  .dl-related2__cta-stat div{flex-direction:row;gap:4px;}
+}
 </style>
 
 <h2 class="sr-only" style="position:absolute;width:1px;height:1px;overflow:hidden;">Каталог автомобилей Драйв Лизинг с расчётом еженедельного платежа по каждой категории цен</h2>
@@ -311,23 +336,17 @@ h1,h2,h3,.dl-num,.dl-btn,.dl-pill,.dl-title{font-family:'Onest',Arial,sans-serif
   <div class="dl-grid" id="dlGrid"></div>
   <div class="dl-empty" id="dlEmpty" hidden>В этой категории пока нет машин</div>
 
-  <div class="dl-cta" id="dlCtaSection">
-    <div class="dl-cta__inner">
-      <div class="dl-cta__left">
-        <div class="dl-cta__frame">
-          <p class="dl-cta__title">Не нашли подходящий автомобиль?</p>
-          <p class="dl-cta__text">У нас есть ещё модели, которых нет в каталоге, плюс машины под заказ. Напишите, что вам нужно (марку, бюджет, платёж в неделю), подберём вариант и посчитаем условия.</p>
-        </div>
-        <div class="dl-cta__links">
-          <a class="dl-cta__link" href="https://t.me/avtohere38" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" width="20" height="20"><circle cx="12" cy="12" r="12" fill="#29A9EB"/><path d="M17.53 7.2L15.4 17.6c-.16.72-.58.9-1.18.56l-3.26-2.4-1.57 1.51c-.17.18-.32.33-.66.33l.24-3.36 6.1-5.51c.27-.24-.06-.37-.41-.13l-7.54 4.75-3.25-1.02c-.7-.22-.72-.7.15-1.04l12.7-4.9c.59-.22 1.1.14.9 1.05z" fill="#fff"/></svg><span>Telegram</span></a>
-          <a class="dl-cta__link" href="https://max.ru/u/f9LHodD0cOJwdXPtIRKpSznrrNNKwx-l7-HcyIykYTEMu3kGUgp9u4vTgm8" target="_blank" rel="noopener"><img src="icon-max.png" width="20" height="20" alt="" style="border-radius:5px;display:block;object-fit:contain;"><span>MAX</span></a>
-        </div>
-      </div>
-      <div class="dl-cta__right">
-        <p class="dl-cta__form-title">Оставить заявку</p>
-        <div id="dlCtaFormWrap"></div>
+  <div class="dl-related2__cta" id="dlCtaSection">
+    <div class="dl-related2__cta-left">
+      <div class="dl-related2__cta-car"><img src="images/icons3d/cta-car.png" alt="" loading="lazy"></div>
+      <span class="dl-related2__cta-check"><svg viewBox="0 0 24 24" fill="none"><path d="M4 12l5 5L20 6" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+      <div class="dl-related2__cta-body">
+        <div class="dl-related2__cta-title">Не нашли подходящий вариант?</div>
+        <p class="dl-related2__cta-text">Оставьте заявку, подберём автомобиль под ваши параметры.</p>
       </div>
     </div>
+    <button type="button" class="dl-btn dl-related2__cta-btn" id="dlNotFoundBtn">Подобрать автомобиль <svg viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+    <div class="dl-related2__cta-stat"><svg viewBox="0 0 24 24" fill="none"><path d="M16 11a4 4 0 10-4-4M6 11a3 3 0 100-6 3 3 0 000 6z" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/><path d="M2 20c.6-3.4 3-5.5 6-5.5M14 20c-.4-3.9 2.4-7 7-7" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg><div><b>Более 60</b><span>автомобилей в наличии</span></div></div>
   </div>
 </div>
 
@@ -1330,16 +1349,44 @@ h1,h2,h3,.dl-num,.dl-btn,.dl-pill,.dl-title{font-family:'Onest',Arial,sans-serif
     if (e.key === 'Escape') closeModal();
   });
 
-  function buildCtaForm(){
-    var wrap = document.getElementById('dlCtaFormWrap');
-    if (!wrap) return;
-    buildLeadForm(wrap, {
+  function openPickCarModal(){
+    var backdrop = document.getElementById('dlModalBackdrop');
+    var modal = document.getElementById('dlModal');
+    if (!backdrop || !modal) return;
+    modal.innerHTML = '';
+    backdrop.hidden = false;
+    document.body.style.overflow = 'hidden';
+
+    var head = document.createElement('div');
+    head.className = 'dl-modal__head';
+    var titleWrap = document.createElement('div');
+    var title = document.createElement('div');
+    title.className = 'dl-modal__title';
+    title.textContent = 'Подбор автомобиля';
+    var sub = document.createElement('div');
+    sub.style.cssText = 'font-size:12px;color:var(--muted);margin-top:4px;';
+    sub.textContent = 'Расскажите, что ищете, подберём варианты';
+    titleWrap.appendChild(title);
+    titleWrap.appendChild(sub);
+    var closeBtn = document.createElement('button');
+    closeBtn.className = 'dl-modal__close';
+    closeBtn.setAttribute('aria-label', 'Закрыть');
+    closeBtn.innerHTML = '&times;';
+    closeBtn.addEventListener('click', closeModal);
+    head.appendChild(titleWrap);
+    head.appendChild(closeBtn);
+    modal.appendChild(head);
+
+    var formWrap = document.createElement('div');
+    modal.appendChild(formWrap);
+
+    buildLeadForm(formWrap, {
       collection: 'requests',
       submitLabel: 'Отправить заявку',
-      commentPlaceholder: 'Какая марка авто и год?\nЕсть ли ПВ?\nКакой платёж в месяц нужен?',
-      extra: { type: 'custom_request' },
+      commentPlaceholder: 'Например: бюджет до 15 000 ₽ в неделю, кроссовер, взнос 10%',
+      extra: { type: 'pick_request' },
       onSuccess: function(){
-        renderSuccess(wrap, 'Заявка отправлена', 'Спасибо! Мы подберём варианты и свяжемся с вами в ближайшее время.');
+        renderSuccess(formWrap, 'Заявка принята', 'Менеджер подберёт варианты под ваш запрос и свяжется с вами в ближайшее время.');
       }
     });
   }
@@ -1392,8 +1439,9 @@ h1,h2,h3,.dl-num,.dl-btn,.dl-pill,.dl-title{font-family:'Onest',Arial,sans-serif
   buildTabs();
   buildMarquee();
   renderGrid();
-  buildCtaForm();
   buildStructuredData();
+  var dlNotFoundBtn = document.getElementById('dlNotFoundBtn');
+  if (dlNotFoundBtn) dlNotFoundBtn.addEventListener('click', openPickCarModal);
 
   function syncStickyOffset(){
     var topbar = document.querySelector('.dl-topbar');
