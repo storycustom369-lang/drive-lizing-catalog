@@ -443,26 +443,63 @@ def render_related(car, all_cars, slugs_by_art):
     # prefer same bucket, then fill with anything else
     same_bucket = [c for c in others if c.get('bucket') == car.get('bucket')]
     pool = same_bucket if len(same_bucket) >= 4 else others
-    picked = pool[:6]
+    picked = pool[:8]
     cards = []
     for c in picked:
         slug = slugs_by_art[c['art']]
         photo = c['photos'][0] if c['photos'] else None
+        photo_count = len(c.get('photos') or [])
+        spec_d = parse_spec(c.get('spec'))
+        spec_bits = [str(x) for x in [c.get('year'), spec_d.get('engine'), spec_d.get('mileage')] if x]
         price = None
         try:
             price = min_week_price(c)
         except Exception:
             pass
         img = f'<img src="../../{photo}" alt="{html.escape(car_title(c))}" loading="lazy">' if photo else ''
-        price_html = f'<span class="dl-num">{fmt_money(price)}</span><span class="dl-price-week">/нед</span>' if price else ''
-        cards.append(f'''<a class="dl-card dl-related__card" href="../{slug}/">
-      <div class="dl-card__art">{img}</div>
-      <div class="dl-card__body">
-        <div class="dl-title">{html.escape(car_title(c))}</div>
-        <div class="dl-price-row">{price_html}</div>
+        price_html = f'от <b>{fmt_money(price)}</b> / нед.' if price else 'Цена по запросу'
+        count_html = (
+            f'<span class="dl-related2__count"><svg viewBox="0 0 24 24" fill="none"><rect x="3" y="6" width="18" height="14" rx="2" stroke="currentColor" stroke-width="1.8"/><path d="M8 6l1.5-2h5L16 6" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><circle cx="12" cy="13" r="3.2" stroke="currentColor" stroke-width="1.8"/></svg>1/{photo_count}</span>'
+            if photo_count else ''
+        )
+        cards.append(f'''<a class="dl-related2__card" href="../{slug}/">
+      <div class="dl-related2__art">
+        {img}
+        <div class="dl-related2__badges"><span class="dl-related2__badge">Без банка</span><span class="dl-related2__badge">ПВ от 0%</span></div>
+        <span class="dl-related2__heart" role="button" tabindex="0" aria-label="В избранное"><svg viewBox="0 0 24 24" fill="none"><path d="M12 20.5s-7.5-4.6-10-9.3C.6 7.8 2.3 4.5 5.7 4c2-.3 3.9.6 5 2.2a5.7 5.7 0 015-2.2c3.4.5 5.1 3.8 3.7 7.2-2.5 4.7-10 9.3-10 9.3z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg></span>
+        {count_html}
+      </div>
+      <div class="dl-related2__body">
+        <div class="dl-related2__title">{html.escape(car_title(c))}</div>
+        <div class="dl-related2__spec">{html.escape(' · '.join(spec_bits))}</div>
+        <div class="dl-related2__price">{price_html}</div>
+        <div class="dl-related2__more">Подробнее {ci('arrow')}</div>
       </div>
     </a>''')
-    return f'<div class="dl-grid dl-related">{"".join(cards)}</div>'
+    return f'''<div class="dl-related2">
+    <div class="dl-related2__eyebrow">В наличии</div>
+    <div class="dl-related2__head">
+      <div>
+        <h2 class="dl-related2__heading">Другие <span>автомобили</span></h2>
+        <p class="dl-related2__sub">Подберите вариант под ваш бюджет</p>
+      </div>
+      <div class="dl-related2__nav">
+        <button type="button" class="dl-related2__nav-btn" data-dir="-1" aria-label="Предыдущие"><svg viewBox="0 0 24 24" fill="none"><path d="M15 18l-6-6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+        <button type="button" class="dl-related2__nav-btn" data-dir="1" aria-label="Следующие"><svg viewBox="0 0 24 24" fill="none"><path d="M9 18l6-6-6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+        <a class="dl-related2__viewall" href="../../catalog.html">Смотреть все авто {ci('arrow')}</a>
+      </div>
+    </div>
+    <div class="dl-related2__track">{"".join(cards)}</div>
+    <div class="dl-related2__cta">
+      <div class="dl-related2__cta-car"><img src="../../images/icons3d/reason-car.png" alt="" loading="lazy"></div>
+      <div class="dl-related2__cta-body">
+        <div class="dl-related2__cta-title"><span class="dl-related2__cta-check"><svg viewBox="0 0 24 24" fill="none"><path d="M4 12l5 5L20 6" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Не нашли подходящий вариант?</div>
+        <p class="dl-related2__cta-text">Оставьте заявку, подберём автомобиль под ваши параметры.</p>
+      </div>
+      <a class="dl-btn dl-related2__cta-btn" href="#leadForm">Подобрать автомобиль {ci('arrow')}</a>
+      <div class="dl-related2__cta-stat"><svg viewBox="0 0 24 24" fill="none"><path d="M16 11a4 4 0 10-4-4M6 11a3 3 0 100-6 3 3 0 000 6z" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/><path d="M2 20c.6-3.4 3-5.5 6-5.5M14 20c-.4-3.9 2.4-7 7-7" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Более 100+ автомобилей в наличии</span></div>
+    </div>
+  </div>'''
 
 def render_schema(car, url, slug, min_week):
     title = car_title(car)
@@ -576,10 +613,9 @@ PAGE_TEMPLATE = '''<!DOCTYPE html>
 <div class="dl-wrap">
   {how_to_own}
 
-  <div class="dl-heading"><h2>Другие машины в наличии</h2></div>
   {related}
 
-  <div class="dl-cta">
+  <div class="dl-cta" id="leadForm">
     <div class="dl-cta__inner">
       <div class="dl-cta__left">
         <div class="dl-cta__frame">

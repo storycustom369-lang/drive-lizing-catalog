@@ -416,4 +416,30 @@
       });
     });
   });
+
+  // --- Карусель "Другие автомобили" ---
+  document.querySelectorAll(".dl-related2__track").forEach(function(track){
+    var section = track.closest(".dl-related2");
+    if (!section) return;
+    section.querySelectorAll(".dl-related2__nav-btn").forEach(function(btn){
+      btn.addEventListener("click", function(){
+        var card = track.querySelector(".dl-related2__card");
+        var step = card ? card.getBoundingClientRect().width + 18 : 280;
+        track.scrollBy({ left: step * Number(btn.dataset.dir), behavior: "smooth" });
+      });
+    });
+  });
+
+  // --- Избранное на карточках (визуально, без сохранения) ---
+  document.querySelectorAll(".dl-related2__heart").forEach(function(heart){
+    function toggle(e){
+      e.preventDefault();
+      e.stopPropagation();
+      heart.classList.toggle("is-active");
+    }
+    heart.addEventListener("click", toggle);
+    heart.addEventListener("keydown", function(e){
+      if (e.key === "Enter" || e.key === " ") toggle(e);
+    });
+  });
 })();
