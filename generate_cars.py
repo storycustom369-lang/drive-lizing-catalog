@@ -491,13 +491,16 @@ def render_related(car, all_cars, slugs_by_art):
     </div>
     <div class="dl-related2__track">{"".join(cards)}</div>
     <div class="dl-related2__cta">
-      <div class="dl-related2__cta-car"><img src="../../images/icons3d/reason-car.png" alt="" loading="lazy"></div>
-      <div class="dl-related2__cta-body">
-        <div class="dl-related2__cta-title"><span class="dl-related2__cta-check"><svg viewBox="0 0 24 24" fill="none"><path d="M4 12l5 5L20 6" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Не нашли подходящий вариант?</div>
-        <p class="dl-related2__cta-text">Оставьте заявку, подберём автомобиль под ваши параметры.</p>
+      <div class="dl-related2__cta-left">
+        <div class="dl-related2__cta-car"><img src="../../images/icons3d/cta-car.png" alt="" loading="lazy"></div>
+        <span class="dl-related2__cta-check"><svg viewBox="0 0 24 24" fill="none"><path d="M4 12l5 5L20 6" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+        <div class="dl-related2__cta-body">
+          <div class="dl-related2__cta-title">Не нашли подходящий вариант?</div>
+          <p class="dl-related2__cta-text">Оставьте заявку, подберём автомобиль под ваши параметры.</p>
+        </div>
       </div>
       <a class="dl-btn dl-related2__cta-btn" href="#leadForm">Подобрать автомобиль {ci('arrow')}</a>
-      <div class="dl-related2__cta-stat"><svg viewBox="0 0 24 24" fill="none"><path d="M16 11a4 4 0 10-4-4M6 11a3 3 0 100-6 3 3 0 000 6z" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/><path d="M2 20c.6-3.4 3-5.5 6-5.5M14 20c-.4-3.9 2.4-7 7-7" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Более 100+ автомобилей в наличии</span></div>
+      <div class="dl-related2__cta-stat"><svg viewBox="0 0 24 24" fill="none"><path d="M16 11a4 4 0 10-4-4M6 11a3 3 0 100-6 3 3 0 000 6z" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/><path d="M2 20c.6-3.4 3-5.5 6-5.5M14 20c-.4-3.9 2.4-7 7-7" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg><div><b>Более 100+</b><span>автомобилей в наличии</span></div></div>
     </div>
   </div>'''
 
