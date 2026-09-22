@@ -268,14 +268,9 @@ h1,h2,h3,.dl-num,.dl-btn,.dl-pill,.dl-title{font-family:'Onest',Arial,sans-serif
 .dl-success__text{font-size:13px;color:var(--navy-soft);line-height:1.5;}
 
 .dl-related2{margin:40px 0 8px;}
-.dl-related2__eyebrow{display:inline-flex;align-items:center;gap:7px;background:color-mix(in srgb, var(--blue) 10%, var(--surface));color:var(--blue);font-family:'Onest',Arial,sans-serif;font-size:11.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:7px 14px;border-radius:999px;margin-bottom:12px;animation:dlEyebrowPulse 1.6s ease-in-out infinite;}
+.dl-related2__eyebrow{display:inline-flex;align-items:center;gap:7px;background:color-mix(in srgb, var(--blue) 10%, var(--surface));color:var(--blue);font-family:'Onest',Arial,sans-serif;font-size:11.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:7px 14px;border-radius:999px;margin-bottom:12px;}
 .dl-related2__eyebrow-dot{position:relative;flex:none;width:7px;height:7px;border-radius:50%;background:var(--blue);}
 .dl-related2__eyebrow-dot::after{content:"";position:absolute;inset:-5px;border-radius:50%;background:var(--blue);opacity:.55;animation:dlHeartbeat 1.6s ease-out infinite;}
-@keyframes dlEyebrowPulse{
-  0%,100%{box-shadow:0 0 0 0 color-mix(in srgb, var(--blue) 30%, transparent);}
-  50%{box-shadow:0 0 0 7px color-mix(in srgb, var(--blue) 0%, transparent);}
-}
-@media (prefers-reduced-motion: reduce){.dl-related2__eyebrow{animation:none;}}
 @keyframes dlHeartbeat{
   0%{transform:scale(.5);opacity:.55;}
   75%{transform:scale(2.3);opacity:0;}
