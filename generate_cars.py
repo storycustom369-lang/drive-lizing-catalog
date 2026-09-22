@@ -301,13 +301,19 @@ OWN_ICONS = [
 
 STEP_ICON_FILES = ['step1-plane', 'step2-doc-check', 'step3-id-person', 'step4-doc-pencil', 'step5-calendar-clock', 'step6-car-key']
 
+CONDITIONS_ARROW_RIGHT = '<svg class="dl-conditions__connector dl-conditions__connector--h" viewBox="0 0 40 16" fill="none"><path d="M1 8h30" stroke="#AEBBD4" stroke-width="2" stroke-dasharray="4 4" stroke-linecap="round"/><path d="M25 3l6 5-6 5" stroke="#AEBBD4" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>'
+CONDITIONS_ARROW_DOWN = '<svg class="dl-conditions__connector dl-conditions__connector--v" viewBox="0 0 40 56" fill="none"><path d="M30 1v18c0 9-8 16-17 16H5" stroke="#AEBBD4" stroke-width="2" stroke-dasharray="4 4" stroke-linecap="round"/><path d="M10 30l-6 5 6 5" stroke="#AEBBD4" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>'
+
 def render_how_to_own():
+    n = len(OWN_STEPS)
     rows = "".join(
         f'<div class="dl-conditions__row">'
         f'<div class="dl-conditions__num">{i+1}</div>'
         f'<div class="dl-conditions__ico"><img src="../../images/icons3d/{icon}.png" alt="" loading="lazy"></div>'
         f'<div class="dl-conditions__body"><div class="dl-conditions__title">{html.escape(t)}</div><div class="dl-conditions__text">{html.escape(d)}</div></div>'
-        f'</div>'
+        + (CONDITIONS_ARROW_RIGHT if i % 2 == 0 and i + 1 < n else '')
+        + (CONDITIONS_ARROW_DOWN if i % 2 == 1 and i + 1 < n - 1 else '')
+        + '</div>'
         for i, (icon, (t, d)) in enumerate(zip(STEP_ICON_FILES, OWN_STEPS))
     )
     return f'''<div class="dl-conditions">
