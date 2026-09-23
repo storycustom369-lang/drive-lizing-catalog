@@ -295,22 +295,6 @@ h1,h2,h3,.dl-num,.dl-btn,.dl-pill,.dl-title{font-family:'Onest',Arial,sans-serif
   .dl-cta__left{padding:28px 22px;}
   .dl-cta__right{padding:26px 22px;}
 }
-.dl-seo-block{margin-top:56px;background:var(--surface);padding:40px 24px;border-top:1px solid var(--border);}
-.dl-seo-block__inner{max-width:1180px;margin:0 auto;}
-.dl-seo-block h2{font-family:'Onest',Arial,sans-serif;font-size:22px;font-weight:800;color:var(--navy);margin:0;}
-.dl-seo-details summary{cursor:pointer;list-style:none;display:flex;align-items:center;justify-content:space-between;gap:16px;}
-.dl-seo-details summary::-webkit-details-marker{display:none;}
-.dl-seo-details summary::after{content:'';flex:none;width:10px;height:10px;border-right:2px solid var(--navy-soft);border-bottom:2px solid var(--navy-soft);transform:rotate(45deg);transition:transform .2s;}
-.dl-seo-details[open] summary::after{transform:rotate(-135deg);}
-.dl-seo-details .dl-seo-block__cols{margin-top:20px;}
-.dl-seo-block__cols{display:grid;grid-template-columns:1fr 1fr;gap:28px;}
-.dl-seo-block__cols h3{font-family:'Onest',Arial,sans-serif;font-size:16px;font-weight:700;color:var(--navy);margin:0 0 8px;}
-.dl-seo-block__cols p{font-size:14px;line-height:1.6;color:var(--navy-soft);margin:0;}
-@media (max-width:640px){
-  .dl-seo-block{padding:28px 16px;margin-top:36px;}
-  .dl-seo-block h2{font-size:18px;margin-bottom:16px;}
-  .dl-seo-block__cols{grid-template-columns:1fr;gap:20px;}
-}
 .dl-footer{background:var(--surface);border-top:1px solid var(--border);color:var(--navy-soft);font-family:'Onest',Arial,sans-serif;}
 .dl-footer__inner{max-width:1180px;margin:0 auto;padding:44px 24px 24px;}
 .dl-footer__top{display:grid;grid-template-columns:1.3fr 1fr 1.2fr 1.1fr;gap:32px;padding-bottom:28px;}
@@ -409,7 +393,8 @@ h1,h2,h3,.dl-num,.dl-btn,.dl-pill,.dl-title{font-family:'Onest',Arial,sans-serif
       <button class="dl-catnav__trigger" type="button">Тип кузова<svg class="dl-catnav__chevron" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
       <div class="dl-catnav__panel"><a href="kuzov/sedan/">Седан</a><a href="kuzov/krossover/">Кроссовер</a><a href="kuzov/miniven/">Минивэн</a><a href="kuzov/universal/">Универсал</a><a href="kuzov/keikar/">Кей-кар</a><a href="kuzov/pikap/">Пикап</a><a href="kuzov/furgon/">Фургон</a></div>
     </div>
-    <a class="dl-catnav__link" id="dlHowItWorksLink" href="#dlHowItWorks">Аренда и лизинг: как это работает</a>
+    <a class="dl-catnav__link" href="arenda-s-vykupom/">Аренда с выкупом</a>
+    <a class="dl-catnav__link" href="lizing-yurlicam/">Лизинг юрлицам</a>
   </div>
 </nav>
 <script>
@@ -428,13 +413,6 @@ h1,h2,h3,.dl-num,.dl-btn,.dl-pill,.dl-title{font-family:'Onest',Arial,sans-serif
   document.addEventListener('click', function(){
     items.forEach(function(i){ i.classList.remove('is-open'); });
   });
-  var howLink = document.getElementById('dlHowItWorksLink');
-  if (howLink) {
-    howLink.addEventListener('click', function(){
-      var d = document.getElementById('dlHowItWorks');
-      if (d) d.open = true;
-    });
-  }
 })();
 </script>
 <!-- BRAND_LINKS_END -->
@@ -1532,23 +1510,6 @@ h1,h2,h3,.dl-num,.dl-btn,.dl-pill,.dl-title{font-family:'Onest',Arial,sans-serif
 })();
 </script>
 
-<section class="dl-seo-block">
-  <div class="dl-seo-block__inner">
-    <details class="dl-seo-details" id="dlHowItWorks">
-      <summary><h2>Аренда и лизинг авто в Иркутске: как это работает</h2></summary>
-      <div class="dl-seo-block__cols">
-        <div>
-          <h3>Аренда авто с выкупом</h3>
-          <p>Для частных лиц: берёте автомобиль в аренду с правом выкупа без банка, первоначальный взнос от 0%. Оформление по 2 документам, решение по заявке за 1 день. В наличии больше 60 автомобилей — новые под заказ и с пробегом.</p>
-        </div>
-        <div>
-          <h3>Лизинг для юридических лиц</h3>
-          <p>Для компаний: лизинг автомобилей на тех же условиях, что и для физлиц — без банка, взнос от 0%, срок договора до 60 месяцев. Подходит, чтобы обновить или расширить автопарк без разовой крупной траты.</p>
-        </div>
-      </div>
-    </details>
-  </div>
-</section>
 
 <footer class="dl-footer">
   <div class="dl-footer__inner">

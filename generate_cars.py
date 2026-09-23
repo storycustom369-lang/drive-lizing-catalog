@@ -265,6 +265,126 @@ def render_listing_page(h1, title_tag, meta_desc, intro, crumb_name, canonical, 
         cookie_banner=COOKIE_BANNER_HTML,
     )
 
+CONTENT_PAGE_TEMPLATE = '''<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{title_tag}</title>
+<meta name="description" content="{meta_desc}">
+<link rel="canonical" href="{canonical}">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="ru_RU">
+<meta property="og:site_name" content="Драйв Лизинг">
+<meta property="og:title" content="{title_tag}">
+<meta property="og:description" content="{meta_desc}">
+<meta property="og:url" content="{canonical}">
+<link rel="icon" type="image/png" href="../../favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Onest:wght@500;600;700;800&family=Golos+Text:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="../../assets/site.css">
+<script type="application/ld+json">{breadcrumb_schema}</script>
+</head>
+<body>
+<div class="dl-topbar">
+  <div class="dl-topbar__inner">
+    <a href="../../" class="dl-topbar__logo">
+      <img src="../../logo.png" alt="Драйв Лизинг" class="dl-topbar__logo-img">
+      <div class="dl-topbar__logo-text">
+        <div class="dl-topbar__slogan">Помогаем получить автомобиль, <em>даже если банк отказал</em></div>
+        <div class="dl-topbar__caption">Работаем с физ. и юр. лицами</div>
+      </div>
+    </a>
+  </div>
+</div>
+
+<div class="dl-wrap">
+  <nav class="dl-breadcrumb" aria-label="Хлебные крошки">
+    <a href="../../">Главная</a><span>/</span>
+    <span>{crumb_name}</span>
+  </nav>
+
+  <div class="dl-content-page">
+    <h1>{h1}</h1>
+    <p class="dl-content-page__lead">{lead}</p>
+    {body}
+    <div class="dl-content-page__cta">
+      <a class="dl-btn" href="../../catalog.html">Смотреть каталог автомобилей →</a>
+    </div>
+  </div>
+</div>
+
+{footer}
+
+{cookie_banner}
+<script src="../../assets/car-page.js"></script>
+</body>
+</html>
+'''
+
+def render_content_page(h1, title_tag, meta_desc, lead, body, crumb_name, canonical):
+    breadcrumb_schema = json.dumps({
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+            {"@type": "ListItem", "position": 1, "name": "Главная", "item": f"{SITE_URL}/"},
+            {"@type": "ListItem", "position": 2, "name": crumb_name, "item": canonical},
+        ]
+    }, ensure_ascii=False)
+    return CONTENT_PAGE_TEMPLATE.format(
+        title_tag=html.escape(title_tag),
+        meta_desc=html.escape(meta_desc),
+        canonical=canonical,
+        breadcrumb_schema=breadcrumb_schema,
+        crumb_name=html.escape(crumb_name),
+        h1=html.escape(h1),
+        lead=html.escape(lead),
+        body=body,
+        footer=FOOTER_HTML,
+        cookie_banner=COOKIE_BANNER_HTML,
+    )
+
+COEFF_TABLE = '''<table>
+<tr><th>Первоначальный взнос</th><th>Коэффициент</th></tr>
+<tr><td>0%</td><td>2.3</td></tr>
+<tr><td>10%</td><td>2.0</td></tr>
+<tr><td>20%</td><td>1.8</td></tr>
+<tr><td>30%</td><td>1.6</td></tr>
+</table>'''
+
+ARENDA_VYKUP_BODY = f'''<h2>Что такое аренда с выкупом</h2>
+<p>Аренда автомобиля с правом выкупа — способ получить машину без банка и без проверки кредитной истории. Вносите первоначальный взнос (можно и без него), дальше платите по графику. По окончании срока договора автомобиль переходит в вашу собственность.</p>
+<p>Главное отличие от автокредита: банк не участвует в сделке, поэтому не важны официальный доход и кредитная история. Решение по заявке — за 1 день.</p>
+
+<h2>Как считается платёж</h2>
+<p>Формула: итоговая сумма = цена автомобиля × коэффициент. Коэффициент зависит от размера первоначального взноса — чем больше взнос, тем ниже коэффициент и итоговая переплата.</p>
+{COEFF_TABLE}
+<p>Взнос снижает коэффициент, а не прибавляется к сумме сверху — платёж считается уже с учётом скидки за взнос.</p>
+
+<h2>Что нужно для оформления</h2>
+<ul>
+<li>Паспорт РФ</li>
+<li>Водительское удостоверение</li>
+<li>Оформление по 2 документам, без справок о доходах</li>
+</ul>
+
+<h2>Кому подходит</h2>
+<p>Аренда с выкупом подходит тем, кому банк отказал в кредите, у кого нет официального трудоустройства или кредитной истории, и тем, кто хочет получить автомобиль быстро — без долгого одобрения.</p>'''
+
+LIZING_YURLICAM_BODY = f'''<h2>Кому подходит</h2>
+<p>Лизинг подходит компаниям и ИП, которым нужно обновить или расширить автопарк без разовой крупной траты. Коэффициенты те же, что и для физических лиц — разница в сроке договора и в том, что автомобиль оформляется на юридическое лицо.</p>
+
+<h2>Условия</h2>
+{COEFF_TABLE}
+<p>Срок договора для юридических лиц — 48 или 60 месяцев. Без банка, взнос от 0%, оформление по 2 документам.</p>
+
+<h2>Чем лизинг выгоднее покупки в кредит</h2>
+<p>Лизинговый платёж можно относить на расходы компании, не привлекая банк и не отвлекая оборотные средства на разовую покупку. Подходит для обновления парка такси, курьерской службы, корпоративного транспорта.</p>
+
+<h2>Как оформить</h2>
+<p>Свяжитесь с менеджером через каталог или мессенджеры — подберём автомобиль и рассчитаем точные условия под ваш ОКВЭД и задачи бизнеса.</p>'''
+
 def write_brand_links(cars, brand_slugs, kuzov_slugs):
     """Пишет выпадающую навигацию 'Марки авто' / 'Тип кузова' между маркерами
     в catalog.html и index.html — сразу под шапкой, как категорийное меню
@@ -312,7 +432,8 @@ def write_brand_links(cars, brand_slugs, kuzov_slugs):
       <button class="dl-catnav__trigger" type="button">Тип кузова{chevron}</button>
       <div class="dl-catnav__panel">{kuzov_links}</div>
     </div>
-    <a class="dl-catnav__link" id="dlHowItWorksLink" href="#dlHowItWorks">Аренда и лизинг: как это работает</a>
+    <a class="dl-catnav__link" href="arenda-s-vykupom/">Аренда с выкупом</a>
+    <a class="dl-catnav__link" href="lizing-yurlicam/">Лизинг юрлицам</a>
   </div>
 </nav>
 <script>
@@ -331,13 +452,6 @@ def write_brand_links(cars, brand_slugs, kuzov_slugs):
   document.addEventListener('click', function(){{
     items.forEach(function(i){{ i.classList.remove('is-open'); }});
   }});
-  var howLink = document.getElementById('dlHowItWorksLink');
-  if (howLink) {{
-    howLink.addEventListener('click', function(){{
-      var d = document.getElementById('dlHowItWorks');
-      if (d) d.open = true;
-    }});
-  }}
 }})();
 </script>'''
 
@@ -1156,6 +1270,29 @@ def main():
             slugs_by_art=slugs_by_art,
             total=len(cars),
         )
+        with open(os.path.join(outdir, "index.html"), "w", encoding="utf-8") as f:
+            f.write(html_out)
+        listing_urls.append(canonical)
+
+    # Отдельные страницы "аренда с выкупом" / "лизинг юрлицам" (были аккордеоном
+    # у подвала — вынесены в полноценные страницы под свои интенты и URL)
+    content_pages = [
+        ('arenda-s-vykupom', 'Аренда с выкупом', 'Аренда авто с выкупом в Иркутске',
+         'Аренда авто с выкупом в Иркутске без банка · Драйв Лизинг',
+         'Аренда автомобиля с правом выкупа в Иркутске: без банка, взнос от 0%, оформление по 2 документам. Как считается платёж и что нужно для оформления.',
+         'Для частных лиц: получаете автомобиль без банка и кредитной истории, платите по графику, по итогу машина ваша.',
+         ARENDA_VYKUP_BODY),
+        ('lizing-yurlicam', 'Лизинг юрлицам', 'Лизинг автомобилей для юридических лиц в Иркутске',
+         'Лизинг для юридических лиц в Иркутске · Драйв Лизинг',
+         'Лизинг автомобилей для ООО и ИП в Иркутске: без банка, взнос от 0%, срок до 60 месяцев. Обновление корпоративного автопарка без разовой крупной траты.',
+         'Для компаний: обновляете или расширяете автопарк без банка и без разовой крупной траты, платёж относится на расходы.',
+         LIZING_YURLICAM_BODY),
+    ]
+    for slug, crumb_name, h1, title_tag, meta_desc, lead, body in content_pages:
+        outdir = os.path.join(BASE_DIR, slug)
+        os.makedirs(outdir, exist_ok=True)
+        canonical = f"{SITE_URL}/{slug}/"
+        html_out = render_content_page(h1, title_tag, meta_desc, lead, body, crumb_name, canonical)
         with open(os.path.join(outdir, "index.html"), "w", encoding="utf-8") as f:
             f.write(html_out)
         listing_urls.append(canonical)
