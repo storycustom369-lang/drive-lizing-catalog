@@ -69,12 +69,12 @@ h1,h2,h3,.dl-num,.dl-btn,.dl-pill,.dl-title{font-family:'Onest',Arial,sans-serif
 .dl-tabs__dropdown-btn{display:flex;align-items:center;gap:6px;}
 .dl-tabs__dropdown-chevron{width:12px;height:12px;flex:none;transition:transform .15s;}
 .dl-tabs__dropdown.is-open .dl-tabs__dropdown-chevron{transform:rotate(180deg);}
-.dl-tabs__dropdown-panel{display:none;position:absolute;top:100%;left:0;margin-top:8px;background:var(--surface);border:1px solid var(--border-strong);border-radius:12px;box-shadow:0 10px 30px rgba(15,30,59,.12);padding:14px;width:300px;flex-wrap:wrap;gap:6px;z-index:50;}
+.dl-tabs__dropdown-panel{display:none;position:fixed;background:var(--surface);border:1px solid var(--border-strong);border-radius:12px;box-shadow:0 10px 30px rgba(15,30,59,.12);padding:14px;width:300px;flex-wrap:wrap;gap:6px;z-index:200;}
 .dl-tabs__dropdown.is-open .dl-tabs__dropdown-panel{display:flex;}
 .dl-tabs__dropdown-panel a{display:inline-block;padding:6px 12px;border-radius:999px;background:var(--surface-page);color:var(--navy);font-size:13px;font-weight:600;text-decoration:none;white-space:nowrap;}
 .dl-tabs__dropdown-panel a:hover{background:var(--blue);color:#fff;}
 @media (max-width:640px){
-  .dl-tabs__dropdown-panel{position:fixed;left:16px;right:16px;top:auto;width:auto;}
+  .dl-tabs__dropdown-panel{left:16px !important;right:16px;width:auto;}
 }
 .dl-pill--range{display:flex;flex-direction:column;align-items:center;gap:0;padding-top:7px;padding-bottom:7px;line-height:1.1;}
 .dl-pill__main{font-size:14px;font-weight:700;}
@@ -408,6 +408,23 @@ h1,h2,h3,.dl-num,.dl-btn,.dl-pill,.dl-title{font-family:'Onest',Arial,sans-serif
 </div>
 
 <!-- BRAND_LINKS_START -->
+<style>
+.dl-lease-links{background:var(--surface);border-bottom:1px solid var(--border);}
+.dl-lease-links__inner{max-width:1180px;margin:0 auto;padding:0 24px;display:flex;align-items:center;gap:4px;flex-wrap:wrap;}
+.dl-lease-links a{padding:12px;font-family:'Onest',Arial,sans-serif;font-size:14px;font-weight:600;color:var(--navy);text-decoration:none;}
+.dl-lease-links a:hover{color:var(--blue);}
+@media (max-width:640px){
+  .dl-lease-links__inner{padding:0 16px;overflow-x:auto;scrollbar-width:none;}
+  .dl-lease-links__inner::-webkit-scrollbar{display:none;}
+  .dl-lease-links a{padding:10px;font-size:13px;white-space:nowrap;}
+}
+</style>
+<nav class="dl-lease-links">
+  <div class="dl-lease-links__inner">
+    <a href="arenda-s-vykupom/">Аренда с выкупом</a>
+    <a href="lizing-yurlicam/">Лизинг юрлицам</a>
+  </div>
+</nav>
 <script>var DL_MARKI_LINKS = [{"label": "BAIC", "href": "marki/baic/"}, {"label": "Belgee", "href": "marki/belgee/"}, {"label": "Chery", "href": "marki/chery/"}, {"label": "GAC", "href": "marki/gac/"}, {"label": "Great Wall", "href": "marki/great-wall/"}, {"label": "Haval", "href": "marki/haval/"}, {"label": "Honda", "href": "marki/honda/"}, {"label": "Hyundai", "href": "marki/hyundai/"}, {"label": "Jetour", "href": "marki/jetour/"}, {"label": "Kia", "href": "marki/kia/"}, {"label": "Lada", "href": "marki/lada/"}, {"label": "Mazda", "href": "marki/mazda/"}, {"label": "Omoda", "href": "marki/omoda/"}, {"label": "Renault", "href": "marki/renault/"}, {"label": "Skoda", "href": "marki/skoda/"}, {"label": "Solaris", "href": "marki/solaris/"}, {"label": "Sollers", "href": "marki/sollers/"}, {"label": "Tenet", "href": "marki/tenet/"}, {"label": "Toyota", "href": "marki/toyota/"}, {"label": "UMO", "href": "marki/umo/"}, {"label": "Volga", "href": "marki/volga/"}, {"label": "Volkswagen", "href": "marki/volkswagen/"}, {"label": "Москвич", "href": "marki/moskvich/"}];
 var DL_KUZOV_LINKS = [{"label": "Седан", "href": "kuzov/sedan/"}, {"label": "Кроссовер", "href": "kuzov/krossover/"}, {"label": "Минивэн", "href": "kuzov/miniven/"}, {"label": "Универсал", "href": "kuzov/universal/"}, {"label": "Кей-кар", "href": "kuzov/keikar/"}, {"label": "Пикап", "href": "kuzov/pikap/"}, {"label": "Фургон", "href": "kuzov/furgon/"}];</script>
 <!-- BRAND_LINKS_END -->
@@ -747,7 +764,12 @@ var DL_KUZOV_LINKS = [{"label": "Седан", "href": "kuzov/sedan/"}, {"label":
         e.stopPropagation();
         var wasOpen = box.classList.contains('is-open');
         document.querySelectorAll('.dl-tabs__dropdown.is-open').forEach(function(d){ d.classList.remove('is-open'); });
-        if (!wasOpen) box.classList.add('is-open');
+        if (!wasOpen) {
+          var rect = btn.getBoundingClientRect();
+          panel.style.top = (rect.bottom + 8) + 'px';
+          panel.style.left = rect.left + 'px';
+          box.classList.add('is-open');
+        }
       });
       box.appendChild(btn);
       box.appendChild(panel);
@@ -755,13 +777,6 @@ var DL_KUZOV_LINKS = [{"label": "Седан", "href": "kuzov/sedan/"}, {"label":
     }
     if (typeof DL_MARKI_LINKS !== 'undefined') pinned.appendChild(buildCategoryDropdown('Марки авто', DL_MARKI_LINKS));
     if (typeof DL_KUZOV_LINKS !== 'undefined') pinned.appendChild(buildCategoryDropdown('Тип кузова', DL_KUZOV_LINKS));
-    [['Аренда с выкупом', 'arenda-s-vykupom/'], ['Лизинг юрлицам', 'lizing-yurlicam/']].forEach(function(item){
-      var a = document.createElement('a');
-      a.className = 'dl-pill';
-      a.href = item[1];
-      a.textContent = item[0];
-      pinned.appendChild(a);
-    });
 
     SOURCE_TABS.forEach(function(s){
       var btn = document.createElement('button');
@@ -1585,6 +1600,9 @@ var DL_KUZOV_LINKS = [{"label": "Седан", "href": "kuzov/sedan/"}, {"label":
   document.addEventListener('click', function(){
     document.querySelectorAll('.dl-tabs__dropdown.is-open').forEach(function(d){ d.classList.remove('is-open'); });
   });
+  window.addEventListener('scroll', function(){
+    document.querySelectorAll('.dl-tabs__dropdown.is-open').forEach(function(d){ d.classList.remove('is-open'); });
+  }, true);
   buildRangeCards();
   buildTabs();
   buildMarquee();

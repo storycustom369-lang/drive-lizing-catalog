@@ -459,7 +459,25 @@ def write_brand_links(cars, brand_slugs, kuzov_slugs):
 
     brand_links_js = json.dumps([{"label": m, "href": f"marki/{brand_slugs[m]}/"} for m in brands_present], ensure_ascii=False)
     kuzov_links_js = json.dumps([{"label": KUZOV_LABELS[k], "href": f"kuzov/{kuzov_slugs[k]}/"} for k in kuzov_present], ensure_ascii=False)
-    catalog_block = f'<script>var DL_MARKI_LINKS = {brand_links_js};\nvar DL_KUZOV_LINKS = {kuzov_links_js};</script>'
+    catalog_block = f'''<style>
+.dl-lease-links{{background:var(--surface);border-bottom:1px solid var(--border);}}
+.dl-lease-links__inner{{max-width:1180px;margin:0 auto;padding:0 24px;display:flex;align-items:center;gap:4px;flex-wrap:wrap;}}
+.dl-lease-links a{{padding:12px;font-family:'Onest',Arial,sans-serif;font-size:14px;font-weight:600;color:var(--navy);text-decoration:none;}}
+.dl-lease-links a:hover{{color:var(--blue);}}
+@media (max-width:640px){{
+  .dl-lease-links__inner{{padding:0 16px;overflow-x:auto;scrollbar-width:none;}}
+  .dl-lease-links__inner::-webkit-scrollbar{{display:none;}}
+  .dl-lease-links a{{padding:10px;font-size:13px;white-space:nowrap;}}
+}}
+</style>
+<nav class="dl-lease-links">
+  <div class="dl-lease-links__inner">
+    <a href="arenda-s-vykupom/">Аренда с выкупом</a>
+    <a href="lizing-yurlicam/">Лизинг юрлицам</a>
+  </div>
+</nav>
+<script>var DL_MARKI_LINKS = {brand_links_js};
+var DL_KUZOV_LINKS = {kuzov_links_js};</script>'''
 
     for path, block in ((CATALOG_HTML, catalog_block), (INDEX_HTML, index_block)):
         text = open(path, encoding='utf-8').read()
