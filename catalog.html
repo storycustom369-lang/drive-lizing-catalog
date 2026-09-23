@@ -339,16 +339,6 @@ h1,h2,h3,.dl-num,.dl-btn,.dl-pill,.dl-title{font-family:'Onest',Arial,sans-serif
   .dl-seo-block h2{font-size:18px;margin-bottom:16px;}
   .dl-seo-block__cols{grid-template-columns:1fr;gap:20px;}
 }
-.dl-links-block{background:var(--surface-page);padding:32px 24px;}
-.dl-links-block__inner{max-width:1180px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:28px;}
-.dl-links-block__title{font-family:'Onest',Arial,sans-serif;font-size:13px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.03em;margin-bottom:12px;}
-.dl-links-block__pills{display:flex;flex-wrap:wrap;gap:8px;}
-.dl-links-pill{display:inline-block;padding:7px 14px;border-radius:999px;background:var(--surface);border:1px solid var(--border-strong);color:var(--navy);font-size:13px;font-weight:600;text-decoration:none;transition:border-color .15s,color .15s;}
-.dl-links-pill:hover{border-color:var(--blue);color:var(--blue);}
-@media (max-width:640px){
-  .dl-links-block{padding:24px 16px;}
-  .dl-links-block__inner{grid-template-columns:1fr;gap:20px;}
-}
 .dl-footer{background:var(--surface);border-top:1px solid var(--border);color:var(--navy-soft);font-family:'Onest',Arial,sans-serif;}
 .dl-footer__inner{max-width:1180px;margin:0 auto;padding:44px 24px 24px;}
 .dl-footer__top{display:grid;grid-template-columns:1.3fr 1fr 1.2fr 1.1fr;gap:32px;padding-bottom:28px;}
@@ -414,6 +404,68 @@ h1,h2,h3,.dl-num,.dl-btn,.dl-pill,.dl-title{font-family:'Onest',Arial,sans-serif
     </div>
   </div>
 </div>
+
+<!-- BRAND_LINKS_START -->
+<style>
+.dl-catnav{background:var(--surface);border-bottom:1px solid var(--border);position:relative;z-index:30;}
+.dl-catnav__inner{max-width:1180px;margin:0 auto;padding:0 24px;display:flex;align-items:center;gap:4px;flex-wrap:wrap;}
+.dl-catnav__item{position:relative;}
+.dl-catnav__trigger{display:flex;align-items:center;gap:6px;padding:14px 12px;border:none;background:none;font-family:'Onest',Arial,sans-serif;font-size:14px;font-weight:600;color:var(--navy);cursor:pointer;}
+.dl-catnav__trigger:hover{color:var(--blue);}
+.dl-catnav__chevron{width:14px;height:14px;flex:none;transition:transform .15s;}
+.dl-catnav__item.is-open .dl-catnav__chevron{transform:rotate(180deg);}
+.dl-catnav__panel{display:none;position:absolute;top:100%;left:0;background:var(--surface);border:1px solid var(--border-strong);border-radius:12px;box-shadow:0 10px 30px rgba(15,30,59,.12);padding:14px;width:300px;flex-wrap:wrap;gap:6px;z-index:50;}
+.dl-catnav__item.is-open .dl-catnav__panel{display:flex;}
+.dl-catnav__panel a{display:inline-block;padding:6px 12px;border-radius:999px;background:var(--surface-page);color:var(--navy);font-size:13px;font-weight:600;text-decoration:none;white-space:nowrap;}
+.dl-catnav__panel a:hover{background:var(--blue);color:#fff;}
+.dl-catnav__link{padding:14px 12px;font-family:'Onest',Arial,sans-serif;font-size:14px;font-weight:600;color:var(--navy);text-decoration:none;}
+.dl-catnav__link:hover{color:var(--blue);}
+@media (max-width:640px){
+  .dl-catnav__inner{padding:0 16px;overflow-x:auto;scrollbar-width:none;}
+  .dl-catnav__inner::-webkit-scrollbar{display:none;}
+  .dl-catnav__trigger,.dl-catnav__link{padding:12px 10px;font-size:13px;white-space:nowrap;}
+  .dl-catnav__panel{position:fixed;left:16px;right:16px;width:auto;}
+}
+</style>
+<nav class="dl-catnav">
+  <div class="dl-catnav__inner">
+    <div class="dl-catnav__item">
+      <button class="dl-catnav__trigger" type="button">Марки авто<svg class="dl-catnav__chevron" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+      <div class="dl-catnav__panel"><a href="marki/baic/">BAIC</a><a href="marki/belgee/">Belgee</a><a href="marki/chery/">Chery</a><a href="marki/gac/">GAC</a><a href="marki/great-wall/">Great Wall</a><a href="marki/haval/">Haval</a><a href="marki/honda/">Honda</a><a href="marki/hyundai/">Hyundai</a><a href="marki/jetour/">Jetour</a><a href="marki/kia/">Kia</a><a href="marki/lada/">Lada</a><a href="marki/mazda/">Mazda</a><a href="marki/omoda/">Omoda</a><a href="marki/renault/">Renault</a><a href="marki/skoda/">Skoda</a><a href="marki/solaris/">Solaris</a><a href="marki/sollers/">Sollers</a><a href="marki/tenet/">Tenet</a><a href="marki/toyota/">Toyota</a><a href="marki/umo/">UMO</a><a href="marki/volga/">Volga</a><a href="marki/volkswagen/">Volkswagen</a><a href="marki/moskvich/">Москвич</a></div>
+    </div>
+    <div class="dl-catnav__item">
+      <button class="dl-catnav__trigger" type="button">Тип кузова<svg class="dl-catnav__chevron" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+      <div class="dl-catnav__panel"><a href="kuzov/sedan/">Седан</a><a href="kuzov/krossover/">Кроссовер</a><a href="kuzov/miniven/">Минивэн</a><a href="kuzov/universal/">Универсал</a><a href="kuzov/keikar/">Кей-кар</a><a href="kuzov/pikap/">Пикап</a><a href="kuzov/furgon/">Фургон</a></div>
+    </div>
+    <a class="dl-catnav__link" id="dlHowItWorksLink" href="#dlHowItWorks">Аренда и лизинг: как это работает</a>
+  </div>
+</nav>
+<script>
+(function(){
+  var items = document.querySelectorAll('.dl-catnav__item');
+  items.forEach(function(item){
+    var trigger = item.querySelector('.dl-catnav__trigger');
+    if (!trigger) return;
+    trigger.addEventListener('click', function(e){
+      e.stopPropagation();
+      var wasOpen = item.classList.contains('is-open');
+      items.forEach(function(i){ i.classList.remove('is-open'); });
+      if (!wasOpen) item.classList.add('is-open');
+    });
+  });
+  document.addEventListener('click', function(){
+    items.forEach(function(i){ i.classList.remove('is-open'); });
+  });
+  var howLink = document.getElementById('dlHowItWorksLink');
+  if (howLink) {
+    howLink.addEventListener('click', function(){
+      var d = document.getElementById('dlHowItWorks');
+      if (d) d.open = true;
+    });
+  }
+})();
+</script>
+<!-- BRAND_LINKS_END -->
 
 <div class="dl-sticky">
   <div class="dl-marquee">
@@ -1577,7 +1629,7 @@ h1,h2,h3,.dl-num,.dl-btn,.dl-pill,.dl-title{font-family:'Onest',Arial,sans-serif
 
 <section class="dl-seo-block">
   <div class="dl-seo-block__inner">
-    <details class="dl-seo-details">
+    <details class="dl-seo-details" id="dlHowItWorks">
       <summary><h2>Аренда и лизинг авто в Иркутске: как это работает</h2></summary>
       <div class="dl-seo-block__cols">
         <div>
@@ -1592,21 +1644,6 @@ h1,h2,h3,.dl-num,.dl-btn,.dl-pill,.dl-title{font-family:'Onest',Arial,sans-serif
     </details>
   </div>
 </section>
-
-<!-- BRAND_LINKS_START -->
-<section class="dl-links-block">
-  <div class="dl-links-block__inner">
-    <div class="dl-links-block__group">
-      <div class="dl-links-block__title">Марки авто в наличии</div>
-      <div class="dl-links-block__pills"><a class="dl-links-pill" href="marki/baic/">BAIC</a><a class="dl-links-pill" href="marki/belgee/">Belgee</a><a class="dl-links-pill" href="marki/chery/">Chery</a><a class="dl-links-pill" href="marki/gac/">GAC</a><a class="dl-links-pill" href="marki/great-wall/">Great Wall</a><a class="dl-links-pill" href="marki/haval/">Haval</a><a class="dl-links-pill" href="marki/honda/">Honda</a><a class="dl-links-pill" href="marki/hyundai/">Hyundai</a><a class="dl-links-pill" href="marki/jetour/">Jetour</a><a class="dl-links-pill" href="marki/kia/">Kia</a><a class="dl-links-pill" href="marki/lada/">Lada</a><a class="dl-links-pill" href="marki/mazda/">Mazda</a><a class="dl-links-pill" href="marki/omoda/">Omoda</a><a class="dl-links-pill" href="marki/renault/">Renault</a><a class="dl-links-pill" href="marki/skoda/">Skoda</a><a class="dl-links-pill" href="marki/solaris/">Solaris</a><a class="dl-links-pill" href="marki/sollers/">Sollers</a><a class="dl-links-pill" href="marki/tenet/">Tenet</a><a class="dl-links-pill" href="marki/toyota/">Toyota</a><a class="dl-links-pill" href="marki/umo/">UMO</a><a class="dl-links-pill" href="marki/volga/">Volga</a><a class="dl-links-pill" href="marki/volkswagen/">Volkswagen</a><a class="dl-links-pill" href="marki/moskvich/">Москвич</a></div>
-    </div>
-    <div class="dl-links-block__group">
-      <div class="dl-links-block__title">По типу кузова</div>
-      <div class="dl-links-block__pills"><a class="dl-links-pill" href="kuzov/sedan/">Седан</a><a class="dl-links-pill" href="kuzov/krossover/">Кроссовер</a><a class="dl-links-pill" href="kuzov/miniven/">Минивэн</a><a class="dl-links-pill" href="kuzov/universal/">Универсал</a><a class="dl-links-pill" href="kuzov/keikar/">Кей-кар</a><a class="dl-links-pill" href="kuzov/pikap/">Пикап</a><a class="dl-links-pill" href="kuzov/furgon/">Фургон</a></div>
-    </div>
-  </div>
-</section>
-<!-- BRAND_LINKS_END -->
 
 <footer class="dl-footer">
   <div class="dl-footer__inner">

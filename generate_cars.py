@@ -10,6 +10,7 @@ import re, json, os, html, hashlib
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 CATALOG_HTML = os.path.join(BASE_DIR, "catalog.html")
+INDEX_HTML = os.path.join(BASE_DIR, "index.html")
 CARS_DIR = os.path.join(BASE_DIR, "cars")
 SITE_URL = "https://driveleasing38.ru"
 WORKER_URL = "https://odd-meadow-4208.litaufit.workers.dev"
@@ -265,43 +266,93 @@ def render_listing_page(h1, title_tag, meta_desc, intro, crumb_name, canonical, 
     )
 
 def write_brand_links(cars, brand_slugs, kuzov_slugs):
-    """Пишет блок ссылок 'Марки авто' / 'Тип кузова' между маркерами в catalog.html —
-    внутренние ссылки на страницы-лендинги, чтобы они были доступны роботу не только
-    через sitemap, но и прямым переходом с каталога (плюс якорный текст = название марки)."""
+    """Пишет выпадающую навигацию 'Марки авто' / 'Тип кузова' между маркерами
+    в catalog.html и index.html — сразу под шапкой, как категорийное меню
+    у конкурентов, а не отдельным текстовым блоком. Ссылки реальные <a href>,
+    доступны роботу в исходном HTML независимо от того, открыта панель или нет
+    (это обычное меню сайта, а не намеренно спрятанный для робота контент)."""
     brands_present = sorted(brand_slugs.keys())
     kuzov_present = [k for k in KUZOV_LABELS if any((c.get('kuzov') or '').strip() == k for c in cars)]
 
-    brand_pills = ''.join(
-        f'<a class="dl-links-pill" href="marki/{brand_slugs[m]}/">{html.escape(m)}</a>' for m in brands_present
+    brand_links = ''.join(
+        f'<a href="marki/{brand_slugs[m]}/">{html.escape(m)}</a>' for m in brands_present
     )
-    kuzov_pills = ''.join(
-        f'<a class="dl-links-pill" href="kuzov/{kuzov_slugs[k]}/">{html.escape(KUZOV_LABELS[k])}</a>' for k in kuzov_present
+    kuzov_links = ''.join(
+        f'<a href="kuzov/{kuzov_slugs[k]}/">{html.escape(KUZOV_LABELS[k])}</a>' for k in kuzov_present
     )
-    block = f'''<section class="dl-links-block">
-  <div class="dl-links-block__inner">
-    <div class="dl-links-block__group">
-      <div class="dl-links-block__title">Марки авто в наличии</div>
-      <div class="dl-links-block__pills">{brand_pills}</div>
+    chevron = '<svg class="dl-catnav__chevron" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>'
+    block = f'''<style>
+.dl-catnav{{background:var(--surface);border-bottom:1px solid var(--border);position:relative;z-index:30;}}
+.dl-catnav__inner{{max-width:1180px;margin:0 auto;padding:0 24px;display:flex;align-items:center;gap:4px;flex-wrap:wrap;}}
+.dl-catnav__item{{position:relative;}}
+.dl-catnav__trigger{{display:flex;align-items:center;gap:6px;padding:14px 12px;border:none;background:none;font-family:'Onest',Arial,sans-serif;font-size:14px;font-weight:600;color:var(--navy);cursor:pointer;}}
+.dl-catnav__trigger:hover{{color:var(--blue);}}
+.dl-catnav__chevron{{width:14px;height:14px;flex:none;transition:transform .15s;}}
+.dl-catnav__item.is-open .dl-catnav__chevron{{transform:rotate(180deg);}}
+.dl-catnav__panel{{display:none;position:absolute;top:100%;left:0;background:var(--surface);border:1px solid var(--border-strong);border-radius:12px;box-shadow:0 10px 30px rgba(15,30,59,.12);padding:14px;width:300px;flex-wrap:wrap;gap:6px;z-index:50;}}
+.dl-catnav__item.is-open .dl-catnav__panel{{display:flex;}}
+.dl-catnav__panel a{{display:inline-block;padding:6px 12px;border-radius:999px;background:var(--surface-page);color:var(--navy);font-size:13px;font-weight:600;text-decoration:none;white-space:nowrap;}}
+.dl-catnav__panel a:hover{{background:var(--blue);color:#fff;}}
+.dl-catnav__link{{padding:14px 12px;font-family:'Onest',Arial,sans-serif;font-size:14px;font-weight:600;color:var(--navy);text-decoration:none;}}
+.dl-catnav__link:hover{{color:var(--blue);}}
+@media (max-width:640px){{
+  .dl-catnav__inner{{padding:0 16px;overflow-x:auto;scrollbar-width:none;}}
+  .dl-catnav__inner::-webkit-scrollbar{{display:none;}}
+  .dl-catnav__trigger,.dl-catnav__link{{padding:12px 10px;font-size:13px;white-space:nowrap;}}
+  .dl-catnav__panel{{position:fixed;left:16px;right:16px;width:auto;}}
+}}
+</style>
+<nav class="dl-catnav">
+  <div class="dl-catnav__inner">
+    <div class="dl-catnav__item">
+      <button class="dl-catnav__trigger" type="button">Марки авто{chevron}</button>
+      <div class="dl-catnav__panel">{brand_links}</div>
     </div>
-    <div class="dl-links-block__group">
-      <div class="dl-links-block__title">По типу кузова</div>
-      <div class="dl-links-block__pills">{kuzov_pills}</div>
+    <div class="dl-catnav__item">
+      <button class="dl-catnav__trigger" type="button">Тип кузова{chevron}</button>
+      <div class="dl-catnav__panel">{kuzov_links}</div>
     </div>
+    <a class="dl-catnav__link" id="dlHowItWorksLink" href="#dlHowItWorks">Аренда и лизинг: как это работает</a>
   </div>
-</section>'''
+</nav>
+<script>
+(function(){{
+  var items = document.querySelectorAll('.dl-catnav__item');
+  items.forEach(function(item){{
+    var trigger = item.querySelector('.dl-catnav__trigger');
+    if (!trigger) return;
+    trigger.addEventListener('click', function(e){{
+      e.stopPropagation();
+      var wasOpen = item.classList.contains('is-open');
+      items.forEach(function(i){{ i.classList.remove('is-open'); }});
+      if (!wasOpen) item.classList.add('is-open');
+    }});
+  }});
+  document.addEventListener('click', function(){{
+    items.forEach(function(i){{ i.classList.remove('is-open'); }});
+  }});
+  var howLink = document.getElementById('dlHowItWorksLink');
+  if (howLink) {{
+    howLink.addEventListener('click', function(){{
+      var d = document.getElementById('dlHowItWorks');
+      if (d) d.open = true;
+    }});
+  }}
+}})();
+</script>'''
 
-    path = CATALOG_HTML
-    text = open(path, encoding='utf-8').read()
-    new_text, n = re.subn(
-        r'<!-- BRAND_LINKS_START -->.*?<!-- BRAND_LINKS_END -->',
-        f'<!-- BRAND_LINKS_START -->\n{block}\n<!-- BRAND_LINKS_END -->',
-        text, count=1, flags=re.S,
-    )
-    if n != 1:
-        raise RuntimeError('Не нашёл <!-- BRAND_LINKS_START/END --> в catalog.html')
-    if new_text != text:
-        open(path, 'w', encoding='utf-8').write(new_text)
-        print(f"catalog.html: ссылки на {len(brands_present)} марок и {len(kuzov_present)} типов кузова обновлены")
+    for path in (CATALOG_HTML, INDEX_HTML):
+        text = open(path, encoding='utf-8').read()
+        new_text, n = re.subn(
+            r'<!-- BRAND_LINKS_START -->.*?<!-- BRAND_LINKS_END -->',
+            f'<!-- BRAND_LINKS_START -->\n{block}\n<!-- BRAND_LINKS_END -->',
+            text, count=1, flags=re.S,
+        )
+        if n != 1:
+            raise RuntimeError(f'Не нашёл <!-- BRAND_LINKS_START/END --> в {os.path.basename(path)}')
+        if new_text != text:
+            open(path, 'w', encoding='utf-8').write(new_text)
+            print(f"{os.path.basename(path)}: меню на {len(brands_present)} марок и {len(kuzov_present)} типов кузова обновлено")
 
 def photo_rel(p):
     """Путь к фото для car-page HTML (относительно cars/<slug>/). Абсолютные URL (сторонние стоковые фото) не трогаем — иначе '../../' ломает ссылку."""

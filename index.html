@@ -371,6 +371,68 @@ h1,h2,h3,.dl-num,.dl-btn,.dl-pill,.dl-title{font-family:'Onest',Arial,sans-serif
   </div>
 </div>
 
+<!-- BRAND_LINKS_START -->
+<style>
+.dl-catnav{background:var(--surface);border-bottom:1px solid var(--border);position:relative;z-index:30;}
+.dl-catnav__inner{max-width:1180px;margin:0 auto;padding:0 24px;display:flex;align-items:center;gap:4px;flex-wrap:wrap;}
+.dl-catnav__item{position:relative;}
+.dl-catnav__trigger{display:flex;align-items:center;gap:6px;padding:14px 12px;border:none;background:none;font-family:'Onest',Arial,sans-serif;font-size:14px;font-weight:600;color:var(--navy);cursor:pointer;}
+.dl-catnav__trigger:hover{color:var(--blue);}
+.dl-catnav__chevron{width:14px;height:14px;flex:none;transition:transform .15s;}
+.dl-catnav__item.is-open .dl-catnav__chevron{transform:rotate(180deg);}
+.dl-catnav__panel{display:none;position:absolute;top:100%;left:0;background:var(--surface);border:1px solid var(--border-strong);border-radius:12px;box-shadow:0 10px 30px rgba(15,30,59,.12);padding:14px;width:300px;flex-wrap:wrap;gap:6px;z-index:50;}
+.dl-catnav__item.is-open .dl-catnav__panel{display:flex;}
+.dl-catnav__panel a{display:inline-block;padding:6px 12px;border-radius:999px;background:var(--surface-page);color:var(--navy);font-size:13px;font-weight:600;text-decoration:none;white-space:nowrap;}
+.dl-catnav__panel a:hover{background:var(--blue);color:#fff;}
+.dl-catnav__link{padding:14px 12px;font-family:'Onest',Arial,sans-serif;font-size:14px;font-weight:600;color:var(--navy);text-decoration:none;}
+.dl-catnav__link:hover{color:var(--blue);}
+@media (max-width:640px){
+  .dl-catnav__inner{padding:0 16px;overflow-x:auto;scrollbar-width:none;}
+  .dl-catnav__inner::-webkit-scrollbar{display:none;}
+  .dl-catnav__trigger,.dl-catnav__link{padding:12px 10px;font-size:13px;white-space:nowrap;}
+  .dl-catnav__panel{position:fixed;left:16px;right:16px;width:auto;}
+}
+</style>
+<nav class="dl-catnav">
+  <div class="dl-catnav__inner">
+    <div class="dl-catnav__item">
+      <button class="dl-catnav__trigger" type="button">Марки авто<svg class="dl-catnav__chevron" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+      <div class="dl-catnav__panel"><a href="marki/baic/">BAIC</a><a href="marki/belgee/">Belgee</a><a href="marki/chery/">Chery</a><a href="marki/gac/">GAC</a><a href="marki/great-wall/">Great Wall</a><a href="marki/haval/">Haval</a><a href="marki/honda/">Honda</a><a href="marki/hyundai/">Hyundai</a><a href="marki/jetour/">Jetour</a><a href="marki/kia/">Kia</a><a href="marki/lada/">Lada</a><a href="marki/mazda/">Mazda</a><a href="marki/omoda/">Omoda</a><a href="marki/renault/">Renault</a><a href="marki/skoda/">Skoda</a><a href="marki/solaris/">Solaris</a><a href="marki/sollers/">Sollers</a><a href="marki/tenet/">Tenet</a><a href="marki/toyota/">Toyota</a><a href="marki/umo/">UMO</a><a href="marki/volga/">Volga</a><a href="marki/volkswagen/">Volkswagen</a><a href="marki/moskvich/">Москвич</a></div>
+    </div>
+    <div class="dl-catnav__item">
+      <button class="dl-catnav__trigger" type="button">Тип кузова<svg class="dl-catnav__chevron" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+      <div class="dl-catnav__panel"><a href="kuzov/sedan/">Седан</a><a href="kuzov/krossover/">Кроссовер</a><a href="kuzov/miniven/">Минивэн</a><a href="kuzov/universal/">Универсал</a><a href="kuzov/keikar/">Кей-кар</a><a href="kuzov/pikap/">Пикап</a><a href="kuzov/furgon/">Фургон</a></div>
+    </div>
+    <a class="dl-catnav__link" id="dlHowItWorksLink" href="#dlHowItWorks">Аренда и лизинг: как это работает</a>
+  </div>
+</nav>
+<script>
+(function(){
+  var items = document.querySelectorAll('.dl-catnav__item');
+  items.forEach(function(item){
+    var trigger = item.querySelector('.dl-catnav__trigger');
+    if (!trigger) return;
+    trigger.addEventListener('click', function(e){
+      e.stopPropagation();
+      var wasOpen = item.classList.contains('is-open');
+      items.forEach(function(i){ i.classList.remove('is-open'); });
+      if (!wasOpen) item.classList.add('is-open');
+    });
+  });
+  document.addEventListener('click', function(){
+    items.forEach(function(i){ i.classList.remove('is-open'); });
+  });
+  var howLink = document.getElementById('dlHowItWorksLink');
+  if (howLink) {
+    howLink.addEventListener('click', function(){
+      var d = document.getElementById('dlHowItWorks');
+      if (d) d.open = true;
+    });
+  }
+})();
+</script>
+<!-- BRAND_LINKS_END -->
+
 <div class="dl-marquee dl-marquee--top">
   <div class="dl-marquee__track" id="dlMarqueeTrackTop"></div>
 </div>
@@ -1466,7 +1528,7 @@ h1,h2,h3,.dl-num,.dl-btn,.dl-pill,.dl-title{font-family:'Onest',Arial,sans-serif
 
 <section class="dl-seo-block">
   <div class="dl-seo-block__inner">
-    <details class="dl-seo-details">
+    <details class="dl-seo-details" id="dlHowItWorks">
       <summary><h2>Аренда и лизинг авто в Иркутске: как это работает</h2></summary>
       <div class="dl-seo-block__cols">
         <div>
