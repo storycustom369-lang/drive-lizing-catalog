@@ -386,11 +386,13 @@ LIZING_YURLICAM_BODY = f'''<h2>Кому подходит</h2>
 <p>Свяжитесь с менеджером через каталог или мессенджеры — подберём автомобиль и рассчитаем точные условия под ваш ОКВЭД и задачи бизнеса.</p>'''
 
 def write_brand_links(cars, brand_slugs, kuzov_slugs):
-    """Пишет выпадающую навигацию 'Марки авто' / 'Тип кузова' между маркерами
-    в catalog.html и index.html — сразу под шапкой, как категорийное меню
-    у конкурентов, а не отдельным текстовым блоком. Ссылки реальные <a href>,
-    доступны роботу в исходном HTML независимо от того, открыта панель или нет
-    (это обычное меню сайта, а не намеренно спрятанный для робота контент)."""
+    """Пишет ссылки на страницы марок/кузова между маркерами в catalog.html и index.html.
+    index.html: нет строки фильтров на странице, поэтому там отдельное выпадающее меню
+    под шапкой. catalog.html: строка фильтров (#dlTabs) уже есть, поэтому туда пишутся
+    только данные (DL_MARKI_LINKS/DL_KUZOV_LINKS) — сами пилюли строит buildTabs() в JS,
+    вместе с остальными фильтрами, одним рядом. Ссылки реальные <a href> в обоих случаях —
+    для catalog.html они рендерятся в первом же вызове buildTabs() при загрузке страницы,
+    доступны роботу в исходном DOM независимо от открытости панели."""
     brands_present = sorted(brand_slugs.keys())
     kuzov_present = [k for k in KUZOV_LABELS if any((c.get('kuzov') or '').strip() == k for c in cars)]
 
@@ -401,7 +403,7 @@ def write_brand_links(cars, brand_slugs, kuzov_slugs):
         f'<a href="kuzov/{kuzov_slugs[k]}/">{html.escape(KUZOV_LABELS[k])}</a>' for k in kuzov_present
     )
     chevron = '<svg class="dl-catnav__chevron" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>'
-    block = f'''<style>
+    index_block = f'''<style>
 .dl-catnav{{background:var(--surface);border-bottom:1px solid var(--border);position:relative;z-index:30;}}
 .dl-catnav__inner{{max-width:1180px;margin:0 auto;padding:0 24px;display:flex;align-items:center;gap:4px;flex-wrap:wrap;}}
 .dl-catnav__item{{position:relative;}}
@@ -455,7 +457,11 @@ def write_brand_links(cars, brand_slugs, kuzov_slugs):
 }})();
 </script>'''
 
-    for path in (CATALOG_HTML, INDEX_HTML):
+    brand_links_js = json.dumps([{"label": m, "href": f"marki/{brand_slugs[m]}/"} for m in brands_present], ensure_ascii=False)
+    kuzov_links_js = json.dumps([{"label": KUZOV_LABELS[k], "href": f"kuzov/{kuzov_slugs[k]}/"} for k in kuzov_present], ensure_ascii=False)
+    catalog_block = f'<script>var DL_MARKI_LINKS = {brand_links_js};\nvar DL_KUZOV_LINKS = {kuzov_links_js};</script>'
+
+    for path, block in ((CATALOG_HTML, catalog_block), (INDEX_HTML, index_block)):
         text = open(path, encoding='utf-8').read()
         new_text, n = re.subn(
             r'<!-- BRAND_LINKS_START -->.*?<!-- BRAND_LINKS_END -->',
@@ -466,7 +472,7 @@ def write_brand_links(cars, brand_slugs, kuzov_slugs):
             raise RuntimeError(f'Не нашёл <!-- BRAND_LINKS_START/END --> в {os.path.basename(path)}')
         if new_text != text:
             open(path, 'w', encoding='utf-8').write(new_text)
-            print(f"{os.path.basename(path)}: меню на {len(brands_present)} марок и {len(kuzov_present)} типов кузова обновлено")
+            print(f"{os.path.basename(path)}: {len(brands_present)} марок и {len(kuzov_present)} типов кузова обновлено")
 
 def photo_rel(p):
     """Путь к фото для car-page HTML (относительно cars/<slug>/). Абсолютные URL (сторонние стоковые фото) не трогаем — иначе '../../' ломает ссылку."""
