@@ -853,7 +853,7 @@ def render_calculator(car):
         return f'{head}<div class="dl-calc-unavailable">Этот автомобиль уже выдан клиенту и недоступен для оформления. Посмотрите похожие варианты в каталоге.<a class="dl-btn dl-btn--calc-cta" href="../../catalog.html" style="text-decoration:none;display:flex;align-items:center;justify-content:center;">Смотреть каталог {ci("arrow")}</a></div>'
     variants = car.get('variants')
     if not variants:
-        return f'{head}<div class="dl-calc-unavailable">Точная цена уточняется у менеджера. Оставьте заявку, посчитаем индивидуально.<button class="dl-btn dl-btn--calc-cta" type="button" data-art="{car["art"]}" data-car="{title_attr}">Забронировать {ci("arrow")}</button></div>'
+        return f'{head}<div class="dl-calc-unavailable">Точная цена уточняется у менеджера. Оставьте заявку, посчитаем индивидуально.<button class="dl-btn dl-btn--calc-cta" type="button" data-art="{car["art"]}" data-car="{title_attr}">Быстрый заказ {ci("arrow")}</button></div>'
     pv_keys = sorted(variants.keys(), key=int)
     last_variant = variants[pv_keys[-1]]
     term_keys = sorted(last_variant['terms'].keys(), key=int)
@@ -886,7 +886,7 @@ def render_calculator(car):
       <span class="dl-pv-sum-row__ico"><img src="../../images/icons3d/pie-icon.png" alt="" loading="lazy"></span>
       <div><div class="dl-pv-sum" data-out="pv-sum"></div><div class="dl-pv-sum__note">Окончательные условия уточнит менеджер</div></div>
     </div>
-    <button class="dl-btn dl-btn--calc-cta" type="button">Забронировать {ci('arrow')}</button>
+    <button class="dl-btn dl-btn--calc-cta" type="button">Быстрый заказ {ci('arrow')}</button>
   </div>
   <div class="dl-calc-note">
     <b>Вы пока ничего не платите</b>
