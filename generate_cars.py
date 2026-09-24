@@ -820,7 +820,10 @@ def ci(name):
 
 def render_slider(kind, keys, labels_map, suffix):
     n = len(keys)
-    active_i = n - 1
+    # ПВ по умолчанию — минимальный (0%, либо минимальный доступный для этой машины,
+    # если 0% нет — например у лизинговых программ). Срок договора — как раньше,
+    # максимальный (самый низкий платёж), это отдельная настройка пользователя.
+    active_i = 0 if kind == 'pv' else n - 1
     pct = (active_i / (n - 1) * 100) if n > 1 else 0
     labels_html = "".join(
         f'<button type="button" class="dl-slider__label{" is-active" if i == active_i else ""}" data-{kind}="{k}">{labels_map.get(k, k + suffix)}</button>'

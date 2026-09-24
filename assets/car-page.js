@@ -603,12 +603,13 @@
   // --- Cookie-баннер ---
   (function(){
     var KEY = "dl_cookie_consent";
+    var SHOW_DELAY_MS = 120000;
     var banner = document.getElementById("dlCookieBanner");
     var btn = document.getElementById("dlCookieAccept");
     if (!banner || !btn) return;
     var accepted = false;
     try { accepted = !!localStorage.getItem(KEY); } catch(e){}
-    if (!accepted) banner.hidden = false;
+    if (!accepted) setTimeout(function(){ banner.hidden = false; }, SHOW_DELAY_MS);
     btn.addEventListener("click", function(){
       banner.hidden = true;
       try { localStorage.setItem(KEY, "1"); } catch(e){}
