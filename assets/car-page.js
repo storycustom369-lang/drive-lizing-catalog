@@ -160,7 +160,7 @@
       }).catch(function(){
         submitBtn.disabled = false;
         submitBtn.textContent = "Забронировать автомобиль";
-        errorMsg.textContent = "Не получилось отправить. Попробуйте ещё раз или напишите нам в Telegram.";
+        errorMsg.innerHTML = "Не получилось отправить. Попробуйте ещё раз или <a href=\"https://t.me/avtohere38\" target=\"_blank\" rel=\"noopener\">напишите нам в Telegram</a>.";
         errorMsg.hidden = false;
       });
     });
@@ -299,7 +299,7 @@
       }).catch(function(){
         submitBtn.disabled = false;
         submitBtn.textContent = "Отправить заявку";
-        errorMsg.textContent = "Не получилось отправить. Попробуйте ещё раз или напишите нам в Telegram.";
+        errorMsg.innerHTML = "Не получилось отправить. Попробуйте ещё раз или <a href=\"https://t.me/avtohere38\" target=\"_blank\" rel=\"noopener\">напишите нам в Telegram</a>.";
         errorMsg.hidden = false;
       });
     });

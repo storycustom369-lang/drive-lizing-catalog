@@ -1346,7 +1346,7 @@ h1,h2,h3,.dl-num,.dl-btn,.dl-pill,.dl-title{font-family:'Onest',Arial,sans-serif
       }).catch(function(){
         submitBtn.disabled = false;
         submitBtn.textContent = opts.submitLabel || 'Отправить';
-        errorMsg.textContent = 'Не получилось отправить. Попробуйте ещё раз или напишите нам в Telegram.';
+        errorMsg.innerHTML = 'Не получилось отправить. Попробуйте ещё раз или <a href="https://t.me/avtohere38" target="_blank" rel="noopener">напишите нам в Telegram</a>.';
         errorMsg.hidden = false;
       });
     });
