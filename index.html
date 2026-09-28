@@ -21,6 +21,12 @@
 </script>
 <noscript><div><img src="https://mc.yandex.ru/watch/112703003" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
 <!-- /Yandex.Metrika counter -->
+<script>
+  window.dlTrack = function(name, params){
+    try { if (typeof gtag === 'function') gtag('event', name, params || {}); } catch(e){}
+    try { if (typeof ym === 'function') ym(112703003, 'reachGoal', name); } catch(e){}
+  };
+</script>
 <title>Драйв Лизинг · авто в лизинг и аренду с выкупом в Иркутске без банка</title>
 <meta name="description" content="Лизинг и аренда автомобилей с выкупом в Иркутске для физических и юридических лиц. Без первоначального взноса, оформление по 2 документам, 92% одобрений, более 60 автомобилей в наличии.">
 <meta name="keywords" content="лизинг авто иркутск, аренда авто с выкупом иркутск, авто в лизинг без первоначального взноса, лизинг для физических лиц иркутск, такси в лизинг иркутск, аренда авто с выкупом для такси">
@@ -1342,8 +1348,10 @@ h1,h2,h3,.dl-num,.dl-btn,.dl-pill,.dl-title{font-family:'Onest',Arial,sans-serif
           if (!r.ok) return Promise.reject(new Error('webhook_failed'));
         });
       }).then(function(){
+        if (window.dlTrack) dlTrack('lead_submitted', {type: opts.collection || 'unknown'});
         if (opts.onSuccess) opts.onSuccess();
       }).catch(function(){
+        if (window.dlTrack) dlTrack('lead_failed', {type: opts.collection || 'unknown'});
         submitBtn.disabled = false;
         submitBtn.textContent = opts.submitLabel || 'Отправить';
         errorMsg.innerHTML = 'Не получилось отправить. Попробуйте ещё раз или <a href="https://t.me/avtohere38" target="_blank" rel="noopener">напишите нам в Telegram</a>.';
@@ -1363,6 +1371,7 @@ h1,h2,h3,.dl-num,.dl-btn,.dl-pill,.dl-title{font-family:'Onest',Arial,sans-serif
   }
 
   function openBookingForm(car, getSelection){
+    if (window.dlTrack) dlTrack('open_booking_modal', {art: car.art});
     var modal = document.getElementById('dlModal');
     modal.innerHTML = '';
 

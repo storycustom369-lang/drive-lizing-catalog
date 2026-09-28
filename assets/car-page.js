@@ -27,6 +27,7 @@
 
   function openBookingModal(opts){
     if (!modal || !backdrop) return;
+    if (window.dlTrack) dlTrack("open_booking_modal", {art: opts.art});
     modal.innerHTML = "";
 
     var head = document.createElement("div");
@@ -149,6 +150,7 @@
         body: JSON.stringify(payload)
       }).then(function(r){
         if (!r.ok) return Promise.reject(new Error("webhook_failed"));
+        if (window.dlTrack) dlTrack("lead_submitted", {type: "booking", art: opts.art});
         modal.innerHTML = "";
         modal.appendChild(head);
         var box = document.createElement("div");
@@ -158,6 +160,7 @@
           '<div class="dl-success__text">Мы получили бронь на ' + opts.carTitle + '. Менеджер свяжется с вами в ближайшее время, чтобы подтвердить условия.</div>';
         modal.appendChild(box);
       }).catch(function(){
+        if (window.dlTrack) dlTrack("lead_failed", {type: "booking", art: opts.art});
         submitBtn.disabled = false;
         submitBtn.textContent = "Забронировать автомобиль";
         errorMsg.innerHTML = "Не получилось отправить. Попробуйте ещё раз или <a href=\"https://t.me/avtohere38\" target=\"_blank\" rel=\"noopener\">напишите нам в Telegram</a>.";
@@ -172,6 +175,7 @@
   // --- Модалка "Подобрать автомобиль" (не привязана к конкретной машине) ---
   function openPickCarModal(){
     if (!modal || !backdrop) return;
+    if (window.dlTrack) dlTrack("open_pick_modal");
     modal.innerHTML = "";
 
     var head = document.createElement("div");
@@ -288,6 +292,7 @@
         body: JSON.stringify(payload)
       }).then(function(r){
         if (!r.ok) return Promise.reject(new Error("webhook_failed"));
+        if (window.dlTrack) dlTrack("lead_submitted", {type: "pick_request"});
         modal.innerHTML = "";
         modal.appendChild(head);
         var box = document.createElement("div");
@@ -297,6 +302,7 @@
           '<div class="dl-success__text">Менеджер подберёт варианты под ваш запрос и свяжется с вами в ближайшее время.</div>';
         modal.appendChild(box);
       }).catch(function(){
+        if (window.dlTrack) dlTrack("lead_failed", {type: "pick_request"});
         submitBtn.disabled = false;
         submitBtn.textContent = "Отправить заявку";
         errorMsg.innerHTML = "Не получилось отправить. Попробуйте ещё раз или <a href=\"https://t.me/avtohere38\" target=\"_blank\" rel=\"noopener\">напишите нам в Telegram</a>.";

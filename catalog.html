@@ -21,6 +21,12 @@
 </script>
 <noscript><div><img src="https://mc.yandex.ru/watch/112703003" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
 <!-- /Yandex.Metrika counter -->
+<script>
+  window.dlTrack = function(name, params){
+    try { if (typeof gtag === 'function') gtag('event', name, params || {}); } catch(e){}
+    try { if (typeof ym === 'function') ym(112703003, 'reachGoal', name); } catch(e){}
+  };
+</script>
 <title>Каталог автомобилей в лизинг · Драйв Лизинг Иркутск</title>
 <meta name="description" content="Полный каталог автомобилей в лизинг и аренду с выкупом в Иркутске. Калькулятор платежа в сутки, неделю и месяц. Новые и с пробегом, без банка, по 2 документам.">
 <meta name="keywords" content="каталог авто в лизинг, авто в аренду с выкупом иркутск, лизинг физическим лицам, автомобили с пробегом в лизинг, новые авто в лизинг иркутск">
@@ -1420,8 +1426,10 @@ var DL_KUZOV_LINKS = [{"label": "Седан", "href": "kuzov/sedan/"}, {"label":
           if (!r.ok) return Promise.reject(new Error('webhook_failed'));
         });
       }).then(function(){
+        if (window.dlTrack) dlTrack('lead_submitted', {type: opts.collection || 'unknown'});
         if (opts.onSuccess) opts.onSuccess();
       }).catch(function(){
+        if (window.dlTrack) dlTrack('lead_failed', {type: opts.collection || 'unknown'});
         submitBtn.disabled = false;
         submitBtn.textContent = opts.submitLabel || 'Отправить';
         errorMsg.innerHTML = 'Не получилось отправить. Попробуйте ещё раз или <a href="https://t.me/avtohere38" target="_blank" rel="noopener">напишите нам в Telegram</a>.';
@@ -1441,6 +1449,7 @@ var DL_KUZOV_LINKS = [{"label": "Седан", "href": "kuzov/sedan/"}, {"label":
   }
 
   function openBookingForm(car, getSelection){
+    if (window.dlTrack) dlTrack('open_booking_modal', {art: car.art});
     var modal = document.getElementById('dlModal');
     modal.innerHTML = '';
 
@@ -1520,6 +1529,7 @@ var DL_KUZOV_LINKS = [{"label": "Седан", "href": "kuzov/sedan/"}, {"label":
     var backdrop = document.getElementById('dlModalBackdrop');
     var modal = document.getElementById('dlModal');
     if (!backdrop || !modal) return;
+    if (window.dlTrack) dlTrack('open_pick_modal');
     modal.innerHTML = '';
     backdrop.hidden = false;
     document.body.style.overflow = 'hidden';

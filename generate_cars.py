@@ -15,6 +15,38 @@ CARS_DIR = os.path.join(BASE_DIR, "cars")
 SITE_URL = "https://driveleasing38.ru"
 WORKER_URL = "https://odd-meadow-4208.litaufit.workers.dev"
 
+# Аналитика (GA4 + Яндекс.Метрика) — раньше стояла только на index.html и catalog.html,
+# страницы машин/марок/кузовов/статей (то, что реально приводит SEO-трафик) не считались
+# вообще. dlTrack — общий хелпер для событий (открытие модалки, успешная/неудачная заявка),
+# чтобы car-page.js мог слать одно и то же событие сразу в GA4 и в Метрику.
+ANALYTICS_HEAD = '''<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-9CF3B6E9EP"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-9CF3B6E9EP');
+</script>
+<!-- Yandex.Metrika counter -->
+<script type="text/javascript">
+    (function(m,e,t,r,i,k,a){
+        m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+        m[i].l=1*new Date();
+        for (var j = 0; j < document.scripts.length; j++) {if (document.scripts[j].src === r) { return; }}
+        k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)
+    })(window, document,'script','https://mc.yandex.ru/metrika/tag.js?id=112703003', 'ym');
+
+    ym(112703003, 'init', {ssr:true, webvisor:true, clickmap:true, ecommerce:"dataLayer", referrer: document.referrer, url: location.href, accurateTrackBounce:true, trackLinks:true});
+</script>
+<noscript><div><img src="https://mc.yandex.ru/watch/112703003" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+<!-- /Yandex.Metrika counter -->
+<script>
+  window.dlTrack = function(name, params){
+    try { if (typeof gtag === 'function') gtag('event', name, params || {}); } catch(e){}
+    try { if (typeof ym === 'function') ym(112703003, 'reachGoal', name); } catch(e){}
+  };
+</script>'''
+
 TRANSLIT = {
     'а':'a','б':'b','в':'v','г':'g','д':'d','е':'e','ё':'e','ж':'zh','з':'z','и':'i','й':'i',
     'к':'k','л':'l','м':'m','н':'n','о':'o','п':'p','р':'r','с':'s','т':'t','у':'u','ф':'f',
@@ -183,6 +215,7 @@ LISTING_PAGE_TEMPLATE = '''<!DOCTYPE html>
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+{analytics_head}
 <title>{title_tag}</title>
 <meta name="description" content="{meta_desc}">
 <link rel="canonical" href="{canonical}">
@@ -263,6 +296,7 @@ def render_listing_page(h1, title_tag, meta_desc, intro, crumb_name, canonical, 
         total=total,
         footer=FOOTER_HTML,
         cookie_banner=COOKIE_BANNER_HTML,
+        analytics_head=ANALYTICS_HEAD,
     )
 
 CONTENT_PAGE_TEMPLATE = '''<!DOCTYPE html>
@@ -270,6 +304,7 @@ CONTENT_PAGE_TEMPLATE = '''<!DOCTYPE html>
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+{analytics_head}
 <title>{title_tag}</title>
 <meta name="description" content="{meta_desc}">
 <link rel="canonical" href="{canonical}">
@@ -343,6 +378,7 @@ def render_content_page(h1, title_tag, meta_desc, lead, body, crumb_name, canoni
         body=body,
         footer=FOOTER_HTML,
         cookie_banner=COOKIE_BANNER_HTML,
+        analytics_head=ANALYTICS_HEAD,
     )
 
 COEFF_TABLE = '''<table>
@@ -1097,6 +1133,7 @@ PAGE_TEMPLATE = '''<!DOCTYPE html>
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+{analytics_head}
 <title>{title_tag}</title>
 <meta name="description" content="{meta_desc}">
 <link rel="canonical" href="{canonical}">
@@ -1277,6 +1314,7 @@ def main():
             art=html.escape(c['art']),
             footer=FOOTER_HTML,
             cookie_banner=COOKIE_BANNER_HTML,
+            analytics_head=ANALYTICS_HEAD,
         )
         with open(os.path.join(outdir, "index.html"), "w", encoding="utf-8") as f:
             f.write(html_out)
