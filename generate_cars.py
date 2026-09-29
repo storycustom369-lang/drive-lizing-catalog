@@ -340,13 +340,28 @@ CONTENT_PAGE_TEMPLATE = '''<!DOCTYPE html>
     <span>{crumb_name}</span>
   </nav>
 
-  <div class="dl-content-page">
-    <h1>{h1}</h1>
-    <p class="dl-content-page__lead">{lead}</p>
-    {body}
-    <div class="dl-content-page__cta">
-      <a class="dl-btn" href="../../catalog.html">Смотреть каталог автомобилей →</a>
+  <div class="dl-content-page-grid">
+    <div class="dl-content-page">
+      <h1>{h1}</h1>
+      <p class="dl-content-page__lead">{lead}</p>
+      {body}
+      <div class="dl-content-page__cta">
+        <a class="dl-btn" href="../../catalog.html">Смотреть каталог автомобилей →</a>
+      </div>
     </div>
+    <aside class="dl-content-page__sidebar">
+      <div class="dl-sidebar-promo">
+        <div class="dl-sidebar-promo__eyebrow">Драйв Лизинг</div>
+        <div class="dl-sidebar-promo__text">Более 60 авто<br><span>в наличии</span></div>
+        <img src="../../images/icons3d/footer-promo-car.png" alt="Автомобили Драйв Лизинг" class="dl-sidebar-promo__img" loading="lazy">
+        <ul class="dl-sidebar-promo__list">
+          <li>Без банка</li>
+          <li>Взнос от 0%</li>
+          <li>По 2 документам</li>
+        </ul>
+        <a class="dl-sidebar-promo__btn" href="../../catalog.html">Смотреть каталог →</a>
+      </div>
+    </aside>
   </div>
 </div>
 
