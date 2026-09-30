@@ -350,17 +350,9 @@ CONTENT_PAGE_TEMPLATE = '''<!DOCTYPE html>
       </div>
     </div>
     <aside class="dl-content-page__sidebar">
-      <div class="dl-sidebar-promo">
-        <div class="dl-sidebar-promo__eyebrow">Драйв Лизинг</div>
-        <div class="dl-sidebar-promo__text">Более 60 авто<br><span>в наличии</span></div>
-        <img src="../../images/icons3d/footer-promo-car.png" alt="Автомобили Драйв Лизинг" class="dl-sidebar-promo__img" loading="lazy">
-        <ul class="dl-sidebar-promo__list">
-          <li>Без банка</li>
-          <li>Взнос от 0%</li>
-          <li>По 2 документам</li>
-        </ul>
-        <a class="dl-sidebar-promo__btn" href="../../catalog.html">Смотреть каталог →</a>
-      </div>
+      <a class="dl-sidebar-banner" href="../../catalog.html">
+        <img src="../../images/promo/sidebar-banner.webp" alt="Более 60 авто в наличии — без банка, взнос от 0%, по 2 документам. Смотреть каталог" width="600" height="791" loading="lazy">
+      </a>
     </aside>
   </div>
 </div>
