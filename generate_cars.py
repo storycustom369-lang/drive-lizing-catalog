@@ -458,13 +458,13 @@ def render_promo_car_card(car, slug):
     else:
         photo_src = photo_rel(car['photos'][0] if car.get('photos') else '')
     title = f"{car['marka'].strip()} {car['model'].strip()} ({car.get('year')})" if car.get('year') else f"{car['marka'].strip()} {car['model'].strip()}"
-    return f'''<a class="dl-banner-carousel__slide dl-banner-card" href="../../cars/{slug}/">
+    return f'''<div class="dl-banner-carousel__slide dl-banner-card">
       <div class="dl-banner-card__title">{html.escape(title)}</div>
       <div class="dl-banner-card__photo"><img src="{photo_src}" alt="" loading="lazy"></div>
       <div class="dl-banner-card__specs">{specs}</div>
       <div class="dl-banner-card__price">от <b>{price_str} ₽</b> /день</div>
-      <div class="dl-banner-card__cta">Посмотреть →</div>
-    </a>'''
+      <a class="dl-banner-card__cta" href="../../cars/{slug}/">Посмотреть →</a>
+    </div>'''
 
 TELEGRAM_ICON_SVG = '<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="12" fill="#29A9EB"/><path d="M17.53 7.2L15.4 17.6c-.16.72-.58.9-1.18.56l-3.26-2.4-1.57 1.51c-.17.18-.32.33-.66.33l.24-3.36 6.1-5.51c.27-.24-.06-.37-.41-.13l-7.54 4.75-3.25-1.02c-.7-.22-.72-.7.15-1.04l12.7-4.9c.59-.22 1.1.14.9 1.05z" fill="#fff"/></svg>'
 
