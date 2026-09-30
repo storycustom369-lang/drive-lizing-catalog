@@ -387,8 +387,7 @@ h1,h2,h3,.dl-num,.dl-btn,.dl-pill,.dl-title{font-family:'Onest',Arial,sans-serif
 .dl-content-page-grid{display:grid;grid-template-columns:1fr 300px;gap:32px;align-items:start;}
 .dl-content-page{max-width:760px;margin:16px 0 56px;}
 .dl-content-page__sidebar{position:sticky;top:104px;}
-.dl-banner-carousel{position:relative;display:block;border-radius:20px;overflow:hidden;background:#fff;aspect-ratio:600/833;box-shadow:0 1px 2px rgba(15,30,59,.04),0 8px 20px rgba(15,30,59,.05);transition:box-shadow .15s,transform .15s;}
-.dl-banner-carousel:hover{box-shadow:0 12px 28px rgba(15,30,59,.12);transform:translateY(-2px);}
+.dl-banner-carousel{position:relative;display:block;border-radius:20px;overflow:hidden;background:#fff;aspect-ratio:600/833;box-shadow:0 1px 2px rgba(15,30,59,.04),0 8px 20px rgba(15,30,59,.05);}
 .dl-banner-carousel__slide{position:absolute;inset:0;display:block;opacity:0;pointer-events:none;transition:opacity .6s ease;}
 .dl-banner-carousel__slide.is-active{opacity:1;pointer-events:auto;}
 .dl-banner-carousel__slide > img{width:100%;height:100%;object-fit:contain;display:block;}
@@ -403,7 +402,27 @@ h1,h2,h3,.dl-num,.dl-btn,.dl-pill,.dl-title{font-family:'Onest',Arial,sans-serif
 .dl-banner-card__spec span b{display:block;font-size:12.5px;color:#0F1E2E;font-weight:700;}
 .dl-banner-card__price{font-family:'Onest',Arial,sans-serif;font-size:14px;color:var(--navy-soft);margin:0 0 12px;flex:none;}
 .dl-banner-card__price b{font-size:21px;color:var(--blue);font-weight:800;}
-.dl-banner-card__cta{display:block;text-align:center;background:var(--blue);color:#fff;font-family:'Onest',Arial,sans-serif;font-weight:700;font-size:13.5px;padding:12px;border-radius:12px;flex:none;}
+.dl-banner-card__cta{display:block;text-align:center;background:var(--blue);color:#fff;font-family:'Onest',Arial,sans-serif;font-weight:700;font-size:13.5px;padding:12px;border-radius:12px;flex:none;transition:background .15s;}
+.dl-banner-card__cta:hover{background:var(--blue-dark);}
+.dl-banner-subscribe{display:flex;flex-direction:column;background:linear-gradient(135deg,#F7F9FF 0%,#EAF1FF 100%);padding:26px 22px;box-sizing:border-box;}
+.dl-banner-subscribe__title{font-family:'Onest',Arial,sans-serif;font-size:23px;font-weight:800;color:#0F1E2E;line-height:1.28;margin:0 0 14px;}
+.dl-banner-subscribe__title span{display:block;color:var(--blue);}
+.dl-banner-subscribe__text{font-size:14px;color:var(--navy-soft);line-height:1.6;margin:0 0 24px;}
+.dl-banner-subscribe__btn{display:flex;align-items:center;gap:10px;padding:14px 16px;border-radius:14px;text-decoration:none;color:#fff;font-family:'Onest',Arial,sans-serif;font-weight:700;font-size:14px;margin-bottom:12px;transition:filter .15s;}
+.dl-banner-subscribe__btn:hover{filter:brightness(.92);}
+.dl-banner-subscribe__btn--max{background:linear-gradient(90deg,#5B3DF5 0%,#2F6FED 100%);}
+.dl-banner-subscribe__btn--tg{background:linear-gradient(90deg,#2F9BED 0%,#2F6FED 100%);}
+.dl-banner-subscribe__btn-ico{width:28px;height:28px;flex:none;border-radius:8px;overflow:hidden;display:flex;align-items:center;justify-content:center;background:rgba(255,255,255,.2);}
+.dl-banner-subscribe__btn-ico img,.dl-banner-subscribe__btn-ico svg{width:100%;height:100%;}
+.dl-banner-subscribe__btn span:nth-child(2){flex:1;}
+.dl-banner-subscribe__note{display:flex;align-items:center;gap:8px;font-size:12.5px;color:var(--muted);margin-top:auto;}
+.dl-banner-subscribe__note svg{width:18px;height:18px;flex:none;}
+.dl-related-articles{margin-top:16px;}
+.dl-related-articles__heading{font-family:'Onest',Arial,sans-serif;font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin:0 0 10px;}
+.dl-related-articles__item{display:block;background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:14px 16px;margin-bottom:10px;text-decoration:none;transition:border-color .15s,box-shadow .15s;}
+.dl-related-articles__item:hover{border-color:var(--border-strong);box-shadow:0 4px 14px rgba(15,30,59,.06);}
+.dl-related-articles__title{display:block;font-family:'Onest',Arial,sans-serif;font-size:14px;font-weight:700;color:#0F1E2E;line-height:1.35;margin-bottom:5px;}
+.dl-related-articles__excerpt{display:block;font-size:12.5px;color:var(--navy-soft);line-height:1.5;}
 @media (max-width:900px){
   .dl-content-page-grid{grid-template-columns:1fr;}
   .dl-content-page__sidebar{position:static;order:2;max-width:360px;}

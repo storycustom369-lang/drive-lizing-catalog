@@ -353,6 +353,7 @@ CONTENT_PAGE_TEMPLATE = '''<!DOCTYPE html>
       <div class="dl-banner-carousel" id="dlBannerCarousel">
         {banner_slides}
       </div>
+      {related_articles}
     </aside>
   </div>
 </div>
@@ -386,8 +387,11 @@ CONTENT_PAGE_TEMPLATE = '''<!DOCTYPE html>
 # устаревают), а не как нарезанные картинки — это и убирает разнобой в размерах
 # между слайдами (все карточки — один и тот же CSS-макет с fixed aspect-ratio),
 # и позволяет добавлять сколько угодно банков одной строкой в BANNER_CAR_ARTS.
-BANNER_CAR_ARTS = ['ДЛ-001', 'ДЛ-002', 'ДЛ-062', 'ДЛ-044', 'ДЛ-010', 'ДЛ-018', 'ДЛ-025', 'ДЛ-040', 'ДЛ-046']
+BANNER_CAR_ARTS = ['ДЛ-001', 'ДЛ-002', 'ДЛ-062', 'ДЛ-044', 'ДЛ-039', 'ДЛ-040', 'ДЛ-043', 'ДЛ-045']
 BANNER_SPEC_ICONS = [('speedometer', 'Пробег', 'mileage'), ('car2', 'Кузов', 'body'), ('gear', 'Двигатель', 'engine'), ('droplet', 'Топливо', None)]
+# Тип топлива не хранится в CARS (в spec его нет) — по умолчанию бензин, кроме
+# дизельных исключений (Great Wall Poer — дизельный пикап, так и на баннере клиента).
+BANNER_DIESEL_ARTS = {'ДЛ-039'}
 
 def min_day_price(car):
     variants = car.get('variants')
@@ -397,17 +401,22 @@ def min_day_price(car):
     max_term = sorted(variants[max_pv]['terms'].keys(), key=int)[-1]
     return variants[max_pv]['terms'][max_term]['day']
 
-# Для этих 4 машин в карусели используется фото из присланного баннера (нарезано и
-# подчищено из "новый баннер.png"), а не реальное фото машины из каталога — клиент
-# попросил взять фото именно из своего файла баннеров.
-BANNER_PHOTO_SLUGS = {'chery-tiggo-4-dl-001', 'skoda-rapid-dl-002', 'omoda-c5-dl-062', 'belgee-h70-dl-044'}
+# Для всех машин в карусели используется фото из присланных клиентом баннеров
+# (нарезано и подчищено из "новый баннер.png" / "баннер 6-9.png"), а не реальное
+# фото машины из каталога — клиент попросил взять фото именно из файлов баннеров.
+BANNER_PHOTO_SLUGS = {
+    'chery-tiggo-4-dl-001', 'skoda-rapid-dl-002', 'omoda-c5-dl-062', 'belgee-h70-dl-044',
+    'great-wall-poer-dl-039', 'hyundai-creta-dl-040', 'honda-n-box-dl-043', 'toyota-tank-dl-045',
+}
 
 def render_promo_car_card(car, slug):
     spec_d = parse_spec(car.get('spec'))
     price = min_day_price(car)
     price_str = f"{price:,}".replace(',', ' ') if price else '—'
     def spec_val(key):
-        return "Бензин" if key is None else (spec_d.get(key) or "—")
+        if key is None:
+            return "Дизель" if car['art'] in BANNER_DIESEL_ARTS else "Бензин"
+        return spec_d.get(key) or "—"
     specs = "".join(
         f'<div class="dl-banner-card__spec"><img src="../../images/icons3d/{icon}.png" alt="" loading="lazy">'
         f'<span>{html.escape(label)}<b>{html.escape(spec_val(key))}</b></span></div>'
@@ -426,6 +435,28 @@ def render_promo_car_card(car, slug):
       <div class="dl-banner-card__cta">Посмотреть →</div>
     </a>'''
 
+TELEGRAM_ICON_SVG = '<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="12" fill="#29A9EB"/><path d="M17.53 7.2L15.4 17.6c-.16.72-.58.9-1.18.56l-3.26-2.4-1.57 1.51c-.17.18-.32.33-.66.33l.24-3.36 6.1-5.51c.27-.24-.06-.37-.41-.13l-7.54 4.75-3.25-1.02c-.7-.22-.72-.7.15-1.04l12.7-4.9c.59-.22 1.1.14.9 1.05z" fill="#fff"/></svg>'
+
+def render_subscribe_slide():
+    return f'''<div class="dl-banner-carousel__slide dl-banner-subscribe">
+      <div class="dl-banner-subscribe__title">Узнавайте первыми<span>о новых предложениях</span></div>
+      <p class="dl-banner-subscribe__text">В наших каналах публикуем выгодные автомобили, актуальные предложения и полезные советы.</p>
+      <a class="dl-banner-subscribe__btn dl-banner-subscribe__btn--max" href="{MAX_CHANNEL_URL}" target="_blank" rel="noopener">
+        <span class="dl-banner-subscribe__btn-ico"><img src="../../images/icons3d/max-badge.png" alt=""></span>
+        <span>Перейти в MAX</span>
+        <span class="dl-banner-subscribe__btn-arrow">→</span>
+      </a>
+      <a class="dl-banner-subscribe__btn dl-banner-subscribe__btn--tg" href="{TG_CHANNEL_URL}" target="_blank" rel="noopener">
+        <span class="dl-banner-subscribe__btn-ico">{TELEGRAM_ICON_SVG}</span>
+        <span>Перейти в Telegram</span>
+        <span class="dl-banner-subscribe__btn-arrow">→</span>
+      </a>
+      <div class="dl-banner-subscribe__note">
+        <svg viewBox="0 0 24 24" fill="none"><path d="M17 20v-1.5a3.5 3.5 0 00-3.5-3.5h-5A3.5 3.5 0 005 18.5V20M9.5 12a3 3 0 100-6 3 3 0 000 6zM19 20v-1.5a3 3 0 00-2-2.83M15 4.17a3 3 0 010 5.66" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        Более 300 человек уже с нами
+      </div>
+    </div>'''
+
 def render_banner_slides(cars, slugs_by_art):
     by_art = {c['art']: c for c in cars}
     generic = ('<a class="dl-banner-carousel__slide is-active" href="../../catalog.html">'
@@ -434,9 +465,22 @@ def render_banner_slides(cars, slugs_by_art):
         render_promo_car_card(by_art[art], slugs_by_art[art])
         for art in BANNER_CAR_ARTS if art in by_art
     )
-    return generic + cards
+    return generic + cards + render_subscribe_slide()
 
-def render_content_page(h1, title_tag, meta_desc, lead, body, crumb_name, canonical, banner_slides):
+def render_related_articles(current_slug):
+    others = [a for a in BLOG_ARTICLES if a[0] != current_slug][:3]
+    if not others:
+        return ''
+    items = ''.join(
+        f'<a class="dl-related-articles__item" href="../{slug}/">'
+        f'<span class="dl-related-articles__title">{html.escape(title)}</span>'
+        f'<span class="dl-related-articles__excerpt">{html.escape(excerpt)}</span>'
+        f'</a>'
+        for slug, title, excerpt, date in others
+    )
+    return f'<div class="dl-related-articles"><div class="dl-related-articles__heading">Другие статьи</div>{items}</div>'
+
+def render_content_page(h1, title_tag, meta_desc, lead, body, crumb_name, canonical, banner_slides, slug):
     breadcrumb_schema = json.dumps({
         "@context": "https://schema.org",
         "@type": "BreadcrumbList",
@@ -458,6 +502,7 @@ def render_content_page(h1, title_tag, meta_desc, lead, body, crumb_name, canoni
         cookie_banner=COOKIE_BANNER_HTML,
         analytics_head=ANALYTICS_HEAD,
         banner_slides=banner_slides,
+        related_articles=render_related_articles(slug),
     )
 
 COEFF_TABLE = '''<table>
@@ -1673,7 +1718,7 @@ def main():
         outdir = os.path.join(BASE_DIR, slug)
         os.makedirs(outdir, exist_ok=True)
         canonical = f"{SITE_URL}/{slug}/"
-        html_out = render_content_page(h1, title_tag, meta_desc, lead, body, crumb_name, canonical, banner_slides)
+        html_out = render_content_page(h1, title_tag, meta_desc, lead, body, crumb_name, canonical, banner_slides, slug)
         with open(os.path.join(outdir, "index.html"), "w", encoding="utf-8") as f:
             f.write(html_out)
         listing_urls.append(canonical)
