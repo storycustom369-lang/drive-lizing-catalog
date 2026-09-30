@@ -380,26 +380,55 @@ CONTENT_PAGE_TEMPLATE = '''<!DOCTYPE html>
 </html>
 '''
 
-# Баннеры в карусели сайдбара статей — общий "более 60 авто" + 4 конкретных
-# автомобиля (картинки нарезаны из "баннер 2-5.png", цифры на них реальные,
-# сверены с CARS: пробег и цена/день совпадают день в день с чери/шкодой/омодой/белджи).
-BANNER_CAROUSEL_ITEMS = [
-    ('sidebar-banner.webp', '../../catalog.html', 'Более 60 авто в наличии — без банка, взнос от 0%, по 2 документам. Смотреть каталог'),
-    ('sidebar-banner-chery-tiggo-4-dl-001.webp', '../../cars/chery-tiggo-4-dl-001/', 'Chery Tiggo 4 (2022) от 1 973 ₽/день — подробнее и расчёт'),
-    ('sidebar-banner-skoda-rapid-dl-002.webp', '../../cars/skoda-rapid-dl-002/', 'Skoda Rapid (2020) от 1 644 ₽/день — подробнее и расчёт'),
-    ('sidebar-banner-omoda-c5-dl-062.webp', '../../cars/omoda-c5-dl-062/', 'Omoda C5 (2026) от 2 317 ₽/день — подробнее и расчёт'),
-    ('sidebar-banner-belgee-h70-dl-044.webp', '../../cars/belgee-h70-dl-044/', 'Belgee X70 (2026) от 2 481 ₽/день — подробнее и расчёт'),
-]
+# Карусель баннеров в сайдбаре статей: 1 общий имиджевый слайд (готовая картинка,
+# "более 60 авто") + N слайдов под конкретные машины. Машины рендерятся как HTML-
+# карточки из живых данных CARS (фото/пробег/цена/день всегда точные, никогда не
+# устаревают), а не как нарезанные картинки — это и убирает разнобой в размерах
+# между слайдами (все карточки — один и тот же CSS-макет с fixed aspect-ratio),
+# и позволяет добавлять сколько угодно банков одной строкой в BANNER_CAR_ARTS.
+BANNER_CAR_ARTS = ['ДЛ-001', 'ДЛ-002', 'ДЛ-062', 'ДЛ-044', 'ДЛ-010', 'ДЛ-018', 'ДЛ-025', 'ДЛ-040', 'ДЛ-046']
+BANNER_SPEC_ICONS = [('speedometer', 'Пробег', 'mileage'), ('car2', 'Кузов', 'body'), ('gear', 'Двигатель', 'engine'), ('droplet', 'Топливо', None)]
 
-def render_banner_slides():
-    return "".join(
-        f'<a class="dl-banner-carousel__slide{" is-active" if i == 0 else ""}" href="{href}">'
-        f'<img src="../../images/promo/{img}" alt="{html.escape(alt)}" loading="lazy">'
-        f'</a>'
-        for i, (img, href, alt) in enumerate(BANNER_CAROUSEL_ITEMS)
+def min_day_price(car):
+    variants = car.get('variants')
+    if not variants:
+        return None
+    max_pv = sorted(variants.keys(), key=int)[-1]
+    max_term = sorted(variants[max_pv]['terms'].keys(), key=int)[-1]
+    return variants[max_pv]['terms'][max_term]['day']
+
+def render_promo_car_card(car, slug):
+    spec_d = parse_spec(car.get('spec'))
+    price = min_day_price(car)
+    price_str = f"{price:,}".replace(',', ' ') if price else '—'
+    def spec_val(key):
+        return "Бензин" if key is None else (spec_d.get(key) or "—")
+    specs = "".join(
+        f'<div class="dl-banner-card__spec"><img src="../../images/icons3d/{icon}.png" alt="" loading="lazy">'
+        f'<span>{html.escape(label)}<b>{html.escape(spec_val(key))}</b></span></div>'
+        for icon, label, key in BANNER_SPEC_ICONS
     )
+    photo = car['photos'][0] if car.get('photos') else ''
+    title = f"{car['marka'].strip()} {car['model'].strip()} ({car.get('year')})" if car.get('year') else f"{car['marka'].strip()} {car['model'].strip()}"
+    return f'''<a class="dl-banner-carousel__slide dl-banner-card" href="../../cars/{slug}/">
+      <div class="dl-banner-card__title">{html.escape(title)}</div>
+      <div class="dl-banner-card__photo"><img src="{photo_rel(photo)}" alt="" loading="lazy"></div>
+      <div class="dl-banner-card__specs">{specs}</div>
+      <div class="dl-banner-card__price">от <b>{price_str} ₽</b> /день</div>
+      <div class="dl-banner-card__cta">Посмотреть →</div>
+    </a>'''
 
-def render_content_page(h1, title_tag, meta_desc, lead, body, crumb_name, canonical):
+def render_banner_slides(cars, slugs_by_art):
+    by_art = {c['art']: c for c in cars}
+    generic = ('<a class="dl-banner-carousel__slide is-active" href="../../catalog.html">'
+               '<img src="../../images/promo/sidebar-banner.webp" alt="Более 60 авто в наличии — без банка, взнос от 0%, по 2 документам. Смотреть каталог" loading="lazy"></a>')
+    cards = "".join(
+        render_promo_car_card(by_art[art], slugs_by_art[art])
+        for art in BANNER_CAR_ARTS if art in by_art
+    )
+    return generic + cards
+
+def render_content_page(h1, title_tag, meta_desc, lead, body, crumb_name, canonical, banner_slides):
     breadcrumb_schema = json.dumps({
         "@context": "https://schema.org",
         "@type": "BreadcrumbList",
@@ -420,7 +449,7 @@ def render_content_page(h1, title_tag, meta_desc, lead, body, crumb_name, canoni
         footer=FOOTER_HTML,
         cookie_banner=COOKIE_BANNER_HTML,
         analytics_head=ANALYTICS_HEAD,
-        banner_slides=render_banner_slides(),
+        banner_slides=banner_slides,
     )
 
 COEFF_TABLE = '''<table>
@@ -1631,11 +1660,12 @@ def main():
          'Разбираем на цифрах, как устроена аренда с выкупом, чем она отличается от автокредита и кому что выгоднее.',
          render_blog_list(BLOG_ARTICLES)),
     ]
+    banner_slides = render_banner_slides(cars, slugs_by_art)
     for slug, crumb_name, h1, title_tag, meta_desc, lead, body in content_pages:
         outdir = os.path.join(BASE_DIR, slug)
         os.makedirs(outdir, exist_ok=True)
         canonical = f"{SITE_URL}/{slug}/"
-        html_out = render_content_page(h1, title_tag, meta_desc, lead, body, crumb_name, canonical)
+        html_out = render_content_page(h1, title_tag, meta_desc, lead, body, crumb_name, canonical, banner_slides)
         with open(os.path.join(outdir, "index.html"), "w", encoding="utf-8") as f:
             f.write(html_out)
         listing_urls.append(canonical)
