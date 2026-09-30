@@ -442,59 +442,31 @@ CONTENT_PAGE_TEMPLATE = '''<!DOCTYPE html>
 '''
 
 # Карусель баннеров в сайдбаре статей: 1 общий имиджевый слайд (готовая картинка,
-# "более 60 авто") + N слайдов под конкретные машины. Машины рендерятся как HTML-
-# карточки из живых данных CARS (фото/пробег/цена/день всегда точные, никогда не
-# устаревают), а не как нарезанные картинки — это и убирает разнобой в размерах
-# между слайдами (все карточки — один и тот же CSS-макет с fixed aspect-ratio),
-# и позволяет добавлять сколько угодно банков одной строкой в BANNER_CAR_ARTS.
+# "более 60 авто") + N слайдов под конкретные машины + слайд подписки. Машины —
+# это готовые карточки клиента целиком (нарезаны один в один из "новый баннер.png"
+# / "баннер 6-9.png": фото+характеристики+цена+кнопка уже отрисованы дизайнером),
+# а не HTML-реконструкция — клиент попросил просто вставлять карточки как есть.
+# Кликабельна только кнопка "Посмотреть →" внутри картинки — поверх неё лежит
+# прозрачная ссылка, координаты которой (в % от размера картинки) сняты один раз
+# при нарезке в images/promo/card-*.webp и захардкожены в BANNER_CARD_BTN_PCT.
 BANNER_CAR_ARTS = ['ДЛ-001', 'ДЛ-002', 'ДЛ-062', 'ДЛ-044', 'ДЛ-039', 'ДЛ-040', 'ДЛ-043', 'ДЛ-045']
-BANNER_SPEC_ICONS = [('speedometer', 'Пробег', 'mileage'), ('car2', 'Кузов', 'body'), ('gear', 'Двигатель', 'engine'), ('droplet', 'Топливо', None)]
-# Тип топлива не хранится в CARS (в spec его нет) — по умолчанию бензин, кроме
-# дизельных исключений (Great Wall Poer — дизельный пикап, так и на баннере клиента).
-BANNER_DIESEL_ARTS = {'ДЛ-039'}
-
-def min_day_price(car):
-    variants = car.get('variants')
-    if not variants:
-        return None
-    max_pv = sorted(variants.keys(), key=int)[-1]
-    max_term = sorted(variants[max_pv]['terms'].keys(), key=int)[-1]
-    return variants[max_pv]['terms'][max_term]['day']
-
-# Для всех машин в карусели используется фото из присланных клиентом баннеров
-# (нарезано и подчищено из "новый баннер.png" / "баннер 6-9.png"), а не реальное
-# фото машины из каталога — клиент попросил взять фото именно из файлов баннеров.
-BANNER_PHOTO_SLUGS = {
-    'chery-tiggo-4-dl-001', 'skoda-rapid-dl-002', 'omoda-c5-dl-062', 'belgee-h70-dl-044',
-    'great-wall-poer-dl-039', 'hyundai-creta-dl-040', 'honda-n-box-dl-043', 'toyota-tank-dl-045',
+BANNER_CARD_BTN_PCT = {
+    'chery-tiggo-4-dl-001': (8.79, 89.12, 83.15, 8.76),
+    'skoda-rapid-dl-002': (8.24, 89.12, 83.15, 8.76),
+    'omoda-c5-dl-062': (8.79, 87.84, 83.15, 9.99),
+    'belgee-h70-dl-044': (8.24, 87.84, 83.15, 9.99),
+    'great-wall-poer-dl-039': (8.29, 87.18, 85.64, 10.68),
+    'hyundai-creta-dl-040': (7.55, 87.18, 86.37, 10.68),
+    'honda-n-box-dl-043': (7.73, 87.18, 85.64, 10.68),
+    'toyota-tank-dl-045': (7.37, 87.18, 84.71, 10.68),
 }
 
 def render_promo_car_card(car, slug):
-    spec_d = parse_spec(car.get('spec'))
-    price = min_day_price(car)
-    price_str = f"{price:,}".replace(',', ' ') if price else '—'
-    def spec_val(key):
-        if key is None:
-            return "Дизель" if car['art'] in BANNER_DIESEL_ARTS else "Бензин"
-        if key == 'body':
-            return KUZOV_LABELS.get(car.get('kuzov'), spec_d.get('body')) or "—"
-        return spec_d.get(key) or "—"
-    specs = "".join(
-        f'<div class="dl-banner-card__spec"><img src="../../images/icons3d/{icon}.png" alt="" loading="lazy">'
-        f'<span>{html.escape(label)}<b>{html.escape(spec_val(key))}</b></span></div>'
-        for icon, label, key in BANNER_SPEC_ICONS
-    )
-    if slug in BANNER_PHOTO_SLUGS:
-        photo_src = f"../../images/promo/car-photo-{slug}.webp"
-    else:
-        photo_src = photo_rel(car['photos'][0] if car.get('photos') else '')
-    title = f"{car['marka'].strip()} {car['model'].strip()} ({car.get('year')})" if car.get('year') else f"{car['marka'].strip()} {car['model'].strip()}"
-    return f'''<div class="dl-banner-carousel__slide dl-banner-card">
-      <div class="dl-banner-card__title">{html.escape(title)}</div>
-      <div class="dl-banner-card__photo"><img src="{photo_src}" alt="" loading="lazy"></div>
-      <div class="dl-banner-card__specs">{specs}</div>
-      <div class="dl-banner-card__price">от <b>{price_str} ₽</b> /день</div>
-      <a class="dl-banner-card__cta" href="../../cars/{slug}/">Посмотреть →</a>
+    left, top, w, h = BANNER_CARD_BTN_PCT[slug]
+    title = f"{car['marka'].strip()} {car['model'].strip()}"
+    return f'''<div class="dl-banner-carousel__slide dl-banner-card-img">
+      <img src="../../images/promo/card-{slug}.webp" alt="{html.escape(title)}" loading="lazy">
+      <a class="dl-banner-card-img__cta" style="left:{left}%;top:{top}%;width:{w}%;height:{h}%;" href="../../cars/{slug}/" aria-label="Посмотреть {html.escape(title)}"></a>
     </div>'''
 
 TELEGRAM_ICON_SVG = '<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="12" fill="#29A9EB"/><path d="M17.53 7.2L15.4 17.6c-.16.72-.58.9-1.18.56l-3.26-2.4-1.57 1.51c-.17.18-.32.33-.66.33l.24-3.36 6.1-5.51c.27-.24-.06-.37-.41-.13l-7.54 4.75-3.25-1.02c-.7-.22-.72-.7.15-1.04l12.7-4.9c.59-.22 1.1.14.9 1.05z" fill="#fff"/></svg>'
