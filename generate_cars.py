@@ -416,6 +416,8 @@ def render_promo_car_card(car, slug):
     def spec_val(key):
         if key is None:
             return "Дизель" if car['art'] in BANNER_DIESEL_ARTS else "Бензин"
+        if key == 'body':
+            return KUZOV_LABELS.get(car.get('kuzov'), spec_d.get('body')) or "—"
         return spec_d.get(key) or "—"
     specs = "".join(
         f'<div class="dl-banner-card__spec"><img src="../../images/icons3d/{icon}.png" alt="" loading="lazy">'
@@ -468,7 +470,7 @@ def render_banner_slides(cars, slugs_by_art):
     return generic + cards + render_subscribe_slide()
 
 def render_related_articles(current_slug):
-    others = [a for a in BLOG_ARTICLES if a[0] != current_slug][:3]
+    others = [a for a in BLOG_ARTICLES if a[0] != current_slug][:1]
     if not others:
         return ''
     items = ''.join(
