@@ -76,12 +76,27 @@
       </div>
     </div>
     <aside class="dl-content-page__sidebar">
-      <a class="dl-sidebar-banner" href="../../catalog.html">
-        <img src="../../images/promo/sidebar-banner.webp" alt="Более 60 авто в наличии — без банка, взнос от 0%, по 2 документам. Смотреть каталог" width="600" height="791" loading="lazy">
-      </a>
+      <div class="dl-banner-carousel" id="dlBannerCarousel">
+        <a class="dl-banner-carousel__slide is-active" href="../../catalog.html"><img src="../../images/promo/sidebar-banner.webp" alt="Более 60 авто в наличии — без банка, взнос от 0%, по 2 документам. Смотреть каталог" loading="lazy"></a><a class="dl-banner-carousel__slide" href="../../cars/chery-tiggo-4-dl-001/"><img src="../../images/promo/sidebar-banner-chery-tiggo-4-dl-001.webp" alt="Chery Tiggo 4 (2022) от 1 973 ₽/день — подробнее и расчёт" loading="lazy"></a><a class="dl-banner-carousel__slide" href="../../cars/skoda-rapid-dl-002/"><img src="../../images/promo/sidebar-banner-skoda-rapid-dl-002.webp" alt="Skoda Rapid (2020) от 1 644 ₽/день — подробнее и расчёт" loading="lazy"></a><a class="dl-banner-carousel__slide" href="../../cars/omoda-c5-dl-062/"><img src="../../images/promo/sidebar-banner-omoda-c5-dl-062.webp" alt="Omoda C5 (2026) от 2 317 ₽/день — подробнее и расчёт" loading="lazy"></a><a class="dl-banner-carousel__slide" href="../../cars/belgee-h70-dl-044/"><img src="../../images/promo/sidebar-banner-belgee-h70-dl-044.webp" alt="Belgee X70 (2026) от 2 481 ₽/день — подробнее и расчёт" loading="lazy"></a>
+      </div>
     </aside>
   </div>
 </div>
+
+<script>
+(function(){
+  var el = document.getElementById('dlBannerCarousel');
+  if (!el) return;
+  var slides = el.querySelectorAll('.dl-banner-carousel__slide');
+  if (slides.length < 2) return;
+  var i = 0;
+  setInterval(function(){
+    slides[i].classList.remove('is-active');
+    i = (i + 1) % slides.length;
+    slides[i].classList.add('is-active');
+  }, 4500);
+})();
+</script>
 
 <footer class="dl-footer">
   <div class="dl-footer__inner">

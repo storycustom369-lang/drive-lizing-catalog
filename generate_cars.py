@@ -350,12 +350,27 @@ CONTENT_PAGE_TEMPLATE = '''<!DOCTYPE html>
       </div>
     </div>
     <aside class="dl-content-page__sidebar">
-      <a class="dl-sidebar-banner" href="../../catalog.html">
-        <img src="../../images/promo/sidebar-banner.webp" alt="Более 60 авто в наличии — без банка, взнос от 0%, по 2 документам. Смотреть каталог" width="600" height="791" loading="lazy">
-      </a>
+      <div class="dl-banner-carousel" id="dlBannerCarousel">
+        {banner_slides}
+      </div>
     </aside>
   </div>
 </div>
+
+<script>
+(function(){{
+  var el = document.getElementById('dlBannerCarousel');
+  if (!el) return;
+  var slides = el.querySelectorAll('.dl-banner-carousel__slide');
+  if (slides.length < 2) return;
+  var i = 0;
+  setInterval(function(){{
+    slides[i].classList.remove('is-active');
+    i = (i + 1) % slides.length;
+    slides[i].classList.add('is-active');
+  }}, 4500);
+}})();
+</script>
 
 {footer}
 
@@ -364,6 +379,25 @@ CONTENT_PAGE_TEMPLATE = '''<!DOCTYPE html>
 </body>
 </html>
 '''
+
+# Баннеры в карусели сайдбара статей — общий "более 60 авто" + 4 конкретных
+# автомобиля (картинки нарезаны из "баннер 2-5.png", цифры на них реальные,
+# сверены с CARS: пробег и цена/день совпадают день в день с чери/шкодой/омодой/белджи).
+BANNER_CAROUSEL_ITEMS = [
+    ('sidebar-banner.webp', '../../catalog.html', 'Более 60 авто в наличии — без банка, взнос от 0%, по 2 документам. Смотреть каталог'),
+    ('sidebar-banner-chery-tiggo-4-dl-001.webp', '../../cars/chery-tiggo-4-dl-001/', 'Chery Tiggo 4 (2022) от 1 973 ₽/день — подробнее и расчёт'),
+    ('sidebar-banner-skoda-rapid-dl-002.webp', '../../cars/skoda-rapid-dl-002/', 'Skoda Rapid (2020) от 1 644 ₽/день — подробнее и расчёт'),
+    ('sidebar-banner-omoda-c5-dl-062.webp', '../../cars/omoda-c5-dl-062/', 'Omoda C5 (2026) от 2 317 ₽/день — подробнее и расчёт'),
+    ('sidebar-banner-belgee-h70-dl-044.webp', '../../cars/belgee-h70-dl-044/', 'Belgee X70 (2026) от 2 481 ₽/день — подробнее и расчёт'),
+]
+
+def render_banner_slides():
+    return "".join(
+        f'<a class="dl-banner-carousel__slide{" is-active" if i == 0 else ""}" href="{href}">'
+        f'<img src="../../images/promo/{img}" alt="{html.escape(alt)}" loading="lazy">'
+        f'</a>'
+        for i, (img, href, alt) in enumerate(BANNER_CAROUSEL_ITEMS)
+    )
 
 def render_content_page(h1, title_tag, meta_desc, lead, body, crumb_name, canonical):
     breadcrumb_schema = json.dumps({
@@ -386,6 +420,7 @@ def render_content_page(h1, title_tag, meta_desc, lead, body, crumb_name, canoni
         footer=FOOTER_HTML,
         cookie_banner=COOKIE_BANNER_HTML,
         analytics_head=ANALYTICS_HEAD,
+        banner_slides=render_banner_slides(),
     )
 
 COEFF_TABLE = '''<table>
