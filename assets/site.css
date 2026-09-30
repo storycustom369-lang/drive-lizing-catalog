@@ -387,15 +387,15 @@ h1,h2,h3,.dl-num,.dl-btn,.dl-pill,.dl-title{font-family:'Onest',Arial,sans-serif
 .dl-content-page-grid{display:grid;grid-template-columns:1fr 300px;gap:32px;align-items:start;}
 .dl-content-page{max-width:760px;margin:16px 0 56px;}
 .dl-content-page__sidebar{position:sticky;top:104px;}
-.dl-banner-carousel{position:relative;display:block;border-radius:20px;overflow:hidden;background:#F7FAFF;aspect-ratio:600/833;box-shadow:0 1px 2px rgba(15,30,59,.04),0 8px 20px rgba(15,30,59,.05);transition:box-shadow .15s,transform .15s;}
+.dl-banner-carousel{position:relative;display:block;border-radius:20px;overflow:hidden;background:#fff;aspect-ratio:600/833;box-shadow:0 1px 2px rgba(15,30,59,.04),0 8px 20px rgba(15,30,59,.05);transition:box-shadow .15s,transform .15s;}
 .dl-banner-carousel:hover{box-shadow:0 12px 28px rgba(15,30,59,.12);transform:translateY(-2px);}
 .dl-banner-carousel__slide{position:absolute;inset:0;display:block;opacity:0;pointer-events:none;transition:opacity .6s ease;}
 .dl-banner-carousel__slide.is-active{opacity:1;pointer-events:auto;}
 .dl-banner-carousel__slide > img{width:100%;height:100%;object-fit:contain;display:block;}
-.dl-banner-card{display:flex;background:linear-gradient(135deg,#EAF1FF 0%,#F7FAFF 100%);flex-direction:column;padding:20px 18px 18px;box-sizing:border-box;text-decoration:none;}
+.dl-banner-card{display:flex;background:#fff;border:1px solid var(--border-strong);flex-direction:column;padding:20px 18px 18px;box-sizing:border-box;text-decoration:none;}
 .dl-banner-card__title{font-family:'Onest',Arial,sans-serif;font-size:19px;font-weight:800;color:#0F1E2E;margin:0 0 12px;line-height:1.25;flex:none;}
 .dl-banner-card__photo{flex:1;min-height:0;border-radius:12px;overflow:hidden;margin-bottom:14px;background:#fff;}
-.dl-banner-card__photo img{width:100%;height:100%;object-fit:cover;display:block;}
+.dl-banner-card__photo img{width:100%;height:100%;object-fit:contain;display:block;}
 .dl-banner-card__specs{display:grid;grid-template-columns:1fr 1fr;gap:10px 14px;margin-bottom:14px;flex:none;}
 .dl-banner-card__spec{display:flex;align-items:center;gap:8px;}
 .dl-banner-card__spec img{width:26px;height:26px;flex:none;object-fit:contain;}
