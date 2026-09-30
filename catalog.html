@@ -420,25 +420,89 @@ h1,h2,h3,.dl-num,.dl-btn,.dl-pill,.dl-title{font-family:'Onest',Arial,sans-serif
 
 <!-- BRAND_LINKS_START -->
 <style>
-.dl-lease-links{background:var(--surface);border-bottom:1px solid var(--border);}
-.dl-lease-links__inner{max-width:1180px;margin:0 auto;padding:0 24px;display:flex;align-items:center;gap:4px;flex-wrap:wrap;}
-.dl-lease-links a{padding:12px;font-family:'Onest',Arial,sans-serif;font-size:14px;font-weight:600;color:var(--navy);text-decoration:none;}
-.dl-lease-links a:hover{color:var(--blue);}
+.dl-catnav{background:var(--surface);border-bottom:1px solid var(--border);position:relative;z-index:30;}
+.dl-catnav__inner{max-width:1180px;margin:0 auto;padding:0 24px;display:flex;align-items:center;gap:4px;flex-wrap:wrap;}
+.dl-catnav__item{position:relative;}
+.dl-catnav__trigger{display:flex;align-items:center;gap:6px;padding:14px 12px;border:none;background:none;font-family:'Onest',Arial,sans-serif;font-size:14px;font-weight:600;color:var(--navy);cursor:pointer;}
+.dl-catnav__trigger:hover{color:var(--blue);}
+.dl-catnav__chevron{width:14px;height:14px;flex:none;transition:transform .15s;}
+.dl-catnav__item.is-open .dl-catnav__chevron{transform:rotate(180deg);}
+.dl-catnav__panel{display:none;position:absolute;top:100%;left:0;background:var(--surface);border:1px solid var(--border-strong);border-radius:12px;box-shadow:0 10px 30px rgba(15,30,59,.12);padding:14px;z-index:50;}
+.dl-catnav__item.is-open .dl-catnav__panel{display:flex;}
+.dl-catnav__panel--groups{width:520px;gap:24px;}
+.dl-catnav__group{flex:1;min-width:0;}
+.dl-catnav__group-title{font-family:'Onest',Arial,sans-serif;font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin:0 0 10px;}
+.dl-catnav__group-links{display:flex;flex-wrap:wrap;gap:6px;}
+.dl-catnav__group-links a{display:inline-block;padding:6px 12px;border-radius:999px;background:var(--surface-page);color:var(--navy);font-size:13px;font-weight:600;text-decoration:none;white-space:nowrap;}
+.dl-catnav__group-links a:hover{background:var(--blue);color:#fff;}
+.dl-catnav__panel--list{flex-direction:column;width:240px;gap:2px;}
+.dl-catnav__panel--list a{display:block;padding:9px 10px;border-radius:8px;color:var(--navy);font-size:13.5px;font-weight:600;text-decoration:none;white-space:nowrap;}
+.dl-catnav__panel--list a:hover{background:var(--surface-tint);color:var(--blue);}
+.dl-catnav__link{padding:14px 12px;font-family:'Onest',Arial,sans-serif;font-size:14px;font-weight:600;color:var(--navy);text-decoration:none;}
+.dl-catnav__link:hover{color:var(--blue);}
 @media (max-width:640px){
-  .dl-lease-links__inner{padding:0 16px;overflow-x:auto;scrollbar-width:none;}
-  .dl-lease-links__inner::-webkit-scrollbar{display:none;}
-  .dl-lease-links a{padding:10px;font-size:13px;white-space:nowrap;}
+  .dl-catnav__inner{padding:0 16px;overflow-x:auto;scrollbar-width:none;}
+  .dl-catnav__inner::-webkit-scrollbar{display:none;}
+  .dl-catnav__trigger,.dl-catnav__link{padding:12px 10px;font-size:13px;white-space:nowrap;}
+  .dl-catnav__panel{position:fixed;left:16px;right:16px;width:auto !important;}
+  .dl-catnav__panel--groups{flex-direction:column;gap:16px;}
 }
 </style>
-<nav class="dl-lease-links">
-  <div class="dl-lease-links__inner">
-    <a href="arenda-s-vykupom/">Аренда с выкупом</a>
-    <a href="lizing-yurlicam/">Лизинг юрлицам</a>
-    <a href="blog/">Блог</a>
+<nav class="dl-catnav">
+  <div class="dl-catnav__inner">
+    <div class="dl-catnav__item">
+      <button class="dl-catnav__trigger" type="button">Автомобили<svg class="dl-catnav__chevron" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+      <div class="dl-catnav__panel dl-catnav__panel--groups">
+        <div class="dl-catnav__group">
+          <div class="dl-catnav__group-title">Марки авто</div>
+          <div class="dl-catnav__group-links"><a href="marki/baic/">BAIC</a><a href="marki/belgee/">Belgee</a><a href="marki/chery/">Chery</a><a href="marki/gac/">GAC</a><a href="marki/great-wall/">Great Wall</a><a href="marki/haval/">Haval</a><a href="marki/honda/">Honda</a><a href="marki/hyundai/">Hyundai</a><a href="marki/jetour/">Jetour</a><a href="marki/kia/">Kia</a><a href="marki/lada/">Lada</a><a href="marki/mazda/">Mazda</a><a href="marki/omoda/">Omoda</a><a href="marki/renault/">Renault</a><a href="marki/skoda/">Skoda</a><a href="marki/solaris/">Solaris</a><a href="marki/sollers/">Sollers</a><a href="marki/tenet/">Tenet</a><a href="marki/toyota/">Toyota</a><a href="marki/umo/">UMO</a><a href="marki/volga/">Volga</a><a href="marki/volkswagen/">Volkswagen</a><a href="marki/moskvich/">Москвич</a></div>
+        </div>
+        <div class="dl-catnav__group">
+          <div class="dl-catnav__group-title">Тип кузова</div>
+          <div class="dl-catnav__group-links"><a href="kuzov/sedan/">Седан</a><a href="kuzov/krossover/">Кроссовер</a><a href="kuzov/miniven/">Минивэн</a><a href="kuzov/universal/">Универсал</a><a href="kuzov/keikar/">Кей-кар</a><a href="kuzov/pikap/">Пикап</a><a href="kuzov/furgon/">Фургон</a></div>
+        </div>
+      </div>
+    </div>
+    <div class="dl-catnav__item">
+      <button class="dl-catnav__trigger" type="button">Аренда с выкупом<svg class="dl-catnav__chevron" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+      <div class="dl-catnav__panel dl-catnav__panel--list">
+        <a href="catalog.html?src=fleet">Автопарк</a>
+        <a href="catalog.html?src=lease">Авто с салона</a>
+        <a href="catalog.html?b=10-15">10-15 тысяч в неделю</a>
+        <a href="catalog.html?b=15-20">15-20 тысяч в неделю</a>
+        <a href="catalog.html?b=20-25">20-25 тысяч в неделю</a>
+        <a href="catalog.html?b=bolee25">Более 25 тысяч в неделю</a>
+      </div>
+    </div>
+    <a class="dl-catnav__link" href="lizing-yurlicam/">Лизинг</a>
+    <a class="dl-catnav__link" href="blog/">Блог</a>
   </div>
 </nav>
-<script>var DL_MARKI_LINKS = [{"label": "BAIC", "href": "marki/baic/"}, {"label": "Belgee", "href": "marki/belgee/"}, {"label": "Chery", "href": "marki/chery/"}, {"label": "GAC", "href": "marki/gac/"}, {"label": "Great Wall", "href": "marki/great-wall/"}, {"label": "Haval", "href": "marki/haval/"}, {"label": "Honda", "href": "marki/honda/"}, {"label": "Hyundai", "href": "marki/hyundai/"}, {"label": "Jetour", "href": "marki/jetour/"}, {"label": "Kia", "href": "marki/kia/"}, {"label": "Lada", "href": "marki/lada/"}, {"label": "Mazda", "href": "marki/mazda/"}, {"label": "Omoda", "href": "marki/omoda/"}, {"label": "Renault", "href": "marki/renault/"}, {"label": "Skoda", "href": "marki/skoda/"}, {"label": "Solaris", "href": "marki/solaris/"}, {"label": "Sollers", "href": "marki/sollers/"}, {"label": "Tenet", "href": "marki/tenet/"}, {"label": "Toyota", "href": "marki/toyota/"}, {"label": "UMO", "href": "marki/umo/"}, {"label": "Volga", "href": "marki/volga/"}, {"label": "Volkswagen", "href": "marki/volkswagen/"}, {"label": "Москвич", "href": "marki/moskvich/"}];
-var DL_KUZOV_LINKS = [{"label": "Седан", "href": "kuzov/sedan/"}, {"label": "Кроссовер", "href": "kuzov/krossover/"}, {"label": "Минивэн", "href": "kuzov/miniven/"}, {"label": "Универсал", "href": "kuzov/universal/"}, {"label": "Кей-кар", "href": "kuzov/keikar/"}, {"label": "Пикап", "href": "kuzov/pikap/"}, {"label": "Фургон", "href": "kuzov/furgon/"}];</script>
+<script>
+(function(){
+  var items = document.querySelectorAll('.dl-catnav__item');
+  items.forEach(function(item){
+    var trigger = item.querySelector('.dl-catnav__trigger');
+    if (!trigger) return;
+    trigger.addEventListener('click', function(e){
+      e.stopPropagation();
+      var wasOpen = item.classList.contains('is-open');
+      items.forEach(function(i){ i.classList.remove('is-open'); });
+      if (!wasOpen) item.classList.add('is-open');
+    });
+    item.addEventListener('mouseenter', function(){
+      items.forEach(function(i){ i.classList.remove('is-open'); });
+      item.classList.add('is-open');
+    });
+    item.addEventListener('mouseleave', function(){
+      item.classList.remove('is-open');
+    });
+  });
+  document.addEventListener('click', function(){
+    items.forEach(function(i){ i.classList.remove('is-open'); });
+  });
+})();
+</script>
 <!-- BRAND_LINKS_END -->
 
 <div class="dl-sticky">
@@ -761,34 +825,6 @@ var DL_KUZOV_LINKS = [{"label": "Седан", "href": "kuzov/sedan/"}, {"label":
 
     var pinned = document.createElement('div');
     pinned.className = 'dl-tabs__pinned';
-
-    function buildCategoryDropdown(label, links){
-      var box = document.createElement('div');
-      box.className = 'dl-tabs__dropdown';
-      var btn = document.createElement('button');
-      btn.type = 'button';
-      btn.className = 'dl-pill dl-tabs__dropdown-btn';
-      btn.innerHTML = label + '<svg class="dl-tabs__dropdown-chevron" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
-      var panel = document.createElement('div');
-      panel.className = 'dl-tabs__dropdown-panel';
-      panel.innerHTML = links.map(function(l){ return '<a href="' + l.href + '">' + l.label + '</a>'; }).join('');
-      btn.addEventListener('click', function(e){
-        e.stopPropagation();
-        var wasOpen = box.classList.contains('is-open');
-        document.querySelectorAll('.dl-tabs__dropdown.is-open').forEach(function(d){ d.classList.remove('is-open'); });
-        if (!wasOpen) {
-          var rect = btn.getBoundingClientRect();
-          panel.style.top = (rect.bottom + 8) + 'px';
-          panel.style.left = rect.left + 'px';
-          box.classList.add('is-open');
-        }
-      });
-      box.appendChild(btn);
-      box.appendChild(panel);
-      return box;
-    }
-    if (typeof DL_MARKI_LINKS !== 'undefined') pinned.appendChild(buildCategoryDropdown('Марки авто', DL_MARKI_LINKS));
-    if (typeof DL_KUZOV_LINKS !== 'undefined') pinned.appendChild(buildCategoryDropdown('Тип кузова', DL_KUZOV_LINKS));
 
     SOURCE_TABS.forEach(function(s){
       var btn = document.createElement('button');
@@ -1574,6 +1610,10 @@ var DL_KUZOV_LINKS = [{"label": "Седан", "href": "kuzov/sedan/"}, {"label":
     var presetBucket = urlParams.get('b');
     if (presetBucket && BUCKETS.some(function(b){ return b.key === presetBucket; })) {
       state.bucket = presetBucket;
+    }
+    var presetSource = urlParams.get('src');
+    if (presetSource && SOURCE_TABS.some(function(s){ return s.key === presetSource; })) {
+      state.source = presetSource;
     }
   } catch (e) {}
 

@@ -792,14 +792,104 @@ def render_blog_list(articles):
     )
     return f'<div class="dl-blog-list">{cards}</div>'
 
+CATNAV_STYLE = '''<style>
+.dl-catnav{background:var(--surface);border-bottom:1px solid var(--border);position:relative;z-index:30;}
+.dl-catnav__inner{max-width:1180px;margin:0 auto;padding:0 24px;display:flex;align-items:center;gap:4px;flex-wrap:wrap;}
+.dl-catnav__item{position:relative;}
+.dl-catnav__trigger{display:flex;align-items:center;gap:6px;padding:14px 12px;border:none;background:none;font-family:'Onest',Arial,sans-serif;font-size:14px;font-weight:600;color:var(--navy);cursor:pointer;}
+.dl-catnav__trigger:hover{color:var(--blue);}
+.dl-catnav__chevron{width:14px;height:14px;flex:none;transition:transform .15s;}
+.dl-catnav__item.is-open .dl-catnav__chevron{transform:rotate(180deg);}
+.dl-catnav__panel{display:none;position:absolute;top:100%;left:0;background:var(--surface);border:1px solid var(--border-strong);border-radius:12px;box-shadow:0 10px 30px rgba(15,30,59,.12);padding:14px;z-index:50;}
+.dl-catnav__item.is-open .dl-catnav__panel{display:flex;}
+.dl-catnav__panel--groups{width:520px;gap:24px;}
+.dl-catnav__group{flex:1;min-width:0;}
+.dl-catnav__group-title{font-family:'Onest',Arial,sans-serif;font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin:0 0 10px;}
+.dl-catnav__group-links{display:flex;flex-wrap:wrap;gap:6px;}
+.dl-catnav__group-links a{display:inline-block;padding:6px 12px;border-radius:999px;background:var(--surface-page);color:var(--navy);font-size:13px;font-weight:600;text-decoration:none;white-space:nowrap;}
+.dl-catnav__group-links a:hover{background:var(--blue);color:#fff;}
+.dl-catnav__panel--list{flex-direction:column;width:240px;gap:2px;}
+.dl-catnav__panel--list a{display:block;padding:9px 10px;border-radius:8px;color:var(--navy);font-size:13.5px;font-weight:600;text-decoration:none;white-space:nowrap;}
+.dl-catnav__panel--list a:hover{background:var(--surface-tint);color:var(--blue);}
+.dl-catnav__link{padding:14px 12px;font-family:'Onest',Arial,sans-serif;font-size:14px;font-weight:600;color:var(--navy);text-decoration:none;}
+.dl-catnav__link:hover{color:var(--blue);}
+@media (max-width:640px){
+  .dl-catnav__inner{padding:0 16px;overflow-x:auto;scrollbar-width:none;}
+  .dl-catnav__inner::-webkit-scrollbar{display:none;}
+  .dl-catnav__trigger,.dl-catnav__link{padding:12px 10px;font-size:13px;white-space:nowrap;}
+  .dl-catnav__panel{position:fixed;left:16px;right:16px;width:auto !important;}
+  .dl-catnav__panel--groups{flex-direction:column;gap:16px;}
+}
+</style>'''
+
+CATNAV_SCRIPT = '''<script>
+(function(){
+  var items = document.querySelectorAll('.dl-catnav__item');
+  items.forEach(function(item){
+    var trigger = item.querySelector('.dl-catnav__trigger');
+    if (!trigger) return;
+    trigger.addEventListener('click', function(e){
+      e.stopPropagation();
+      var wasOpen = item.classList.contains('is-open');
+      items.forEach(function(i){ i.classList.remove('is-open'); });
+      if (!wasOpen) item.classList.add('is-open');
+    });
+    item.addEventListener('mouseenter', function(){
+      items.forEach(function(i){ i.classList.remove('is-open'); });
+      item.classList.add('is-open');
+    });
+    item.addEventListener('mouseleave', function(){
+      item.classList.remove('is-open');
+    });
+  });
+  document.addEventListener('click', function(){
+    items.forEach(function(i){ i.classList.remove('is-open'); });
+  });
+})();
+</script>'''
+
+def render_catnav(brand_links, kuzov_links, base):
+    """base: '' на index.html (корень), '' на catalog.html тоже (сам в корне) —
+    оставлен параметром на случай появления вложенных страниц с этим меню."""
+    chevron = '<svg class="dl-catnav__chevron" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>'
+    return f'''{CATNAV_STYLE}
+<nav class="dl-catnav">
+  <div class="dl-catnav__inner">
+    <div class="dl-catnav__item">
+      <button class="dl-catnav__trigger" type="button">Автомобили{chevron}</button>
+      <div class="dl-catnav__panel dl-catnav__panel--groups">
+        <div class="dl-catnav__group">
+          <div class="dl-catnav__group-title">Марки авто</div>
+          <div class="dl-catnav__group-links">{brand_links}</div>
+        </div>
+        <div class="dl-catnav__group">
+          <div class="dl-catnav__group-title">Тип кузова</div>
+          <div class="dl-catnav__group-links">{kuzov_links}</div>
+        </div>
+      </div>
+    </div>
+    <div class="dl-catnav__item">
+      <button class="dl-catnav__trigger" type="button">Аренда с выкупом{chevron}</button>
+      <div class="dl-catnav__panel dl-catnav__panel--list">
+        <a href="{base}catalog.html?src=fleet">Автопарк</a>
+        <a href="{base}catalog.html?src=lease">Авто с салона</a>
+        <a href="{base}catalog.html?b=10-15">10-15 тысяч в неделю</a>
+        <a href="{base}catalog.html?b=15-20">15-20 тысяч в неделю</a>
+        <a href="{base}catalog.html?b=20-25">20-25 тысяч в неделю</a>
+        <a href="{base}catalog.html?b=bolee25">Более 25 тысяч в неделю</a>
+      </div>
+    </div>
+    <a class="dl-catnav__link" href="{base}lizing-yurlicam/">Лизинг</a>
+    <a class="dl-catnav__link" href="{base}blog/">Блог</a>
+  </div>
+</nav>
+{CATNAV_SCRIPT}'''
+
 def write_brand_links(cars, brand_slugs, kuzov_slugs):
-    """Пишет ссылки на страницы марок/кузова между маркерами в catalog.html и index.html.
-    index.html: нет строки фильтров на странице, поэтому там отдельное выпадающее меню
-    под шапкой. catalog.html: строка фильтров (#dlTabs) уже есть, поэтому туда пишутся
-    только данные (DL_MARKI_LINKS/DL_KUZOV_LINKS) — сами пилюли строит buildTabs() в JS,
-    вместе с остальными фильтрами, одним рядом. Ссылки реальные <a href> в обоих случаях —
-    для catalog.html они рендерятся в первом же вызове buildTabs() при загрузке страницы,
-    доступны роботу в исходном DOM независимо от открытости панели."""
+    """Пишет объединённое меню (Автомобили/Аренда с выкупом/Лизинг/Блог) между маркерами
+    в catalog.html и index.html. Раскрывается по наведению (и по клику — для тачскринов).
+    Марки/кузов — чистая навигация на другие страницы, поэтому вынесены из живого
+    #dlTabs (там остаются только реальные фильтры — автопарк/с салона, цена/неделю)."""
     brands_present = sorted(brand_slugs.keys())
     kuzov_present = [k for k in KUZOV_LABELS if any((c.get('kuzov') or '').strip() == k for c in cars)]
 
@@ -809,84 +899,8 @@ def write_brand_links(cars, brand_slugs, kuzov_slugs):
     kuzov_links = ''.join(
         f'<a href="kuzov/{kuzov_slugs[k]}/">{html.escape(KUZOV_LABELS[k])}</a>' for k in kuzov_present
     )
-    chevron = '<svg class="dl-catnav__chevron" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>'
-    index_block = f'''<style>
-.dl-catnav{{background:var(--surface);border-bottom:1px solid var(--border);position:relative;z-index:30;}}
-.dl-catnav__inner{{max-width:1180px;margin:0 auto;padding:0 24px;display:flex;align-items:center;gap:4px;flex-wrap:wrap;}}
-.dl-catnav__item{{position:relative;}}
-.dl-catnav__trigger{{display:flex;align-items:center;gap:6px;padding:14px 12px;border:none;background:none;font-family:'Onest',Arial,sans-serif;font-size:14px;font-weight:600;color:var(--navy);cursor:pointer;}}
-.dl-catnav__trigger:hover{{color:var(--blue);}}
-.dl-catnav__chevron{{width:14px;height:14px;flex:none;transition:transform .15s;}}
-.dl-catnav__item.is-open .dl-catnav__chevron{{transform:rotate(180deg);}}
-.dl-catnav__panel{{display:none;position:absolute;top:100%;left:0;background:var(--surface);border:1px solid var(--border-strong);border-radius:12px;box-shadow:0 10px 30px rgba(15,30,59,.12);padding:14px;width:300px;flex-wrap:wrap;gap:6px;z-index:50;}}
-.dl-catnav__item.is-open .dl-catnav__panel{{display:flex;}}
-.dl-catnav__panel a{{display:inline-block;padding:6px 12px;border-radius:999px;background:var(--surface-page);color:var(--navy);font-size:13px;font-weight:600;text-decoration:none;white-space:nowrap;}}
-.dl-catnav__panel a:hover{{background:var(--blue);color:#fff;}}
-.dl-catnav__link{{padding:14px 12px;font-family:'Onest',Arial,sans-serif;font-size:14px;font-weight:600;color:var(--navy);text-decoration:none;}}
-.dl-catnav__link:hover{{color:var(--blue);}}
-@media (max-width:640px){{
-  .dl-catnav__inner{{padding:0 16px;overflow-x:auto;scrollbar-width:none;}}
-  .dl-catnav__inner::-webkit-scrollbar{{display:none;}}
-  .dl-catnav__trigger,.dl-catnav__link{{padding:12px 10px;font-size:13px;white-space:nowrap;}}
-  .dl-catnav__panel{{position:fixed;left:16px;right:16px;width:auto;}}
-}}
-</style>
-<nav class="dl-catnav">
-  <div class="dl-catnav__inner">
-    <div class="dl-catnav__item">
-      <button class="dl-catnav__trigger" type="button">Марки авто{chevron}</button>
-      <div class="dl-catnav__panel">{brand_links}</div>
-    </div>
-    <div class="dl-catnav__item">
-      <button class="dl-catnav__trigger" type="button">Тип кузова{chevron}</button>
-      <div class="dl-catnav__panel">{kuzov_links}</div>
-    </div>
-    <a class="dl-catnav__link" href="arenda-s-vykupom/">Аренда с выкупом</a>
-    <a class="dl-catnav__link" href="lizing-yurlicam/">Лизинг юрлицам</a>
-    <a class="dl-catnav__link" href="blog/">Блог</a>
-  </div>
-</nav>
-<script>
-(function(){{
-  var items = document.querySelectorAll('.dl-catnav__item');
-  items.forEach(function(item){{
-    var trigger = item.querySelector('.dl-catnav__trigger');
-    if (!trigger) return;
-    trigger.addEventListener('click', function(e){{
-      e.stopPropagation();
-      var wasOpen = item.classList.contains('is-open');
-      items.forEach(function(i){{ i.classList.remove('is-open'); }});
-      if (!wasOpen) item.classList.add('is-open');
-    }});
-  }});
-  document.addEventListener('click', function(){{
-    items.forEach(function(i){{ i.classList.remove('is-open'); }});
-  }});
-}})();
-</script>'''
-
-    brand_links_js = json.dumps([{"label": m, "href": f"marki/{brand_slugs[m]}/"} for m in brands_present], ensure_ascii=False)
-    kuzov_links_js = json.dumps([{"label": KUZOV_LABELS[k], "href": f"kuzov/{kuzov_slugs[k]}/"} for k in kuzov_present], ensure_ascii=False)
-    catalog_block = f'''<style>
-.dl-lease-links{{background:var(--surface);border-bottom:1px solid var(--border);}}
-.dl-lease-links__inner{{max-width:1180px;margin:0 auto;padding:0 24px;display:flex;align-items:center;gap:4px;flex-wrap:wrap;}}
-.dl-lease-links a{{padding:12px;font-family:'Onest',Arial,sans-serif;font-size:14px;font-weight:600;color:var(--navy);text-decoration:none;}}
-.dl-lease-links a:hover{{color:var(--blue);}}
-@media (max-width:640px){{
-  .dl-lease-links__inner{{padding:0 16px;overflow-x:auto;scrollbar-width:none;}}
-  .dl-lease-links__inner::-webkit-scrollbar{{display:none;}}
-  .dl-lease-links a{{padding:10px;font-size:13px;white-space:nowrap;}}
-}}
-</style>
-<nav class="dl-lease-links">
-  <div class="dl-lease-links__inner">
-    <a href="arenda-s-vykupom/">Аренда с выкупом</a>
-    <a href="lizing-yurlicam/">Лизинг юрлицам</a>
-    <a href="blog/">Блог</a>
-  </div>
-</nav>
-<script>var DL_MARKI_LINKS = {brand_links_js};
-var DL_KUZOV_LINKS = {kuzov_links_js};</script>'''
+    index_block = render_catnav(brand_links, kuzov_links, base='')
+    catalog_block = render_catnav(brand_links, kuzov_links, base='')
 
     for path, block in ((CATALOG_HTML, catalog_block), (INDEX_HTML, index_block)):
         text = open(path, encoding='utf-8').read()
