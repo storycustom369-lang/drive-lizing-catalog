@@ -453,6 +453,15 @@ h1,h2,h3,.dl-num,.dl-btn,.dl-pill,.dl-title{font-family:'Onest',Arial,sans-serif
 .dl-content-page__steps li::before{counter-increment:dlstep;content:counter(dlstep);position:absolute;left:0;top:0;width:26px;height:26px;border-radius:50%;background:var(--blue);color:#fff;font-family:'Onest',Arial,sans-serif;font-weight:700;font-size:13px;display:flex;align-items:center;justify-content:center;}
 .dl-content-page__footnote{font-size:12px;color:var(--muted);line-height:1.6;margin:24px 0 0;padding-top:16px;border-top:1px solid var(--border);}
 .dl-content-page__cta{margin-top:32px;}
+.dl-faq{margin:0 0 16px;}
+.dl-faq__item{border:1px solid var(--border-strong);border-radius:14px;margin-bottom:10px;overflow:hidden;}
+.dl-faq__item[open]{border-color:var(--blue);}
+.dl-faq__q{cursor:pointer;list-style:none;padding:16px 44px 16px 18px;font-family:'Onest',Arial,sans-serif;font-weight:700;font-size:15px;color:#0F1E2E;position:relative;}
+.dl-faq__q::-webkit-details-marker{display:none;}
+.dl-faq__q::after{content:'+';position:absolute;right:18px;top:50%;transform:translateY(-50%);font-size:22px;line-height:1;color:var(--blue);font-weight:700;}
+.dl-faq__item[open] .dl-faq__q::after{content:'−';}
+.dl-faq__a{padding:0 18px 16px;color:var(--navy-soft);font-size:14.5px;line-height:1.7;}
+.dl-faq__a p{margin:0;}
 .dl-content-page__cta .dl-btn{display:inline-block;width:auto;text-decoration:none;}
 .dl-blog-list{display:flex;flex-direction:column;gap:14px;margin:0 0 20px;}
 .dl-blog-card{display:block;background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:22px 24px;text-decoration:none;transition:box-shadow .15s,border-color .15s;}
