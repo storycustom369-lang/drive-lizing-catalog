@@ -506,9 +506,6 @@ h1,h2,h3,.dl-num,.dl-btn,.dl-pill,.dl-title{font-family:'Onest',Arial,sans-serif
 <!-- BRAND_LINKS_END -->
 
 <div class="dl-sticky">
-  <div class="dl-marquee">
-    <div class="dl-marquee__track" id="dlMarqueeTrack"></div>
-  </div>
   <div class="dl-tabs" id="dlTabs"></div>
 </div>
 
@@ -1661,7 +1658,7 @@ h1,h2,h3,.dl-num,.dl-btn,.dl-pill,.dl-title{font-family:'Onest',Arial,sans-serif
   }, true);
   buildRangeCards();
   buildTabs();
-  buildMarquee();
+  document.addEventListener('DOMContentLoaded', buildMarquee);
   renderGrid();
   buildStructuredData();
   var dlNotFoundBtn = document.getElementById('dlNotFoundBtn');
@@ -1681,6 +1678,9 @@ h1,h2,h3,.dl-num,.dl-btn,.dl-pill,.dl-title{font-family:'Onest',Arial,sans-serif
 
 
 <footer class="dl-footer">
+  <div class="dl-marquee">
+    <div class="dl-marquee__track" id="dlMarqueeTrack"></div>
+  </div>
   <div class="dl-footer__inner">
     <div class="dl-footer__top">
       <div class="dl-footer__brand">
