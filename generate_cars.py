@@ -343,6 +343,10 @@ CONTENT_PAGE_TEMPLATE = '''<!DOCTYPE html>
   <div class="dl-content-page-grid">
     <div class="dl-content-page">
       <h1>{h1}</h1>
+      <div class="dl-view-counter">
+        <svg class="dl-view-counter__icon" viewBox="0 0 24 24" fill="none"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z" stroke="currentColor" stroke-width="1.6"/><circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="1.6"/></svg>
+        <span id="dlViewCount">—</span> просмотров
+      </div>
       <p class="dl-content-page__lead">{lead}</p>
       {body}
       <div class="dl-content-page__cta">
@@ -399,6 +403,33 @@ CONTENT_PAGE_TEMPLATE = '''<!DOCTYPE html>
   }}
   dots.forEach(function(fill, j){{ setDot(fill, j === 0 ? 'current' : 'pending'); }});
   setInterval(function(){{ activate((i + 1) % slides.length); }}, DURATION);
+}})();
+</script>
+
+<script>
+(function(){{
+  var countEl = document.getElementById('dlViewCount');
+  if (!countEl) return;
+  var slug = '{slug}';
+  var api = '{worker_url}/views?slug=' + encodeURIComponent(slug);
+  var sessionKey = 'dl_viewed_' + slug;
+  var alreadyViewed = false;
+  try {{ alreadyViewed = sessionStorage.getItem(sessionKey) === '1'; }} catch (e) {{}}
+  function render(n){{ countEl.textContent = n; }}
+  fetch(api, {{ method: alreadyViewed ? 'GET' : 'POST' }})
+    .then(function(r){{ return r.json(); }})
+    .then(function(d){{
+      if (d && d.ok) {{
+        render(d.views);
+        try {{ sessionStorage.setItem(sessionKey, '1'); }} catch (e) {{}}
+      }}
+    }})
+    .catch(function(){{}});
+  setInterval(function(){{
+    fetch(api).then(function(r){{ return r.json(); }}).then(function(d){{
+      if (d && d.ok) render(d.views);
+    }}).catch(function(){{}});
+  }}, 8000);
 }})();
 </script>
 
@@ -534,6 +565,8 @@ def render_content_page(h1, title_tag, meta_desc, lead, body, crumb_name, canoni
         analytics_head=ANALYTICS_HEAD,
         banner_slides=banner_slides,
         related_articles=render_related_articles(slug),
+        slug=slug,
+        worker_url=WORKER_URL,
     )
 
 COEFF_TABLE = '''<table>

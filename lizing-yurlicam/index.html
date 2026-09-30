@@ -68,6 +68,10 @@
   <div class="dl-content-page-grid">
     <div class="dl-content-page">
       <h1>Лизинг автомобилей для юридических лиц в Иркутске</h1>
+      <div class="dl-view-counter">
+        <svg class="dl-view-counter__icon" viewBox="0 0 24 24" fill="none"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z" stroke="currentColor" stroke-width="1.6"/><circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="1.6"/></svg>
+        <span id="dlViewCount">—</span> просмотров
+      </div>
       <p class="dl-content-page__lead">Для компаний: обновляете или расширяете автопарк без банка и без разовой крупной траты, платёж относится на расходы.</p>
       <p>Мы дорабатываем эту страницу — подробности появятся здесь в ближайшее время.</p>
 <p>А пока можно посмотреть весь каталог автомобилей, почитать про <a href="../kupit-ili-arenda-s-vykupom/">разницу между арендой с выкупом и автокредитом</a> или написать нам в Telegram/MAX — ответим на любые вопросы уже сейчас.</p>
@@ -190,6 +194,33 @@
   }
   dots.forEach(function(fill, j){ setDot(fill, j === 0 ? 'current' : 'pending'); });
   setInterval(function(){ activate((i + 1) % slides.length); }, DURATION);
+})();
+</script>
+
+<script>
+(function(){
+  var countEl = document.getElementById('dlViewCount');
+  if (!countEl) return;
+  var slug = 'lizing-yurlicam';
+  var api = 'https://odd-meadow-4208.litaufit.workers.dev/views?slug=' + encodeURIComponent(slug);
+  var sessionKey = 'dl_viewed_' + slug;
+  var alreadyViewed = false;
+  try { alreadyViewed = sessionStorage.getItem(sessionKey) === '1'; } catch (e) {}
+  function render(n){ countEl.textContent = n; }
+  fetch(api, { method: alreadyViewed ? 'GET' : 'POST' })
+    .then(function(r){ return r.json(); })
+    .then(function(d){
+      if (d && d.ok) {
+        render(d.views);
+        try { sessionStorage.setItem(sessionKey, '1'); } catch (e) {}
+      }
+    })
+    .catch(function(){});
+  setInterval(function(){
+    fetch(api).then(function(r){ return r.json(); }).then(function(d){
+      if (d && d.ok) render(d.views);
+    }).catch(function(){});
+  }, 8000);
 })();
 </script>
 
