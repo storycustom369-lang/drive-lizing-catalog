@@ -1001,14 +1001,23 @@ def render_catnav(brand_links, kuzov_links, base):
       </div>
     </div>
     <a class="dl-catnav__link" href="{base}lizing-yurlicam/">Лизинг</a>
-    <a class="dl-catnav__link" href="{base}blog/">Блог</a>
+    <div class="dl-catnav__item">
+      <button class="dl-catnav__trigger" type="button">Компания{chevron}</button>
+      <div class="dl-catnav__panel dl-catnav__panel--list">
+        <a href="{base}blog/">Блог</a>
+        <a href="#footer-reviews">Отзывы</a>
+      </div>
+    </div>
+    <a class="dl-catnav__link" href="#footer-contacts">Контакты</a>
   </div>
 </nav>
 {CATNAV_SCRIPT}'''
 
 def write_brand_links(cars, brand_slugs, kuzov_slugs):
-    """Пишет объединённое меню (Автомобили/Аренда с выкупом/Лизинг/Блог) между маркерами
-    в catalog.html и index.html. Раскрывается по наведению (и по клику — для тачскринов).
+    """Пишет объединённое меню (Автомобили/Аренда с выкупом/Лизинг/Компания/Контакты) между
+    маркерами в catalog.html и index.html. Раскрывается по наведению (и по клику — для тачскринов).
+    Компания → Блог (реальная страница) и Отзывы (якорь на подвал). Контакты — тоже якорь
+    на подвал, не отдельная страница (там уже есть блок с телефоном/адресом/мессенджерами).
     Марки/кузов — чистая навигация на другие страницы, поэтому вынесены из живого
     #dlTabs (там остаются только реальные фильтры — автопарк/с салона, цена/неделю)."""
     brands_present = sorted(brand_slugs.keys())
