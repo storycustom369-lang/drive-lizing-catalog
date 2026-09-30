@@ -387,10 +387,10 @@ h1,h2,h3,.dl-num,.dl-btn,.dl-pill,.dl-title{font-family:'Onest',Arial,sans-serif
 .dl-content-page-grid{display:grid;grid-template-columns:1fr 300px;gap:32px;align-items:start;}
 .dl-content-page{max-width:760px;margin:16px 0 56px;}
 .dl-content-page__sidebar{position:sticky;top:104px;}
-.dl-banner-carousel{position:relative;display:block;border-radius:20px;overflow:hidden;background:#fff;aspect-ratio:600/833;box-shadow:0 1px 2px rgba(15,30,59,.04),0 8px 20px rgba(15,30,59,.05);}
+.dl-banner-carousel{position:relative;display:block;border-radius:20px;overflow:hidden;aspect-ratio:546/702;box-shadow:0 1px 2px rgba(15,30,59,.04),0 8px 20px rgba(15,30,59,.05);}
 .dl-banner-carousel__slide{position:absolute;inset:0;display:block;opacity:0;pointer-events:none;}
 .dl-banner-carousel__slide.is-active{opacity:1;pointer-events:auto;}
-.dl-banner-carousel__slide > img{width:100%;height:100%;object-fit:contain;display:block;}
+.dl-banner-carousel__slide > img{width:100%;height:100%;object-fit:cover;display:block;}
 .dl-banner-card-img{border-radius:20px;overflow:hidden;background:#fff;}
 .dl-banner-card-img__cta{position:absolute;display:block;border-radius:12px;}
 .dl-banner-subscribe{display:flex;flex-direction:column;background:linear-gradient(135deg,#F7F9FF 0%,#EAF1FF 100%);padding:26px 22px;box-sizing:border-box;}
