@@ -417,6 +417,11 @@ h1,h2,h3,.dl-num,.dl-btn,.dl-pill,.dl-title{font-family:'Onest',Arial,sans-serif
 .dl-banner-subscribe__btn span:nth-child(2){flex:1;}
 .dl-banner-subscribe__note{display:flex;align-items:center;gap:8px;font-size:12.5px;color:var(--muted);margin-top:auto;}
 .dl-banner-subscribe__note svg{width:18px;height:18px;flex:none;}
+.dl-banner-dots{display:flex;justify-content:center;gap:7px;margin-top:12px;}
+.dl-banner-dot{width:14px;height:14px;flex:none;}
+.dl-banner-dot svg{width:100%;height:100%;transform:rotate(-90deg);display:block;}
+.dl-banner-dot__track{fill:none;stroke:var(--border-strong);stroke-width:2;}
+.dl-banner-dot__fill{fill:none;stroke:var(--blue);stroke-width:2;stroke-linecap:round;stroke-dasharray:37.7;stroke-dashoffset:37.7;}
 .dl-related-articles{margin-top:16px;}
 .dl-related-articles__heading{font-family:'Onest',Arial,sans-serif;font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin:0 0 10px;}
 .dl-related-articles__item{display:block;background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:14px 16px;margin-bottom:10px;text-decoration:none;transition:border-color .15s,box-shadow .15s;}

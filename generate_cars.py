@@ -353,6 +353,7 @@ CONTENT_PAGE_TEMPLATE = '''<!DOCTYPE html>
       <div class="dl-banner-carousel" id="dlBannerCarousel">
         {banner_slides}
       </div>
+      <div class="dl-banner-dots" id="dlBannerDots"></div>
       {related_articles}
     </aside>
   </div>
@@ -364,12 +365,40 @@ CONTENT_PAGE_TEMPLATE = '''<!DOCTYPE html>
   if (!el) return;
   var slides = el.querySelectorAll('.dl-banner-carousel__slide');
   if (slides.length < 2) return;
+  var DURATION = 4500;
+  var CIRC = 37.7;
+  var dotsWrap = document.getElementById('dlBannerDots');
+  var dots = [];
+  if (dotsWrap) {{
+    slides.forEach(function(){{
+      var dot = document.createElement('span');
+      dot.className = 'dl-banner-dot';
+      dot.innerHTML = '<svg viewBox="0 0 16 16"><circle class="dl-banner-dot__track" cx="8" cy="8" r="6"/><circle class="dl-banner-dot__fill" cx="8" cy="8" r="6"/></svg>';
+      dotsWrap.appendChild(dot);
+      dots.push(dot.querySelector('.dl-banner-dot__fill'));
+    }});
+  }}
+  function setDot(fill, state){{
+    if (!fill) return;
+    fill.style.transition = 'none';
+    fill.style.strokeDashoffset = state === 'done' ? '0' : String(CIRC);
+    if (state === 'current') {{
+      void fill.getBoundingClientRect();
+      fill.style.transition = 'stroke-dashoffset ' + DURATION + 'ms linear';
+      fill.style.strokeDashoffset = '0';
+    }}
+  }}
   var i = 0;
-  setInterval(function(){{
+  function activate(idx){{
     slides[i].classList.remove('is-active');
-    i = (i + 1) % slides.length;
+    i = idx;
     slides[i].classList.add('is-active');
-  }}, 4500);
+    dots.forEach(function(fill, j){{
+      setDot(fill, j < i ? 'done' : (j === i ? 'current' : 'pending'));
+    }});
+  }}
+  dots.forEach(function(fill, j){{ setDot(fill, j === 0 ? 'current' : 'pending'); }});
+  setInterval(function(){{ activate((i + 1) % slides.length); }}, DURATION);
 }})();
 </script>
 
