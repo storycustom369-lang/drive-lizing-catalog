@@ -397,6 +397,11 @@ def min_day_price(car):
     max_term = sorted(variants[max_pv]['terms'].keys(), key=int)[-1]
     return variants[max_pv]['terms'][max_term]['day']
 
+# Для этих 4 машин в карусели используется фото из присланного баннера (нарезано и
+# подчищено из "новый баннер.png"), а не реальное фото машины из каталога — клиент
+# попросил взять фото именно из своего файла баннеров.
+BANNER_PHOTO_SLUGS = {'chery-tiggo-4-dl-001', 'skoda-rapid-dl-002', 'omoda-c5-dl-062', 'belgee-h70-dl-044'}
+
 def render_promo_car_card(car, slug):
     spec_d = parse_spec(car.get('spec'))
     price = min_day_price(car)
@@ -408,11 +413,14 @@ def render_promo_car_card(car, slug):
         f'<span>{html.escape(label)}<b>{html.escape(spec_val(key))}</b></span></div>'
         for icon, label, key in BANNER_SPEC_ICONS
     )
-    photo = car['photos'][0] if car.get('photos') else ''
+    if slug in BANNER_PHOTO_SLUGS:
+        photo_src = f"../../images/promo/car-photo-{slug}.webp"
+    else:
+        photo_src = photo_rel(car['photos'][0] if car.get('photos') else '')
     title = f"{car['marka'].strip()} {car['model'].strip()} ({car.get('year')})" if car.get('year') else f"{car['marka'].strip()} {car['model'].strip()}"
     return f'''<a class="dl-banner-carousel__slide dl-banner-card" href="../../cars/{slug}/">
       <div class="dl-banner-card__title">{html.escape(title)}</div>
-      <div class="dl-banner-card__photo"><img src="{photo_rel(photo)}" alt="" loading="lazy"></div>
+      <div class="dl-banner-card__photo"><img src="{photo_src}" alt="" loading="lazy"></div>
       <div class="dl-banner-card__specs">{specs}</div>
       <div class="dl-banner-card__price">от <b>{price_str} ₽</b> /день</div>
       <div class="dl-banner-card__cta">Посмотреть →</div>
