@@ -1028,7 +1028,13 @@ def render_catnav(brand_links, kuzov_links, base):
         </div>
       </div>
     </div>
-    <a class="dl-catnav__link" href="{base}lizing-yurlicam/">Лизинг</a>
+    <div class="dl-catnav__item">
+      <button class="dl-catnav__trigger" type="button">Лизинг{chevron}</button>
+      <div class="dl-catnav__panel dl-catnav__panel--list">
+        <a href="{base}arenda-s-vykupom/">Лизинг для физ. лиц</a>
+        <a href="{base}lizing-yurlicam/">Лизинг для юр. лиц</a>
+      </div>
+    </div>
     <div class="dl-catnav__item">
       <button class="dl-catnav__trigger" type="button">Компания{chevron}</button>
       <div class="dl-catnav__panel dl-catnav__panel--list">
@@ -1046,7 +1052,8 @@ def write_brand_links(cars, brand_slugs, kuzov_slugs):
     """Пишет объединённое меню (Каталог/Лизинг/Компания/Контакты) между маркерами в catalog.html
     и index.html. Раскрывается по наведению (и по клику — для тачскринов). "Каталог" объединяет
     бывшие "Автомобили" и "Аренда с выкупом" в одну панель с тремя группами (марки/кузов/варианты),
-    чтобы не плодить по сути одинаковые по смыслу вкладки.
+    чтобы не плодить по сути одинаковые по смыслу вкладки. "Лизинг" — дропдаун на две существующие
+    страницы: физ. лица (arenda-s-vykupom/) и юр. лица (lizing-yurlicam/).
     Компания → О компании/Блог (реальные страницы) и Отзывы (якорь на подвал — отдельной
     страницы с отзывами пока нет). Контакты — реальная страница /contacts/.
     Марки/кузов — чистая навигация на другие страницы, поэтому вынесены из живого
