@@ -1011,25 +1011,35 @@ CATNAV_SCRIPT = '''<script>
     });
   });
   var subs = document.querySelectorAll('.dl-catnav__submenu');
+  function closeOthers(sub){
+    subs.forEach(function(other){
+      if (other === sub || other.contains(sub)) return;
+      cancelClose(other);
+      other.classList.remove('is-open');
+    });
+  }
+  function cancelAncestorCloses(el){
+    var p = el.parentElement;
+    while (p) {
+      if (p.classList && (p.classList.contains('dl-catnav__submenu') || p.classList.contains('dl-catnav__item'))) {
+        cancelClose(p);
+      }
+      p = p.parentElement;
+    }
+  }
   subs.forEach(function(sub){
     var trigger = sub.querySelector(':scope > .dl-catnav__submenu-trigger');
     if (!trigger) return;
-    var siblings = Array.prototype.filter.call(sub.parentElement.children, function(el){
-      return el.classList.contains('dl-catnav__submenu');
-    });
     trigger.addEventListener('click', function(e){
       e.stopPropagation();
       var wasOpen = sub.classList.contains('is-open');
-      siblings.forEach(function(s){ s.classList.remove('is-open'); });
-      if (!wasOpen) sub.classList.add('is-open');
+      closeOthers(sub);
+      if (!wasOpen) sub.classList.add('is-open'); else sub.classList.remove('is-open');
     });
     sub.addEventListener('mouseenter', function(){
       cancelClose(sub);
-      var ancestorSub = sub.parentElement.closest('.dl-catnav__submenu');
-      if (ancestorSub) cancelClose(ancestorSub);
-      var ancestorItem = sub.closest('.dl-catnav__item');
-      if (ancestorItem) cancelClose(ancestorItem);
-      siblings.forEach(function(s){ if (s !== sub) s.classList.remove('is-open'); });
+      cancelAncestorCloses(sub);
+      closeOthers(sub);
       sub.classList.add('is-open');
     });
     sub.addEventListener('mouseleave', function(){
