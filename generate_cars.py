@@ -575,6 +575,30 @@ LIZING_YURLICAM_BODY = f'''<h2>Кому подходит</h2>
 COMING_SOON_BODY = '''<p>Мы дорабатываем эту страницу — подробности появятся здесь в ближайшее время.</p>
 <p>А пока можно посмотреть весь каталог автомобилей, почитать про <a href="../kupit-ili-arenda-s-vykupom/">разницу между арендой с выкупом и автокредитом</a> или написать нам в Telegram/MAX — ответим на любые вопросы уже сейчас.</p>'''
 
+CONTACTS_SCHEMA = '<script type="application/ld+json">{"@context":"https://schema.org","@type":"AutoDealer","name":"Драйв Лизинг","image":"https://driveleasing38.ru/logo.png","url":"https://driveleasing38.ru/contacts/","telephone":"+79950527683","address":{"@type":"PostalAddress","streetAddress":"ул. Байкальская, 208","addressLocality":"Иркутск","addressCountry":"RU"},"areaServed":"Иркутск","priceRange":"$$","sameAs":["https://t.me/drivelizing","https://max.ru/id30954831331_biz"],"aggregateRating":{"@type":"AggregateRating","ratingValue":"4.9","reviewCount":"400"},"openingHoursSpecification":{"@type":"OpeningHoursSpecification","dayOfWeek":["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"],"opens":"09:00","closes":"21:00"}}</script>'
+
+CONTACTS_BODY = CONTACTS_SCHEMA + '''
+<ul class="dl-content-page__facts">
+<li>📞 Телефон: <a href="tel:+79950527683">+7 995 052-76-83</a>, ежедневно с 9:00 до 21:00</li>
+<li>📍 Адрес: г. Иркутск, ул. Байкальская, 208 (отдел продаж)</li>
+<li>💬 Telegram: <a href="https://t.me/avtohere38" target="_blank" rel="noopener">написать нам</a></li>
+<li>💬 MAX: <a href="https://max.ru/u/f9LHodD0cOJwdXPtIRKpSznrrNNKwx-l7-HcyIykYTEMu3kGUgp9u4vTgm8" target="_blank" rel="noopener">написать нам</a></li>
+</ul>
+<p>Быстрее всего отвечаем в мессенджерах — там же можно скинуть ссылку на объявление или фото машины, если ищете что-то конкретное.</p>
+<p>Если уже присмотрели автомобиль, удобнее сразу открыть <a href="../catalog.html">каталог</a> и оставить заявку на расчёт из карточки — менеджер перезвонит и посчитает точные условия.</p>'''
+
+O_KOMPANII_BODY = '''<p>Драйв Лизинг — аренда автомобилей с выкупом и лизинг в Иркутске, без банка и без кредитной истории. Работаем с физическими и юридическими лицами на одних и тех же условиях.</p>
+<ul class="dl-content-page__facts">
+<li>🚘 Собственный автопарк 100+ автомобилей</li>
+<li>⭐ Более 400 отзывов, рейтинг 4.9</li>
+<li>✅ 92% заявок получают одобрение по внутренней статистике</li>
+<li>📅 На рынке Иркутска 7 лет</li>
+</ul>
+<p>Бизнес вырос из бренда «The Drive» — за эти годы собрали собственный парк машин с пробегом и отладили работу так, чтобы оформление не зависело от банка: без справок о доходах, по паспорту и водительскому удостоверению.</p>
+<p>Отдельно работаем с новыми автомобилями под заказ у дилера — для них те же условия и тот же принцип: сначала считаем и показываем весь график платежей, потом оформляем.</p>
+<p>Если банк уже отказал или кредитная история мешает получить обычный автокредит — это как раз тот случай, для которого мы работаем.</p>
+<p class="dl-content-page__footnote">92% одобрений — показатель по внутренней статистике Драйв Лизинг, не является гарантией одобрения каждой заявки.</p>'''
+
 ARENDA_ILI_KREDIT_BODY = f'''<h2>Сколько стоит аренда с выкупом</h2>
 <p>Итоговая сумма считается так: цена автомобиля × коэффициент. Коэффициент зависит от первоначального взноса, чем больше взнос, тем ниже коэффициент.</p>
 {COEFF_TABLE}
@@ -1004,11 +1028,12 @@ def render_catnav(brand_links, kuzov_links, base):
     <div class="dl-catnav__item">
       <button class="dl-catnav__trigger" type="button">Компания{chevron}</button>
       <div class="dl-catnav__panel dl-catnav__panel--list">
+        <a href="{base}o-kompanii/">О компании</a>
         <a href="{base}blog/">Блог</a>
         <a href="#footer-reviews">Отзывы</a>
       </div>
     </div>
-    <a class="dl-catnav__link" href="#footer-contacts">Контакты</a>
+    <a class="dl-catnav__link" href="{base}contacts/">Контакты</a>
   </div>
 </nav>
 {CATNAV_SCRIPT}'''
@@ -1016,8 +1041,8 @@ def render_catnav(brand_links, kuzov_links, base):
 def write_brand_links(cars, brand_slugs, kuzov_slugs):
     """Пишет объединённое меню (Автомобили/Аренда с выкупом/Лизинг/Компания/Контакты) между
     маркерами в catalog.html и index.html. Раскрывается по наведению (и по клику — для тачскринов).
-    Компания → Блог (реальная страница) и Отзывы (якорь на подвал). Контакты — тоже якорь
-    на подвал, не отдельная страница (там уже есть блок с телефоном/адресом/мессенджерами).
+    Компания → О компании/Блог (реальные страницы) и Отзывы (якорь на подвал — отдельной
+    страницы с отзывами пока нет). Контакты — реальная страница /contacts/.
     Марки/кузов — чистая навигация на другие страницы, поэтому вынесены из живого
     #dlTabs (там остаются только реальные фильтры — автопарк/с салона, цена/неделю)."""
     brands_present = sorted(brand_slugs.keys())
@@ -1560,8 +1585,10 @@ FOOTER_HTML = '''<footer class="dl-footer">
         <div class="dl-footer__col-title">Навигация</div>
         <ul class="dl-footer__list">
           <li><a href="../../catalog.html">Каталог автомобилей</a></li>
+          <li><a href="../../o-kompanii/">О компании</a></li>
           <li><a href="../../blog/">Блог</a></li>
           <li><a href="../../faq/">Вопросы и ответы</a></li>
+          <li><a href="../../contacts/">Контакты</a></li>
           <li><a href="../../privacy.html">Политика конфиденциальности</a></li>
         </ul>
       </div>
@@ -1892,6 +1919,16 @@ def main():
          'Короткие ответы на вопросы, которые чаще всего задают клиенты об аренде автомобиля с выкупом.',
          render_faq_schema(FAQ_ITEMS) + render_faq_block(FAQ_ITEMS) +
          '<p style="margin-top:20px;">Подробный разбор всего процесса — в статье <a href="../kogda-avto-stanet-vashim/">«Когда автомобиль становится вашим при аренде с выкупом?»</a>.</p>'),
+        ('contacts', 'Контакты', 'Контакты Драйв Лизинг в Иркутске',
+         'Контакты Драйв Лизинг в Иркутске: адрес, телефон · Драйв Лизинг',
+         'Адрес и телефон Драйв Лизинг в Иркутске: ул. Байкальская, 208. Звоните или пишите в Telegram/MAX — поможем подобрать автомобиль и посчитаем условия аренды с выкупом или лизинга.',
+         'Телефон, адрес отдела продаж и мессенджеры — самый быстрый способ получить ответ сегодня.',
+         CONTACTS_BODY),
+        ('o-kompanii', 'О компании', 'О компании Драйв Лизинг',
+         'О компании Драйв Лизинг — аренда с выкупом и лизинг в Иркутске',
+         'Драйв Лизинг — собственный автопарк 100+ машин в Иркутске, 7 лет на рынке, более 400 отзывов. Аренда с выкупом и лизинг без банка для физ. и юр. лиц.',
+         'Кто мы и почему нам можно доверить оформление автомобиля без банка.',
+         O_KOMPANII_BODY),
     ]
     banner_slides = render_banner_slides(cars, slugs_by_art)
     for slug, crumb_name, h1, title_tag, meta_desc, lead, body in content_pages:
