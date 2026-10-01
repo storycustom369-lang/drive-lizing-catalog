@@ -957,7 +957,8 @@ CATNAV_STYLE = '''<style>
 .dl-catnav__submenu-trigger::after{content:'';flex:none;margin-left:10px;border-style:solid;border-width:4px 0 4px 5px;border-color:transparent transparent transparent var(--muted);}
 .dl-catnav__flyout{display:none;position:absolute;left:100%;top:0;margin-left:6px;background:var(--surface);border:1px solid var(--border-strong);border-radius:12px;box-shadow:0 10px 30px rgba(15,30,59,.12);padding:10px;z-index:60;}
 .dl-catnav__submenu.is-open > .dl-catnav__flyout{display:block;}
-.dl-catnav__flyout--menu{width:200px;}
+.dl-catnav__flyout--menu{position:relative;width:200px;}
+.dl-catnav__flyout--menu > .dl-catnav__submenu{position:static;}
 .dl-catnav__flyout--tags{display:flex;flex-wrap:wrap;gap:6px;width:320px;}
 .dl-catnav__group-links a{display:inline-block;padding:6px 12px;border-radius:999px;background:var(--surface-page);color:var(--navy);font-size:13px;font-weight:600;text-decoration:none;white-space:nowrap;}
 .dl-catnav__group-links a:hover{background:var(--blue);color:#fff;}
