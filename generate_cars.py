@@ -938,11 +938,13 @@ def render_blog_list(articles):
     return f'<div class="dl-blog-list">{cards}</div><p style="margin-top:24px;">Короткие ответы без сплошного текста — в разделе <a href="../faq/">«Вопросы и ответы»</a>.</p>'
 
 CATNAV_STYLE = '''<style>
-.dl-catnav{background:var(--surface);border-bottom:1px solid var(--border);position:relative;z-index:42;}
-.dl-catnav__inner{max-width:1180px;margin:0 auto;padding:0 24px;display:flex;align-items:center;gap:4px;flex-wrap:wrap;}
+.dl-catnav{background:var(--surface-tint);border-bottom:1px solid var(--border);position:relative;z-index:42;}
+.dl-catnav__inner{max-width:1180px;margin:0 auto;padding:10px 24px;display:flex;align-items:center;gap:6px;flex-wrap:wrap;}
 .dl-catnav__item{position:relative;}
-.dl-catnav__trigger{display:flex;align-items:center;gap:6px;padding:14px 12px;border:none;background:none;font-family:'Onest',Arial,sans-serif;font-size:14px;font-weight:600;color:var(--navy);cursor:pointer;}
-.dl-catnav__trigger:hover{color:var(--blue);}
+.dl-catnav__trigger{display:flex;align-items:center;gap:6px;padding:10px 18px;border:none;border-radius:999px;background:none;font-family:'Onest',Arial,sans-serif;font-size:14px;font-weight:600;color:var(--navy);cursor:pointer;transition:background .15s,color .15s;}
+.dl-catnav__trigger:hover{background:var(--surface-page);color:var(--blue);}
+.dl-catnav__item.is-open .dl-catnav__trigger,
+.dl-catnav__item--active .dl-catnav__trigger{background:var(--blue);color:#fff;}
 .dl-catnav__chevron{width:14px;height:14px;flex:none;transition:transform .15s;}
 .dl-catnav__item.is-open .dl-catnav__chevron{transform:rotate(180deg);}
 .dl-catnav__panel{display:none;position:absolute;top:100%;left:0;background:var(--surface);border:1px solid var(--border-strong);border-radius:12px;box-shadow:0 10px 30px rgba(15,30,59,.12);padding:14px;z-index:50;}
@@ -960,8 +962,10 @@ CATNAV_STYLE = '''<style>
 .dl-catnav__panel--list{flex-direction:column;width:240px;gap:2px;}
 .dl-catnav__panel--list a{display:block;padding:9px 10px;border-radius:8px;color:var(--navy);font-size:13.5px;font-weight:600;text-decoration:none;white-space:nowrap;}
 .dl-catnav__panel--list a:hover{background:var(--surface-tint);color:var(--blue);}
-.dl-catnav__link{padding:14px 12px;font-family:'Onest',Arial,sans-serif;font-size:14px;font-weight:600;color:var(--navy);text-decoration:none;}
-.dl-catnav__link:hover{color:var(--blue);}
+.dl-catnav__link{padding:10px 18px;border-radius:999px;font-family:'Onest',Arial,sans-serif;font-size:14px;font-weight:600;color:var(--navy);text-decoration:none;transition:background .15s,color .15s;}
+.dl-catnav__link:hover{background:var(--surface-page);color:var(--blue);}
+.dl-catnav__link--active{background:var(--blue);color:#fff;}
+.dl-catnav__link--active:hover{background:var(--blue-dark);color:#fff;}
 @media (max-width:640px){
   .dl-catnav__inner{padding:0 16px;overflow-x:auto;scrollbar-width:none;}
   .dl-catnav__inner::-webkit-scrollbar{display:none;}
@@ -997,14 +1001,19 @@ CATNAV_SCRIPT = '''<script>
 })();
 </script>'''
 
-def render_catnav(brand_links, kuzov_links, base):
+def render_catnav(brand_links, kuzov_links, base, active=None):
     """base: '' на index.html (корень), '' на catalog.html тоже (сам в корне) —
-    оставлен параметром на случай появления вложенных страниц с этим меню."""
+    оставлен параметром на случай появления вложенных страниц с этим меню.
+    active: 'home' на index.html, 'catalog' на catalog.html — подсвечивает синим
+    пилюлю текущего раздела, как постоянный индикатор "вы здесь" (не только hover)."""
     chevron = '<svg class="dl-catnav__chevron" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>'
+    home_cls = ' dl-catnav__link--active' if active == 'home' else ''
+    catalog_cls = ' dl-catnav__item--active' if active == 'catalog' else ''
     return f'''{CATNAV_STYLE}
 <nav class="dl-catnav">
   <div class="dl-catnav__inner">
-    <div class="dl-catnav__item">
+    <a class="dl-catnav__link{home_cls}" href="{base}index.html">Главная</a>
+    <div class="dl-catnav__item{catalog_cls}">
       <button class="dl-catnav__trigger" type="button">Каталог{chevron}</button>
       <div class="dl-catnav__panel dl-catnav__panel--groups">
         <div class="dl-catnav__group">
@@ -1067,8 +1076,8 @@ def write_brand_links(cars, brand_slugs, kuzov_slugs):
     kuzov_links = ''.join(
         f'<a href="kuzov/{kuzov_slugs[k]}/">{html.escape(KUZOV_LABELS[k])}</a>' for k in kuzov_present
     )
-    index_block = render_catnav(brand_links, kuzov_links, base='')
-    catalog_block = render_catnav(brand_links, kuzov_links, base='')
+    index_block = render_catnav(brand_links, kuzov_links, base='', active='home')
+    catalog_block = render_catnav(brand_links, kuzov_links, base='', active='catalog')
 
     for path, block in ((CATALOG_HTML, catalog_block), (INDEX_HTML, index_block)):
         text = open(path, encoding='utf-8').read()
