@@ -952,11 +952,13 @@ CATNAV_STYLE = '''<style>
 .dl-catnav__panel--catalog{flex-direction:column;width:480px;gap:2px;}
 .dl-catnav__panel-link{display:block;padding:9px 10px;border-radius:8px;color:#0F1E2E;font-size:14px;font-weight:700;text-decoration:none;}
 .dl-catnav__panel-link:hover{background:var(--surface-tint);color:var(--blue);}
-.dl-catnav__panel-label{font-family:'Onest',Arial,sans-serif;font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin:10px 10px 6px;}
-.dl-catnav__catalog-groups{display:flex;gap:24px;padding:0 10px 8px;}
-.dl-catnav__group{flex:1;min-width:0;}
-.dl-catnav__group-title{font-family:'Onest',Arial,sans-serif;font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin:0 0 10px;}
-.dl-catnav__group-links{display:flex;flex-wrap:wrap;gap:6px;}
+.dl-catnav__submenu{position:relative;}
+.dl-catnav__submenu-trigger{display:flex;align-items:center;justify-content:space-between;width:100%;border:none;background:none;text-align:left;font-family:inherit;cursor:pointer;}
+.dl-catnav__submenu-trigger::after{content:'';flex:none;margin-left:10px;border-style:solid;border-width:4px 0 4px 5px;border-color:transparent transparent transparent var(--muted);}
+.dl-catnav__flyout{display:none;position:absolute;left:100%;top:0;margin-left:6px;background:var(--surface);border:1px solid var(--border-strong);border-radius:12px;box-shadow:0 10px 30px rgba(15,30,59,.12);padding:10px;z-index:60;}
+.dl-catnav__submenu.is-open > .dl-catnav__flyout{display:block;}
+.dl-catnav__flyout--menu{width:200px;}
+.dl-catnav__flyout--tags{display:flex;flex-wrap:wrap;gap:6px;width:320px;}
 .dl-catnav__group-links a{display:inline-block;padding:6px 12px;border-radius:999px;background:var(--surface-page);color:var(--navy);font-size:13px;font-weight:600;text-decoration:none;white-space:nowrap;}
 .dl-catnav__group-links a:hover{background:var(--blue);color:#fff;}
 .dl-catnav__panel--list{flex-direction:column;width:240px;gap:2px;}
@@ -971,7 +973,7 @@ CATNAV_STYLE = '''<style>
   .dl-catnav__inner::-webkit-scrollbar{display:none;}
   .dl-catnav__trigger,.dl-catnav__link{padding:12px 10px;font-size:13px;white-space:nowrap;}
   .dl-catnav__panel{position:fixed;left:16px;right:16px;width:auto !important;}
-  .dl-catnav__catalog-groups{flex-direction:column;gap:16px;}
+  .dl-catnav__flyout{position:static;margin:6px 0 6px 14px;box-shadow:none;border:none;padding:0;width:auto!important;}
 }
 </style>'''
 
@@ -993,10 +995,34 @@ CATNAV_SCRIPT = '''<script>
     });
     item.addEventListener('mouseleave', function(){
       item.classList.remove('is-open');
+      item.querySelectorAll('.dl-catnav__submenu.is-open').forEach(function(s){ s.classList.remove('is-open'); });
+    });
+  });
+  var subs = document.querySelectorAll('.dl-catnav__submenu');
+  subs.forEach(function(sub){
+    var trigger = sub.querySelector(':scope > .dl-catnav__submenu-trigger');
+    if (!trigger) return;
+    var siblings = Array.prototype.filter.call(sub.parentElement.children, function(el){
+      return el.classList.contains('dl-catnav__submenu');
+    });
+    trigger.addEventListener('click', function(e){
+      e.stopPropagation();
+      var wasOpen = sub.classList.contains('is-open');
+      siblings.forEach(function(s){ s.classList.remove('is-open'); });
+      if (!wasOpen) sub.classList.add('is-open');
+    });
+    sub.addEventListener('mouseenter', function(){
+      siblings.forEach(function(s){ s.classList.remove('is-open'); });
+      sub.classList.add('is-open');
+    });
+    sub.addEventListener('mouseleave', function(){
+      sub.classList.remove('is-open');
+      sub.querySelectorAll('.dl-catnav__submenu.is-open').forEach(function(s){ s.classList.remove('is-open'); });
     });
   });
   document.addEventListener('click', function(){
     items.forEach(function(i){ i.classList.remove('is-open'); });
+    subs.forEach(function(s){ s.classList.remove('is-open'); });
   });
 })();
 </script>'''
@@ -1017,15 +1043,17 @@ def render_catnav(brand_links, kuzov_links, base, active=None):
       <button class="dl-catnav__trigger" type="button">Каталог{chevron}</button>
       <div class="dl-catnav__panel dl-catnav__panel--catalog">
         <a class="dl-catnav__panel-link" href="{base}catalog.html">Каталог автомобилей</a>
-        <div class="dl-catnav__panel-label">Поиск по автомобилю</div>
-        <div class="dl-catnav__catalog-groups">
-          <div class="dl-catnav__group">
-            <div class="dl-catnav__group-title">Марка</div>
-            <div class="dl-catnav__group-links">{brand_links}</div>
-          </div>
-          <div class="dl-catnav__group">
-            <div class="dl-catnav__group-title">Кузов</div>
-            <div class="dl-catnav__group-links">{kuzov_links}</div>
+        <div class="dl-catnav__submenu">
+          <button class="dl-catnav__panel-link dl-catnav__submenu-trigger" type="button">Поиск по автомобилю</button>
+          <div class="dl-catnav__flyout dl-catnav__flyout--menu">
+            <div class="dl-catnav__submenu">
+              <button class="dl-catnav__panel-link dl-catnav__submenu-trigger" type="button">По марке</button>
+              <div class="dl-catnav__flyout dl-catnav__flyout--tags dl-catnav__group-links">{brand_links}</div>
+            </div>
+            <div class="dl-catnav__submenu">
+              <button class="dl-catnav__panel-link dl-catnav__submenu-trigger" type="button">По кузову</button>
+              <div class="dl-catnav__flyout dl-catnav__flyout--tags dl-catnav__group-links">{kuzov_links}</div>
+            </div>
           </div>
         </div>
         <a class="dl-catnav__panel-link" href="{base}arenda-s-vykupom/">Условия аренды авто с выкупом</a>
