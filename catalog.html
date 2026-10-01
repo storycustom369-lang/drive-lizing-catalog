@@ -435,12 +435,16 @@ h1,h2,h3,.dl-num,.dl-btn,.dl-pill,.dl-title{font-family:'Onest',Arial,sans-serif
 .dl-catnav__item.is-open .dl-catnav__chevron{transform:rotate(180deg);}
 .dl-catnav__panel{display:none;position:absolute;top:100%;left:0;background:var(--surface);border:1px solid var(--border-strong);border-radius:12px;box-shadow:0 10px 30px rgba(15,30,59,.12);padding:14px;z-index:50;}
 .dl-catnav__item.is-open .dl-catnav__panel{display:flex;}
-.dl-catnav__panel--groups{width:520px;gap:24px;}
+.dl-catnav__panel--groups{width:760px;gap:24px;}
 .dl-catnav__group{flex:1;min-width:0;}
+.dl-catnav__group--list{flex:0 0 210px;}
 .dl-catnav__group-title{font-family:'Onest',Arial,sans-serif;font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin:0 0 10px;}
 .dl-catnav__group-links{display:flex;flex-wrap:wrap;gap:6px;}
 .dl-catnav__group-links a{display:inline-block;padding:6px 12px;border-radius:999px;background:var(--surface-page);color:var(--navy);font-size:13px;font-weight:600;text-decoration:none;white-space:nowrap;}
 .dl-catnav__group-links a:hover{background:var(--blue);color:#fff;}
+.dl-catnav__group-list{display:flex;flex-direction:column;gap:2px;}
+.dl-catnav__group-list a{display:block;padding:7px 8px;border-radius:8px;color:var(--navy);font-size:13px;font-weight:600;text-decoration:none;white-space:nowrap;}
+.dl-catnav__group-list a:hover{background:var(--surface-tint);color:var(--blue);}
 .dl-catnav__panel--list{flex-direction:column;width:240px;gap:2px;}
 .dl-catnav__panel--list a{display:block;padding:9px 10px;border-radius:8px;color:var(--navy);font-size:13.5px;font-weight:600;text-decoration:none;white-space:nowrap;}
 .dl-catnav__panel--list a:hover{background:var(--surface-tint);color:var(--blue);}
@@ -457,7 +461,7 @@ h1,h2,h3,.dl-num,.dl-btn,.dl-pill,.dl-title{font-family:'Onest',Arial,sans-serif
 <nav class="dl-catnav">
   <div class="dl-catnav__inner">
     <div class="dl-catnav__item">
-      <button class="dl-catnav__trigger" type="button">Автомобили<svg class="dl-catnav__chevron" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+      <button class="dl-catnav__trigger" type="button">Каталог<svg class="dl-catnav__chevron" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
       <div class="dl-catnav__panel dl-catnav__panel--groups">
         <div class="dl-catnav__group">
           <div class="dl-catnav__group-title">Марки авто</div>
@@ -467,17 +471,17 @@ h1,h2,h3,.dl-num,.dl-btn,.dl-pill,.dl-title{font-family:'Onest',Arial,sans-serif
           <div class="dl-catnav__group-title">Тип кузова</div>
           <div class="dl-catnav__group-links"><a href="kuzov/sedan/">Седан</a><a href="kuzov/krossover/">Кроссовер</a><a href="kuzov/miniven/">Минивэн</a><a href="kuzov/universal/">Универсал</a><a href="kuzov/keikar/">Кей-кар</a><a href="kuzov/pikap/">Пикап</a><a href="kuzov/furgon/">Фургон</a></div>
         </div>
-      </div>
-    </div>
-    <div class="dl-catnav__item">
-      <button class="dl-catnav__trigger" type="button">Аренда с выкупом<svg class="dl-catnav__chevron" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
-      <div class="dl-catnav__panel dl-catnav__panel--list">
-        <a href="catalog.html?src=fleet">Автопарк</a>
-        <a href="catalog.html?src=lease">Авто с салона</a>
-        <a href="catalog.html?b=10-15">10-15 тысяч в неделю</a>
-        <a href="catalog.html?b=15-20">15-20 тысяч в неделю</a>
-        <a href="catalog.html?b=20-25">20-25 тысяч в неделю</a>
-        <a href="catalog.html?b=bolee25">Более 25 тысяч в неделю</a>
+        <div class="dl-catnav__group dl-catnav__group--list">
+          <div class="dl-catnav__group-title">Варианты</div>
+          <div class="dl-catnav__group-list">
+            <a href="catalog.html?src=fleet">Автопарк</a>
+            <a href="catalog.html?src=lease">Авто с салона</a>
+            <a href="catalog.html?b=10-15">10-15 тысяч в неделю</a>
+            <a href="catalog.html?b=15-20">15-20 тысяч в неделю</a>
+            <a href="catalog.html?b=20-25">20-25 тысяч в неделю</a>
+            <a href="catalog.html?b=bolee25">Более 25 тысяч в неделю</a>
+          </div>
+        </div>
       </div>
     </div>
     <a class="dl-catnav__link" href="lizing-yurlicam/">Лизинг</a>
