@@ -949,16 +949,16 @@ CATNAV_STYLE = '''<style>
 .dl-catnav__item.is-open .dl-catnav__chevron{transform:rotate(180deg);}
 .dl-catnav__panel{display:none;position:absolute;top:100%;left:0;background:var(--surface);border:1px solid var(--border-strong);border-radius:12px;box-shadow:0 10px 30px rgba(15,30,59,.12);padding:14px;z-index:50;}
 .dl-catnav__item.is-open .dl-catnav__panel{display:flex;}
-.dl-catnav__panel--groups{width:760px;gap:24px;}
+.dl-catnav__panel--catalog{flex-direction:column;width:480px;gap:2px;}
+.dl-catnav__panel-link{display:block;padding:9px 10px;border-radius:8px;color:#0F1E2E;font-size:14px;font-weight:700;text-decoration:none;}
+.dl-catnav__panel-link:hover{background:var(--surface-tint);color:var(--blue);}
+.dl-catnav__panel-label{font-family:'Onest',Arial,sans-serif;font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin:10px 10px 6px;}
+.dl-catnav__catalog-groups{display:flex;gap:24px;padding:0 10px 8px;}
 .dl-catnav__group{flex:1;min-width:0;}
-.dl-catnav__group--list{flex:0 0 210px;}
 .dl-catnav__group-title{font-family:'Onest',Arial,sans-serif;font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin:0 0 10px;}
 .dl-catnav__group-links{display:flex;flex-wrap:wrap;gap:6px;}
 .dl-catnav__group-links a{display:inline-block;padding:6px 12px;border-radius:999px;background:var(--surface-page);color:var(--navy);font-size:13px;font-weight:600;text-decoration:none;white-space:nowrap;}
 .dl-catnav__group-links a:hover{background:var(--blue);color:#fff;}
-.dl-catnav__group-list{display:flex;flex-direction:column;gap:2px;}
-.dl-catnav__group-list a{display:block;padding:7px 8px;border-radius:8px;color:var(--navy);font-size:13px;font-weight:600;text-decoration:none;white-space:nowrap;}
-.dl-catnav__group-list a:hover{background:var(--surface-tint);color:var(--blue);}
 .dl-catnav__panel--list{flex-direction:column;width:240px;gap:2px;}
 .dl-catnav__panel--list a{display:block;padding:9px 10px;border-radius:8px;color:var(--navy);font-size:13.5px;font-weight:600;text-decoration:none;white-space:nowrap;}
 .dl-catnav__panel--list a:hover{background:var(--surface-tint);color:var(--blue);}
@@ -971,7 +971,7 @@ CATNAV_STYLE = '''<style>
   .dl-catnav__inner::-webkit-scrollbar{display:none;}
   .dl-catnav__trigger,.dl-catnav__link{padding:12px 10px;font-size:13px;white-space:nowrap;}
   .dl-catnav__panel{position:fixed;left:16px;right:16px;width:auto !important;}
-  .dl-catnav__panel--groups{flex-direction:column;gap:16px;}
+  .dl-catnav__catalog-groups{flex-direction:column;gap:16px;}
 }
 </style>'''
 
@@ -1015,26 +1015,21 @@ def render_catnav(brand_links, kuzov_links, base, active=None):
     <a class="dl-catnav__link{home_cls}" href="{base}index.html">Главная</a>
     <div class="dl-catnav__item{catalog_cls}">
       <button class="dl-catnav__trigger" type="button">Каталог{chevron}</button>
-      <div class="dl-catnav__panel dl-catnav__panel--groups">
-        <div class="dl-catnav__group">
-          <div class="dl-catnav__group-title">Марки авто</div>
-          <div class="dl-catnav__group-links">{brand_links}</div>
-        </div>
-        <div class="dl-catnav__group">
-          <div class="dl-catnav__group-title">Тип кузова</div>
-          <div class="dl-catnav__group-links">{kuzov_links}</div>
-        </div>
-        <div class="dl-catnav__group dl-catnav__group--list">
-          <div class="dl-catnav__group-title">Варианты</div>
-          <div class="dl-catnav__group-list">
-            <a href="{base}catalog.html?src=fleet">Автопарк</a>
-            <a href="{base}catalog.html?src=lease">Авто с салона</a>
-            <a href="{base}catalog.html?b=10-15">10-15 тысяч в неделю</a>
-            <a href="{base}catalog.html?b=15-20">15-20 тысяч в неделю</a>
-            <a href="{base}catalog.html?b=20-25">20-25 тысяч в неделю</a>
-            <a href="{base}catalog.html?b=bolee25">Более 25 тысяч в неделю</a>
+      <div class="dl-catnav__panel dl-catnav__panel--catalog">
+        <a class="dl-catnav__panel-link" href="{base}catalog.html">Каталог автомобилей</a>
+        <div class="dl-catnav__panel-label">Поиск по автомобилю</div>
+        <div class="dl-catnav__catalog-groups">
+          <div class="dl-catnav__group">
+            <div class="dl-catnav__group-title">Марка</div>
+            <div class="dl-catnav__group-links">{brand_links}</div>
+          </div>
+          <div class="dl-catnav__group">
+            <div class="dl-catnav__group-title">Кузов</div>
+            <div class="dl-catnav__group-links">{kuzov_links}</div>
           </div>
         </div>
+        <a class="dl-catnav__panel-link" href="{base}arenda-s-vykupom/">Условия аренды авто с выкупом</a>
+        <a class="dl-catnav__panel-link" href="{base}faq/">Частые вопросы</a>
       </div>
     </div>
     <div class="dl-catnav__item">
@@ -1059,9 +1054,10 @@ def render_catnav(brand_links, kuzov_links, base, active=None):
 
 def write_brand_links(cars, brand_slugs, kuzov_slugs):
     """Пишет объединённое меню (Каталог/Лизинг/Компания/Контакты) между маркерами в catalog.html
-    и index.html. Раскрывается по наведению (и по клику — для тачскринов). "Каталог" объединяет
-    бывшие "Автомобили" и "Аренда с выкупом" в одну панель с тремя группами (марки/кузов/варианты),
-    чтобы не плодить по сути одинаковые по смыслу вкладки. "Лизинг" — дропдаун на две существующие
+    и index.html. Раскрывается по наведению (и по клику — для тачскринов). "Каталог" — вертикальный
+    список (Каталог автомобилей / Поиск по автомобилю — марка+кузов / Условия аренды с выкупом /
+    Частые вопросы); цены/источник (автопарк vs с салона) убраны отсюда намеренно — это дублировало
+    фильтры, которые и так есть прямо на странице каталога. "Лизинг" — дропдаун на две существующие
     страницы: физ. лица (arenda-s-vykupom/) и юр. лица (lizing-yurlicam/).
     Компания → О компании/Блог (реальные страницы) и Отзывы (якорь на подвал — отдельной
     страницы с отзывами пока нет). Контакты — реальная страница /contacts/.

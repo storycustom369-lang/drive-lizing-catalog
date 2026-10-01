@@ -437,16 +437,16 @@ h1,h2,h3,.dl-num,.dl-btn,.dl-pill,.dl-title{font-family:'Onest',Arial,sans-serif
 .dl-catnav__item.is-open .dl-catnav__chevron{transform:rotate(180deg);}
 .dl-catnav__panel{display:none;position:absolute;top:100%;left:0;background:var(--surface);border:1px solid var(--border-strong);border-radius:12px;box-shadow:0 10px 30px rgba(15,30,59,.12);padding:14px;z-index:50;}
 .dl-catnav__item.is-open .dl-catnav__panel{display:flex;}
-.dl-catnav__panel--groups{width:760px;gap:24px;}
+.dl-catnav__panel--catalog{flex-direction:column;width:480px;gap:2px;}
+.dl-catnav__panel-link{display:block;padding:9px 10px;border-radius:8px;color:#0F1E2E;font-size:14px;font-weight:700;text-decoration:none;}
+.dl-catnav__panel-link:hover{background:var(--surface-tint);color:var(--blue);}
+.dl-catnav__panel-label{font-family:'Onest',Arial,sans-serif;font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin:10px 10px 6px;}
+.dl-catnav__catalog-groups{display:flex;gap:24px;padding:0 10px 8px;}
 .dl-catnav__group{flex:1;min-width:0;}
-.dl-catnav__group--list{flex:0 0 210px;}
 .dl-catnav__group-title{font-family:'Onest',Arial,sans-serif;font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin:0 0 10px;}
 .dl-catnav__group-links{display:flex;flex-wrap:wrap;gap:6px;}
 .dl-catnav__group-links a{display:inline-block;padding:6px 12px;border-radius:999px;background:var(--surface-page);color:var(--navy);font-size:13px;font-weight:600;text-decoration:none;white-space:nowrap;}
 .dl-catnav__group-links a:hover{background:var(--blue);color:#fff;}
-.dl-catnav__group-list{display:flex;flex-direction:column;gap:2px;}
-.dl-catnav__group-list a{display:block;padding:7px 8px;border-radius:8px;color:var(--navy);font-size:13px;font-weight:600;text-decoration:none;white-space:nowrap;}
-.dl-catnav__group-list a:hover{background:var(--surface-tint);color:var(--blue);}
 .dl-catnav__panel--list{flex-direction:column;width:240px;gap:2px;}
 .dl-catnav__panel--list a{display:block;padding:9px 10px;border-radius:8px;color:var(--navy);font-size:13.5px;font-weight:600;text-decoration:none;white-space:nowrap;}
 .dl-catnav__panel--list a:hover{background:var(--surface-tint);color:var(--blue);}
@@ -459,7 +459,7 @@ h1,h2,h3,.dl-num,.dl-btn,.dl-pill,.dl-title{font-family:'Onest',Arial,sans-serif
   .dl-catnav__inner::-webkit-scrollbar{display:none;}
   .dl-catnav__trigger,.dl-catnav__link{padding:12px 10px;font-size:13px;white-space:nowrap;}
   .dl-catnav__panel{position:fixed;left:16px;right:16px;width:auto !important;}
-  .dl-catnav__panel--groups{flex-direction:column;gap:16px;}
+  .dl-catnav__catalog-groups{flex-direction:column;gap:16px;}
 }
 </style>
 <nav class="dl-catnav">
@@ -467,26 +467,21 @@ h1,h2,h3,.dl-num,.dl-btn,.dl-pill,.dl-title{font-family:'Onest',Arial,sans-serif
     <a class="dl-catnav__link" href="index.html">Главная</a>
     <div class="dl-catnav__item dl-catnav__item--active">
       <button class="dl-catnav__trigger" type="button">Каталог<svg class="dl-catnav__chevron" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
-      <div class="dl-catnav__panel dl-catnav__panel--groups">
-        <div class="dl-catnav__group">
-          <div class="dl-catnav__group-title">Марки авто</div>
-          <div class="dl-catnav__group-links"><a href="marki/baic/">BAIC</a><a href="marki/belgee/">Belgee</a><a href="marki/chery/">Chery</a><a href="marki/gac/">GAC</a><a href="marki/great-wall/">Great Wall</a><a href="marki/haval/">Haval</a><a href="marki/honda/">Honda</a><a href="marki/hyundai/">Hyundai</a><a href="marki/jetour/">Jetour</a><a href="marki/kia/">Kia</a><a href="marki/lada/">Lada</a><a href="marki/mazda/">Mazda</a><a href="marki/omoda/">Omoda</a><a href="marki/renault/">Renault</a><a href="marki/skoda/">Skoda</a><a href="marki/solaris/">Solaris</a><a href="marki/sollers/">Sollers</a><a href="marki/tenet/">Tenet</a><a href="marki/toyota/">Toyota</a><a href="marki/umo/">UMO</a><a href="marki/volga/">Volga</a><a href="marki/volkswagen/">Volkswagen</a><a href="marki/moskvich/">Москвич</a></div>
-        </div>
-        <div class="dl-catnav__group">
-          <div class="dl-catnav__group-title">Тип кузова</div>
-          <div class="dl-catnav__group-links"><a href="kuzov/sedan/">Седан</a><a href="kuzov/krossover/">Кроссовер</a><a href="kuzov/miniven/">Минивэн</a><a href="kuzov/universal/">Универсал</a><a href="kuzov/keikar/">Кей-кар</a><a href="kuzov/pikap/">Пикап</a><a href="kuzov/furgon/">Фургон</a></div>
-        </div>
-        <div class="dl-catnav__group dl-catnav__group--list">
-          <div class="dl-catnav__group-title">Варианты</div>
-          <div class="dl-catnav__group-list">
-            <a href="catalog.html?src=fleet">Автопарк</a>
-            <a href="catalog.html?src=lease">Авто с салона</a>
-            <a href="catalog.html?b=10-15">10-15 тысяч в неделю</a>
-            <a href="catalog.html?b=15-20">15-20 тысяч в неделю</a>
-            <a href="catalog.html?b=20-25">20-25 тысяч в неделю</a>
-            <a href="catalog.html?b=bolee25">Более 25 тысяч в неделю</a>
+      <div class="dl-catnav__panel dl-catnav__panel--catalog">
+        <a class="dl-catnav__panel-link" href="catalog.html">Каталог автомобилей</a>
+        <div class="dl-catnav__panel-label">Поиск по автомобилю</div>
+        <div class="dl-catnav__catalog-groups">
+          <div class="dl-catnav__group">
+            <div class="dl-catnav__group-title">Марка</div>
+            <div class="dl-catnav__group-links"><a href="marki/baic/">BAIC</a><a href="marki/belgee/">Belgee</a><a href="marki/chery/">Chery</a><a href="marki/gac/">GAC</a><a href="marki/great-wall/">Great Wall</a><a href="marki/haval/">Haval</a><a href="marki/honda/">Honda</a><a href="marki/hyundai/">Hyundai</a><a href="marki/jetour/">Jetour</a><a href="marki/kia/">Kia</a><a href="marki/lada/">Lada</a><a href="marki/mazda/">Mazda</a><a href="marki/omoda/">Omoda</a><a href="marki/renault/">Renault</a><a href="marki/skoda/">Skoda</a><a href="marki/solaris/">Solaris</a><a href="marki/sollers/">Sollers</a><a href="marki/tenet/">Tenet</a><a href="marki/toyota/">Toyota</a><a href="marki/umo/">UMO</a><a href="marki/volga/">Volga</a><a href="marki/volkswagen/">Volkswagen</a><a href="marki/moskvich/">Москвич</a></div>
+          </div>
+          <div class="dl-catnav__group">
+            <div class="dl-catnav__group-title">Кузов</div>
+            <div class="dl-catnav__group-links"><a href="kuzov/sedan/">Седан</a><a href="kuzov/krossover/">Кроссовер</a><a href="kuzov/miniven/">Минивэн</a><a href="kuzov/universal/">Универсал</a><a href="kuzov/keikar/">Кей-кар</a><a href="kuzov/pikap/">Пикап</a><a href="kuzov/furgon/">Фургон</a></div>
           </div>
         </div>
+        <a class="dl-catnav__panel-link" href="arenda-s-vykupom/">Условия аренды авто с выкупом</a>
+        <a class="dl-catnav__panel-link" href="faq/">Частые вопросы</a>
       </div>
     </div>
     <div class="dl-catnav__item">
