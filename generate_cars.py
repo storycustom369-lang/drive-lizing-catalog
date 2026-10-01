@@ -1011,11 +1011,28 @@ CATNAV_SCRIPT = '''<script>
     });
   });
   var subs = document.querySelectorAll('.dl-catnav__submenu');
+  function subFlyout(sub){
+    return sub.querySelector(':scope > .dl-catnav__flyout');
+  }
+  function setSubOpen(sub, open){
+    var flyout = subFlyout(sub);
+    if (open) {
+      sub.classList.add('is-open');
+      if (flyout) {
+        flyout.style.display = 'none';
+        void flyout.offsetHeight;
+        flyout.style.display = 'block';
+      }
+    } else {
+      sub.classList.remove('is-open');
+      if (flyout) flyout.style.display = 'none';
+    }
+  }
   function closeOthers(sub){
     subs.forEach(function(other){
       if (other === sub || other.contains(sub)) return;
       cancelClose(other);
-      other.classList.remove('is-open');
+      setSubOpen(other, false);
     });
   }
   function cancelAncestorCloses(el){
@@ -1034,18 +1051,18 @@ CATNAV_SCRIPT = '''<script>
       e.stopPropagation();
       var wasOpen = sub.classList.contains('is-open');
       closeOthers(sub);
-      if (!wasOpen) sub.classList.add('is-open'); else sub.classList.remove('is-open');
+      setSubOpen(sub, !wasOpen);
     });
     sub.addEventListener('mouseenter', function(){
       cancelClose(sub);
       cancelAncestorCloses(sub);
       closeOthers(sub);
-      sub.classList.add('is-open');
+      setSubOpen(sub, true);
     });
     sub.addEventListener('mouseleave', function(){
       armClose(sub, function(){
-        sub.classList.remove('is-open');
-        sub.querySelectorAll('.dl-catnav__submenu.is-open').forEach(function(s){ s.classList.remove('is-open'); });
+        setSubOpen(sub, false);
+        sub.querySelectorAll('.dl-catnav__submenu.is-open').forEach(function(s){ setSubOpen(s, false); });
       });
     });
   });
