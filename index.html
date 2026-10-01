@@ -462,6 +462,14 @@ h1,h2,h3,.dl-num,.dl-btn,.dl-pill,.dl-title{font-family:'Onest',Arial,sans-serif
 </nav>
 <script>
 (function(){
+  var CLOSE_DELAY = 300;
+  function armClose(el, fn){
+    clearTimeout(el._dlCloseTimer);
+    el._dlCloseTimer = setTimeout(fn, CLOSE_DELAY);
+  }
+  function cancelClose(el){
+    clearTimeout(el._dlCloseTimer);
+  }
   var items = document.querySelectorAll('.dl-catnav__item');
   items.forEach(function(item){
     var trigger = item.querySelector('.dl-catnav__trigger');
@@ -473,12 +481,15 @@ h1,h2,h3,.dl-num,.dl-btn,.dl-pill,.dl-title{font-family:'Onest',Arial,sans-serif
       if (!wasOpen) item.classList.add('is-open');
     });
     item.addEventListener('mouseenter', function(){
-      items.forEach(function(i){ i.classList.remove('is-open'); });
+      cancelClose(item);
+      items.forEach(function(i){ if (i !== item) i.classList.remove('is-open'); });
       item.classList.add('is-open');
     });
     item.addEventListener('mouseleave', function(){
-      item.classList.remove('is-open');
-      item.querySelectorAll('.dl-catnav__submenu.is-open').forEach(function(s){ s.classList.remove('is-open'); });
+      armClose(item, function(){
+        item.classList.remove('is-open');
+        item.querySelectorAll('.dl-catnav__submenu.is-open').forEach(function(s){ s.classList.remove('is-open'); });
+      });
     });
   });
   var subs = document.querySelectorAll('.dl-catnav__submenu');
@@ -495,12 +506,19 @@ h1,h2,h3,.dl-num,.dl-btn,.dl-pill,.dl-title{font-family:'Onest',Arial,sans-serif
       if (!wasOpen) sub.classList.add('is-open');
     });
     sub.addEventListener('mouseenter', function(){
-      siblings.forEach(function(s){ s.classList.remove('is-open'); });
+      cancelClose(sub);
+      var ancestorSub = sub.parentElement.closest('.dl-catnav__submenu');
+      if (ancestorSub) cancelClose(ancestorSub);
+      var ancestorItem = sub.closest('.dl-catnav__item');
+      if (ancestorItem) cancelClose(ancestorItem);
+      siblings.forEach(function(s){ if (s !== sub) s.classList.remove('is-open'); });
       sub.classList.add('is-open');
     });
     sub.addEventListener('mouseleave', function(){
-      sub.classList.remove('is-open');
-      sub.querySelectorAll('.dl-catnav__submenu.is-open').forEach(function(s){ s.classList.remove('is-open'); });
+      armClose(sub, function(){
+        sub.classList.remove('is-open');
+        sub.querySelectorAll('.dl-catnav__submenu.is-open').forEach(function(s){ s.classList.remove('is-open'); });
+      });
     });
   });
   document.addEventListener('click', function(){
