@@ -1,3 +1,6 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <!-- Google tag (gtag.js) -->
@@ -44,7 +47,10 @@
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"AutoDealer","name":"Драйв Лизинг","image":"https://driveleasing38.ru/logo.png","url":"https://driveleasing38.ru/","telephone":"+79950527683","address":{"@type":"PostalAddress","streetAddress":"ул. Байкальская, 208","addressLocality":"Иркутск","addressCountry":"RU"},"areaServed":"Иркутск","priceRange":"$$","sameAs":["https://t.me/drivelizing","https://max.ru/id30954831331_biz","https://2gis.ru/irkutsk/search/драйв%20лизинг/firm/70000001099120012/104.32804%2C52.257428"],"aggregateRating":{"@type":"AggregateRating","ratingValue":"4.9","reviewCount":"400"},"openingHoursSpecification":{"@type":"OpeningHoursSpecification","dayOfWeek":["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"],"opens":"09:00","closes":"21:00"}}</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Onest:wght@500;600;700;800&family=Golos+Text:wght@400;500;600;700&display=swap">
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Onest:wght@500;600;700;800&family=Golos+Text:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Onest:wght@500;600;700;800&family=Golos+Text:wght@400;500;600;700&display=swap" media="print" onload="this.media='all'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Onest:wght@500;600;700;800&family=Golos+Text:wght@400;500;600;700&display=swap"></noscript>
+<link rel="preload" as="image" href="images/range-cards/10-15.webp" fetchpriority="high">
 <style>
 :root{
   --navy:#1B435C;
@@ -361,6 +367,8 @@ h1,h2,h3,.dl-num,.dl-btn,.dl-pill,.dl-title{font-family:'Onest',Arial,sans-serif
   .dl-footer__bottom{flex-direction:column;align-items:flex-start;}
 }
 </style>
+</head>
+<body>
 
 <div class="dl-topbar">
   <div class="dl-topbar__inner">
@@ -567,7 +575,12 @@ h1,h2,h3,.dl-num,.dl-btn,.dl-pill,.dl-title{font-family:'Onest',Arial,sans-serif
       <h2>Сколько готовы платить <em>в неделю?</em></h2>
       <p>Нажмите на диапазон, покажем подходящие машины</p>
     </div>
-    <div class="dl-range-grid" id="dlRangeGrid"></div>
+    <div class="dl-range-grid" id="dlRangeGrid">
+      <button type="button" class="dl-range-card dl-range-card--full" data-bucket="10-15"><img src="images/range-cards/10-15.webp" alt="10-15 тыс ₽ в неделю" width="1828" height="796" fetchpriority="high"></button>
+      <button type="button" class="dl-range-card dl-range-card--full" data-bucket="15-20"><img src="images/range-cards/15-20.webp" alt="15-20 тыс ₽ в неделю" width="1828" height="796"></button>
+      <button type="button" class="dl-range-card dl-range-card--full" data-bucket="20-25"><img src="images/range-cards/20-25.webp" alt="20-25 тыс ₽ в неделю" width="1828" height="796"></button>
+      <button type="button" class="dl-range-card dl-range-card--full" data-bucket="bolee25"><img src="images/range-cards/bolee25.webp" alt="более 25 тыс ₽ в неделю" width="1828" height="796"></button>
+    </div>
   </div>
 </div>
 
@@ -937,6 +950,22 @@ h1,h2,h3,.dl-num,.dl-btn,.dl-pill,.dl-title{font-family:'Onest',Arial,sans-serif
     var wrap = document.getElementById('dlRangeGrid');
     if (!wrap) return;
     var order = ['10-15', '15-20', '20-25', 'bolee25'];
+
+    // Карточки уже пререндерены в HTML (статичные webp-картинки, не зависят
+    // от CARS) — так первая, LCP-картинка, грузится сразу из разметки, а не
+    // после разбора и выполнения всего скрипта с данными машин. Здесь только
+    // навешиваем клики и прячем бакет, если в нём вдруг не осталось машин.
+    var staticCards = wrap.querySelectorAll('[data-bucket]');
+    if (staticCards.length) {
+      staticCards.forEach(function(btn){
+        var key = btn.getAttribute('data-bucket');
+        var hasCars = CARS.some(function(c){ return c.bucket === key; });
+        if (!hasCars) { btn.remove(); return; }
+        btn.addEventListener('click', function(){ goToBucketOrNavigate(key); });
+      });
+      return;
+    }
+
     wrap.innerHTML = '';
     order.forEach(function(key){
       var list = CARS.filter(function(c){ return c.bucket === key; });
@@ -1746,3 +1775,5 @@ h1,h2,h3,.dl-num,.dl-btn,.dl-pill,.dl-title{font-family:'Onest',Arial,sans-serif
   });
 })();
 </script>
+</body>
+</html>
