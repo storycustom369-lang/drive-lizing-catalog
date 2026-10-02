@@ -50,6 +50,7 @@
 <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Onest:wght@500;600;700;800&family=Golos+Text:wght@400;500;600;700&display=swap">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Onest:wght@500;600;700;800&family=Golos+Text:wght@400;500;600;700&display=swap" media="print" onload="this.media='all'">
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Onest:wght@500;600;700;800&family=Golos+Text:wght@400;500;600;700&display=swap"></noscript>
+<link rel="preload" as="image" href="images/cars/stor6132-3266-4134-b262-303439396463_6e187098e2b5d41614dd3947f1adbf9a.webp" fetchpriority="high">
 <link rel="preload" as="image" href="images/range-cards/10-15.webp" fetchpriority="high">
 <style>
 :root{
@@ -228,6 +229,29 @@ h1,h2,h3,.dl-num,.dl-btn,.dl-pill,.dl-title{font-family:'Onest',Arial,sans-serif
 .dl-marquee--top .dl-marquee__item svg{filter:none;}
 .dl-marquee--top .dl-marquee__dot{background:var(--border-strong);}
 
+.dl-hero2{background:var(--surface);padding:56px 24px 64px;}
+.dl-hero2__inner{max-width:1180px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:center;}
+.dl-hero2__brand{display:flex;align-items:center;gap:10px;margin-bottom:28px;}
+.dl-hero2__brand img{height:40px;width:auto;display:block;}
+.dl-hero2__kicker{font-size:15px;font-weight:600;color:var(--navy-soft);margin:0 0 14px;}
+.dl-hero2__title{font-family:'Onest',Arial,sans-serif;font-size:50px;font-weight:800;line-height:1.08;color:var(--navy);margin:0 0 20px;text-transform:uppercase;text-wrap:balance;}
+.dl-hero2__title em{display:block;font-style:normal;color:var(--blue);}
+.dl-hero2__sub{font-size:17px;color:var(--navy-soft);margin:0;max-width:420px;line-height:1.5;}
+.dl-hero2__media{position:relative;aspect-ratio:1.1/1;}
+.dl-hero2__shape{position:absolute;inset:0 4% 4% 0;background:#EAF2FE;border-radius:44% 56% 58% 42%/58% 44% 56% 42%;z-index:0;}
+.dl-hero2__car{position:absolute;inset:8% 10% 10% 8%;width:82%;height:82%;z-index:1;object-fit:cover;border-radius:24px;display:block;box-shadow:0 20px 40px rgba(15,30,59,.12);}
+.dl-hero2__badge{position:absolute;left:6%;bottom:8%;z-index:2;background:#fff;border-radius:16px;box-shadow:0 10px 30px rgba(15,30,59,.16);padding:10px 16px;display:flex;align-items:center;gap:8px;}
+.dl-hero2__badge img{height:28px;width:auto;display:block;}
+.dl-hero2__badge-text{display:flex;flex-direction:column;line-height:1.1;font-family:'Onest',Arial,sans-serif;font-weight:800;font-size:12px;letter-spacing:.02em;}
+.dl-hero2__badge-text span:first-child{color:var(--navy);}
+.dl-hero2__badge-text span:last-child{color:var(--blue);}
+@media (max-width:860px){
+  .dl-hero2{padding:36px 20px 44px;}
+  .dl-hero2__inner{grid-template-columns:1fr;gap:28px;}
+  .dl-hero2__media{order:-1;aspect-ratio:4/3;}
+  .dl-hero2__title{font-size:34px;}
+  .dl-hero2__brand{margin-bottom:18px;}
+}
 
 .dl-ranges{background:var(--blue);padding:44px 24px;}
 .dl-ranges--first{padding-top:40px;scroll-margin-top:160px;}
@@ -598,6 +622,27 @@ h1,h2,h3,.dl-num,.dl-btn,.dl-pill,.dl-title{font-family:'Onest',Arial,sans-serif
 <div class="dl-marquee dl-marquee--top">
   <div class="dl-marquee__track" id="dlMarqueeTrackTop"></div>
 </div>
+
+<section class="dl-hero2">
+  <div class="dl-hero2__inner">
+    <div class="dl-hero2__text">
+      <div class="dl-hero2__brand">
+        <img src="logo-topbar.webp" alt="Драйв Лизинг">
+      </div>
+      <p class="dl-hero2__kicker">Автомобили для физических и юридических лиц</p>
+      <p class="dl-hero2__title">Уезжайте<br>на новом<br>автомобиле<br><em>уже сегодня.</em></p>
+      <p class="dl-hero2__sub">Подберём автомобиль под ваши задачи и бюджет</p>
+    </div>
+    <div class="dl-hero2__media">
+      <div class="dl-hero2__shape"></div>
+      <img class="dl-hero2__car" src="images/cars/stor6132-3266-4134-b262-303439396463_6e187098e2b5d41614dd3947f1adbf9a.webp" alt="Автомобиль в лизинг и аренду с выкупом" width="1000" height="562" fetchpriority="high">
+      <div class="dl-hero2__badge">
+        <img src="images/icons3d/logo-icon-small.webp" alt="">
+        <span class="dl-hero2__badge-text"><span>ДРАЙВ</span><span>ЛИЗИНГ</span></span>
+      </div>
+    </div>
+  </div>
+</section>
 
 <div class="dl-ranges dl-ranges--first" id="catalog-start">
   <div class="dl-ranges__inner">
