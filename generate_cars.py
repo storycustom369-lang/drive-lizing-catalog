@@ -1122,7 +1122,7 @@ def render_catnav(brand_links, kuzov_links, base, active=None):
     <div class="dl-catnav__item{catalog_cls}">
       <button class="dl-catnav__trigger" type="button">Каталог{chevron}</button>
       <div class="dl-catnav__panel dl-catnav__panel--catalog">
-        <a class="dl-catnav__panel-link" href="{base}catalog.html">Каталог автомобилей</a>
+        <a class="dl-catnav__panel-link" href="{base}index.html#catalog-start">Каталог автомобилей</a>
         <div class="dl-catnav__submenu">
           <button class="dl-catnav__panel-link dl-catnav__submenu-trigger" type="button">Поиск по автомобилю</button>
           <div class="dl-catnav__flyout dl-catnav__flyout--menu">
@@ -1202,7 +1202,7 @@ def write_brand_links(cars, brand_slugs, kuzov_slugs, brand_links_tpl, kuzov_lin
             raise RuntimeError(f'Не нашёл <!-- BRAND_LINKS_START/END --> в {os.path.basename(path)}')
         if new_text != text:
             open(path, 'w', encoding='utf-8').write(new_text)
-            print(f"{os.path.basename(path)}: {len(brands_present)} марок и {len(kuzov_present)} типов кузова обновлено")
+            print(f"{os.path.basename(path)}: {brand_links.count('<a ')} марок и {kuzov_links.count('<a ')} типов кузова обновлено")
 
 def photo_rel(p):
     """Путь к фото для car-page HTML (относительно cars/<slug>/). Абсолютные URL (сторонние стоковые фото) не трогаем — иначе '../../' ломает ссылку."""
