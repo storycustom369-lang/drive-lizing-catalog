@@ -58,6 +58,212 @@
     </a>
   </div>
 </div>
+<style>
+.dl-catnav{background:var(--surface);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:42;}
+.dl-catnav__inner{max-width:1180px;margin:0 auto;padding:10px 24px;display:flex;align-items:center;gap:6px;flex-wrap:wrap;}
+.dl-catnav__item{position:relative;}
+.dl-catnav__trigger{display:flex;align-items:center;gap:6px;padding:10px 18px;border:none;border-radius:999px;background:none;font-family:'Onest',Arial,sans-serif;font-size:14px;font-weight:600;color:var(--navy);cursor:pointer;transition:background .15s,color .15s;}
+.dl-catnav__trigger:hover{background:var(--surface-page);color:var(--blue);}
+.dl-catnav__item.is-open .dl-catnav__trigger,
+.dl-catnav__item--active .dl-catnav__trigger{background:var(--blue);color:#fff;}
+.dl-catnav__chevron{width:14px;height:14px;flex:none;transition:transform .15s;}
+.dl-catnav__item.is-open .dl-catnav__chevron{transform:rotate(180deg);}
+.dl-catnav__panel{display:none;position:absolute;top:100%;left:0;background:var(--surface);border:1px solid var(--border-strong);border-radius:12px;box-shadow:0 10px 30px rgba(15,30,59,.12);padding:14px;z-index:50;}
+.dl-catnav__item.is-open .dl-catnav__panel{display:flex;}
+.dl-catnav__panel--catalog{flex-direction:column;width:480px;gap:2px;}
+.dl-catnav__panel-link{display:block;padding:9px 10px;border-radius:8px;color:#0F1E2E;font-size:14px;font-weight:700;text-decoration:none;}
+.dl-catnav__panel-link:hover{background:var(--surface-tint);color:var(--blue);}
+.dl-catnav__submenu{position:relative;}
+.dl-catnav__submenu-trigger{display:flex;align-items:center;justify-content:space-between;width:100%;border:none;background:none;text-align:left;font-family:inherit;cursor:pointer;}
+.dl-catnav__submenu-trigger::after{content:'';flex:none;margin-left:10px;border-style:solid;border-width:4px 0 4px 5px;border-color:transparent transparent transparent var(--muted);}
+.dl-catnav__flyout{display:none;position:absolute;left:100%;top:0;margin-left:6px;background:var(--surface);border:1px solid var(--border-strong);border-radius:12px;box-shadow:0 10px 30px rgba(15,30,59,.12);padding:10px;z-index:60;}
+.dl-catnav__submenu.is-open > .dl-catnav__flyout{display:block;}
+.dl-catnav__flyout--menu{width:200px;}
+.dl-catnav__flyout--menu > .dl-catnav__submenu{position:static;}
+.dl-catnav__flyout--tags{display:flex;flex-wrap:wrap;gap:6px;width:320px;}
+.dl-catnav__group-links a{display:inline-block;padding:6px 12px;border-radius:999px;background:var(--surface-page);color:var(--navy);font-size:13px;font-weight:600;text-decoration:none;white-space:nowrap;}
+.dl-catnav__group-links a:hover{background:var(--blue);color:#fff;}
+.dl-catnav__panel--list{flex-direction:column;width:240px;gap:2px;}
+.dl-catnav__panel--list a{display:block;padding:9px 10px;border-radius:8px;color:var(--navy);font-size:13.5px;font-weight:600;text-decoration:none;white-space:nowrap;}
+.dl-catnav__panel--list a:hover{background:var(--surface-tint);color:var(--blue);}
+.dl-catnav__link{padding:10px 18px;border-radius:999px;font-family:'Onest',Arial,sans-serif;font-size:14px;font-weight:600;color:var(--navy);text-decoration:none;transition:background .15s,color .15s;}
+.dl-catnav__link:hover{background:var(--surface-page);color:var(--blue);}
+.dl-catnav__link--active{background:var(--blue);color:#fff;}
+.dl-catnav__link--active:hover{background:var(--blue-dark);color:#fff;}
+@media (max-width:640px){
+  .dl-catnav__inner{padding:6px 16px;overflow-x:auto;scrollbar-width:none;flex-wrap:nowrap;}
+  .dl-catnav__inner::-webkit-scrollbar{display:none;}
+  .dl-catnav__item{flex:none;}
+  .dl-catnav__trigger,.dl-catnav__link{padding:12px 10px;font-size:13px;white-space:nowrap;flex:none;}
+  .dl-catnav__panel{position:fixed;left:16px;right:16px;width:auto !important;max-height:70vh;overflow-y:auto;}
+  .dl-catnav__flyout{position:static;margin:6px 0 6px 14px;box-shadow:none;border:none;padding:0;width:auto!important;}
+}
+</style>
+<nav class="dl-catnav">
+  <div class="dl-catnav__inner">
+    <a class="dl-catnav__link" href="../../index.html">Главная</a>
+    <div class="dl-catnav__item dl-catnav__item--active">
+      <button class="dl-catnav__trigger" type="button">Каталог<svg class="dl-catnav__chevron" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+      <div class="dl-catnav__panel dl-catnav__panel--catalog">
+        <a class="dl-catnav__panel-link" href="../../catalog.html">Каталог автомобилей</a>
+        <div class="dl-catnav__submenu">
+          <button class="dl-catnav__panel-link dl-catnav__submenu-trigger" type="button">Поиск по автомобилю</button>
+          <div class="dl-catnav__flyout dl-catnav__flyout--menu">
+            <div class="dl-catnav__submenu">
+              <button class="dl-catnav__panel-link dl-catnav__submenu-trigger" type="button">По марке</button>
+              <div class="dl-catnav__flyout dl-catnav__flyout--tags dl-catnav__group-links"><a href="../../marki/baic/">BAIC</a><a href="../../marki/belgee/">Belgee</a><a href="../../marki/chery/">Chery</a><a href="../../marki/gac/">GAC</a><a href="../../marki/great-wall/">Great Wall</a><a href="../../marki/haval/">Haval</a><a href="../../marki/honda/">Honda</a><a href="../../marki/hyundai/">Hyundai</a><a href="../../marki/jetour/">Jetour</a><a href="../../marki/kia/">Kia</a><a href="../../marki/lada/">Lada</a><a href="../../marki/mazda/">Mazda</a><a href="../../marki/omoda/">Omoda</a><a href="../../marki/renault/">Renault</a><a href="../../marki/skoda/">Skoda</a><a href="../../marki/solaris/">Solaris</a><a href="../../marki/sollers/">Sollers</a><a href="../../marki/tenet/">Tenet</a><a href="../../marki/toyota/">Toyota</a><a href="../../marki/umo/">UMO</a><a href="../../marki/volga/">Volga</a><a href="../../marki/volkswagen/">Volkswagen</a><a href="../../marki/moskvich/">Москвич</a></div>
+            </div>
+            <div class="dl-catnav__submenu">
+              <button class="dl-catnav__panel-link dl-catnav__submenu-trigger" type="button">По кузову</button>
+              <div class="dl-catnav__flyout dl-catnav__flyout--tags dl-catnav__group-links"><a href="../../kuzov/sedan/">Седан</a><a href="../../kuzov/krossover/">Кроссовер</a><a href="../../kuzov/miniven/">Минивэн</a><a href="../../kuzov/universal/">Универсал</a><a href="../../kuzov/keikar/">Кей-кар</a><a href="../../kuzov/pikap/">Пикап</a><a href="../../kuzov/furgon/">Фургон</a></div>
+            </div>
+          </div>
+        </div>
+        <a class="dl-catnav__panel-link" href="../../arenda-s-vykupom/">Условия аренды авто с выкупом</a>
+        <a class="dl-catnav__panel-link" href="../../faq/">Частые вопросы</a>
+      </div>
+    </div>
+    <div class="dl-catnav__item">
+      <button class="dl-catnav__trigger" type="button">Лизинг<svg class="dl-catnav__chevron" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+      <div class="dl-catnav__panel dl-catnav__panel--list">
+        <a href="../../arenda-s-vykupom/">Лизинг для физ. лиц</a>
+        <a href="../../lizing-yurlicam/">Лизинг для юр. лиц</a>
+      </div>
+    </div>
+    <div class="dl-catnav__item">
+      <button class="dl-catnav__trigger" type="button">Компания<svg class="dl-catnav__chevron" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+      <div class="dl-catnav__panel dl-catnav__panel--list">
+        <a href="../../o-kompanii/">О компании</a>
+        <a href="../../blog/">Блог</a>
+        <a href="#footer-reviews">Отзывы</a>
+      </div>
+    </div>
+    <a class="dl-catnav__link" href="../../contacts/">Контакты</a>
+  </div>
+</nav>
+<script>
+(function(){
+  var CLOSE_DELAY = 300;
+  function armClose(el, fn){
+    clearTimeout(el._dlCloseTimer);
+    el._dlCloseTimer = setTimeout(fn, CLOSE_DELAY);
+  }
+  function cancelClose(el){
+    clearTimeout(el._dlCloseTimer);
+  }
+  // Шапка (лого+слоган) прилипает к верху сама по себе (.dl-topbar). Чтобы
+  // строка навигации ехала вместе с ней, а не уезжала под неё при скролле,
+  // тоже делаем её sticky и ставим top точно под высоту шапки -- без этого
+  // обе sticky-полосы встанут в одну точку top:0 и наедут друг на друга.
+  function syncCatnavOffset(){
+    var topbar = document.querySelector('.dl-topbar');
+    var bar = document.querySelector('.dl-catnav');
+    if (!topbar || !bar) return;
+    bar.style.top = topbar.getBoundingClientRect().height + 'px';
+  }
+  syncCatnavOffset();
+  window.addEventListener('resize', syncCatnavOffset);
+  // На мобильной ширине панель становится position:fixed (чтобы не резаться
+  // горизонтальным скроллом строки навигации), поэтому top:100% из CSS больше
+  // не значит "под кнопкой", а значит "100% высоты экрана" -- панель рисуется
+  // за нижним краем viewport. Ставим top явно под нижнюю границу самой панели.
+  function positionMobilePanel(item){
+    if (window.innerWidth > 640) return;
+    var panel = item.querySelector(':scope > .dl-catnav__panel');
+    var bar = item.closest('.dl-catnav');
+    if (!panel || !bar) return;
+    panel.style.top = bar.getBoundingClientRect().bottom + 'px';
+  }
+  function closeItem(item){
+    item.classList.remove('is-open');
+    var panel = item.querySelector(':scope > .dl-catnav__panel');
+    if (panel) panel.style.top = '';
+  }
+  var items = document.querySelectorAll('.dl-catnav__item');
+  items.forEach(function(item){
+    var trigger = item.querySelector('.dl-catnav__trigger');
+    if (!trigger) return;
+    trigger.addEventListener('click', function(e){
+      e.stopPropagation();
+      var wasOpen = item.classList.contains('is-open');
+      items.forEach(closeItem);
+      if (!wasOpen) { item.classList.add('is-open'); positionMobilePanel(item); }
+    });
+    item.addEventListener('mouseenter', function(){
+      cancelClose(item);
+      items.forEach(function(i){ if (i !== item) closeItem(i); });
+      item.classList.add('is-open');
+      positionMobilePanel(item);
+    });
+    item.addEventListener('mouseleave', function(){
+      armClose(item, function(){
+        closeItem(item);
+        item.querySelectorAll('.dl-catnav__submenu.is-open').forEach(function(s){ s.classList.remove('is-open'); });
+      });
+    });
+  });
+  var subs = document.querySelectorAll('.dl-catnav__submenu');
+  function subFlyout(sub){
+    return sub.querySelector(':scope > .dl-catnav__flyout');
+  }
+  function setSubOpen(sub, open){
+    var flyout = subFlyout(sub);
+    if (open) {
+      sub.classList.add('is-open');
+      if (flyout) {
+        flyout.style.display = 'none';
+        void flyout.offsetHeight;
+        flyout.style.display = 'block';
+      }
+    } else {
+      sub.classList.remove('is-open');
+      if (flyout) flyout.style.display = 'none';
+    }
+  }
+  function closeOthers(sub){
+    subs.forEach(function(other){
+      if (other === sub || other.contains(sub)) return;
+      cancelClose(other);
+      setSubOpen(other, false);
+    });
+  }
+  function cancelAncestorCloses(el){
+    var p = el.parentElement;
+    while (p) {
+      if (p.classList && (p.classList.contains('dl-catnav__submenu') || p.classList.contains('dl-catnav__item'))) {
+        cancelClose(p);
+      }
+      p = p.parentElement;
+    }
+  }
+  subs.forEach(function(sub){
+    var trigger = sub.querySelector(':scope > .dl-catnav__submenu-trigger');
+    if (!trigger) return;
+    trigger.addEventListener('click', function(e){
+      e.stopPropagation();
+      var wasOpen = sub.classList.contains('is-open');
+      closeOthers(sub);
+      setSubOpen(sub, !wasOpen);
+    });
+    sub.addEventListener('mouseenter', function(){
+      cancelClose(sub);
+      cancelAncestorCloses(sub);
+      closeOthers(sub);
+      setSubOpen(sub, true);
+    });
+    sub.addEventListener('mouseleave', function(){
+      armClose(sub, function(){
+        setSubOpen(sub, false);
+        sub.querySelectorAll('.dl-catnav__submenu.is-open').forEach(function(s){ setSubOpen(s, false); });
+      });
+    });
+  });
+  document.addEventListener('click', function(){
+    items.forEach(closeItem);
+    subs.forEach(function(s){ s.classList.remove('is-open'); });
+  });
+})();
+</script>
 
 <div class="dl-wrap">
   <nav class="dl-breadcrumb" aria-label="Хлебные крошки">

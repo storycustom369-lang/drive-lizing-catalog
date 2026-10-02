@@ -244,6 +244,7 @@ LISTING_PAGE_TEMPLATE = '''<!DOCTYPE html>
     </a>
   </div>
 </div>
+{catnav}
 
 <div class="dl-wrap">
   <nav class="dl-breadcrumb" aria-label="Хлебные крошки">
@@ -271,7 +272,7 @@ LISTING_PAGE_TEMPLATE = '''<!DOCTYPE html>
 </html>
 '''
 
-def render_listing_page(h1, title_tag, meta_desc, intro, crumb_name, canonical, cars_subset, slugs_by_art, total):
+def render_listing_page(h1, title_tag, meta_desc, intro, crumb_name, canonical, cars_subset, slugs_by_art, total, catnav):
     grid = render_catalog_grid(cars_subset, slugs_by_art, base='../../')
     empty_block = '' if cars_subset else '<div class="dl-empty">Пока нет автомобилей в этой категории — уточните у менеджера.</div>'
     breadcrumb_schema = json.dumps({
@@ -297,6 +298,7 @@ def render_listing_page(h1, title_tag, meta_desc, intro, crumb_name, canonical, 
         footer=FOOTER_HTML,
         cookie_banner=COOKIE_BANNER_HTML,
         analytics_head=ANALYTICS_HEAD,
+        catnav=catnav,
     )
 
 CONTENT_PAGE_TEMPLATE = '''<!DOCTYPE html>
@@ -333,6 +335,7 @@ CONTENT_PAGE_TEMPLATE = '''<!DOCTYPE html>
     </a>
   </div>
 </div>
+{catnav}
 
 <div class="dl-wrap">
   <nav class="dl-breadcrumb" aria-label="Хлебные крошки">
@@ -502,7 +505,7 @@ def render_related_articles(current_slug):
     )
     return f'<div class="dl-related-articles"><div class="dl-related-articles__heading">Другие статьи</div>{items}</div>'
 
-def render_content_page(h1, title_tag, meta_desc, lead, body, crumb_name, canonical, banner_slides, slug):
+def render_content_page(h1, title_tag, meta_desc, lead, body, crumb_name, canonical, banner_slides, slug, catnav):
     breadcrumb_schema = json.dumps({
         "@context": "https://schema.org",
         "@type": "BreadcrumbList",
@@ -526,6 +529,7 @@ def render_content_page(h1, title_tag, meta_desc, lead, body, crumb_name, canoni
         banner_slides=banner_slides,
         related_articles=render_related_articles(slug),
         slug=slug,
+        catnav=catnav,
         worker_url=WORKER_URL,
     )
 
@@ -1156,7 +1160,22 @@ def render_catnav(brand_links, kuzov_links, base, active=None):
 </nav>
 {CATNAV_SCRIPT}'''
 
-def write_brand_links(cars, brand_slugs, kuzov_slugs):
+def build_catnav_links(cars, brand_slugs, kuzov_slugs):
+    """brand_links/kuzov_links (HTML <a> списки для "Поиск по автомобилю") — общие
+    для index.html/catalog.html и для всех остальных страниц (машины/марки/кузова/
+    статьи), поэтому считаются один раз в main() и просто передаются дальше с
+    нужным base на каждой странице."""
+    brands_present = sorted(brand_slugs.keys())
+    kuzov_present = [k for k in KUZOV_LABELS if any((c.get('kuzov') or '').strip() == k for c in cars)]
+    brand_links = ''.join(
+        f'<a href="{{base}}marki/{brand_slugs[m]}/">{html.escape(m)}</a>' for m in brands_present
+    )
+    kuzov_links = ''.join(
+        f'<a href="{{base}}kuzov/{kuzov_slugs[k]}/">{html.escape(KUZOV_LABELS[k])}</a>' for k in kuzov_present
+    )
+    return brand_links, kuzov_links
+
+def write_brand_links(cars, brand_slugs, kuzov_slugs, brand_links_tpl, kuzov_links_tpl):
     """Пишет объединённое меню (Каталог/Лизинг/Компания/Контакты) между маркерами в catalog.html
     и index.html. Раскрывается по наведению (и по клику — для тачскринов). "Каталог" — вертикальный
     список (Каталог автомобилей / Поиск по автомобилю — марка+кузов / Условия аренды с выкупом /
@@ -1167,15 +1186,8 @@ def write_brand_links(cars, brand_slugs, kuzov_slugs):
     страницы с отзывами пока нет). Контакты — реальная страница /contacts/.
     Марки/кузов — чистая навигация на другие страницы, поэтому вынесены из живого
     #dlTabs (там остаются только реальные фильтры — автопарк/с салона, цена/неделю)."""
-    brands_present = sorted(brand_slugs.keys())
-    kuzov_present = [k for k in KUZOV_LABELS if any((c.get('kuzov') or '').strip() == k for c in cars)]
-
-    brand_links = ''.join(
-        f'<a href="marki/{brand_slugs[m]}/">{html.escape(m)}</a>' for m in brands_present
-    )
-    kuzov_links = ''.join(
-        f'<a href="kuzov/{kuzov_slugs[k]}/">{html.escape(KUZOV_LABELS[k])}</a>' for k in kuzov_present
-    )
+    brand_links = brand_links_tpl.format(base='')
+    kuzov_links = kuzov_links_tpl.format(base='')
     index_block = render_catnav(brand_links, kuzov_links, base='', active='home')
     catalog_block = render_catnav(brand_links, kuzov_links, base='', active='catalog')
 
@@ -1798,6 +1810,7 @@ PAGE_TEMPLATE = '''<!DOCTYPE html>
     </a>
   </div>
 </div>
+{catnav}
 
 <div class="dl-wrap">
   <nav class="dl-breadcrumb" aria-label="Хлебные крошки">
@@ -1902,7 +1915,10 @@ def main():
 
     write_slugs_to_catalog(cars, slugs_by_art)
     write_catalog_grid(cars, slugs_by_art)
-    write_brand_links(cars, brand_slugs, kuzov_slugs)
+    brand_links_tpl, kuzov_links_tpl = build_catnav_links(cars, brand_slugs, kuzov_slugs)
+    write_brand_links(cars, brand_slugs, kuzov_slugs, brand_links_tpl, kuzov_links_tpl)
+    catnav_cars2 = render_catnav(brand_links_tpl.format(base='../../'), kuzov_links_tpl.format(base='../../'), base='../../', active='catalog')
+    catnav_content1 = render_catnav(brand_links_tpl.format(base='../../'), kuzov_links_tpl.format(base='../../'), base='../../', active=None)
 
     os.makedirs(CARS_DIR, exist_ok=True)
     urls = []
@@ -1949,6 +1965,7 @@ def main():
             footer=FOOTER_HTML,
             cookie_banner=COOKIE_BANNER_HTML,
             analytics_head=ANALYTICS_HEAD,
+            catnav=catnav_cars2,
         )
         with open(os.path.join(outdir, "index.html"), "w", encoding="utf-8") as f:
             f.write(html_out)
@@ -1974,6 +1991,7 @@ def main():
             cars_subset=subset,
             slugs_by_art=slugs_by_art,
             total=len(cars),
+            catnav=catnav_cars2,
         )
         with open(os.path.join(outdir, "index.html"), "w", encoding="utf-8") as f:
             f.write(html_out)
@@ -2002,6 +2020,7 @@ def main():
             cars_subset=subset,
             slugs_by_art=slugs_by_art,
             total=len(cars),
+            catnav=catnav_cars2,
         )
         with open(os.path.join(outdir, "index.html"), "w", encoding="utf-8") as f:
             f.write(html_out)
@@ -2057,7 +2076,7 @@ def main():
         outdir = os.path.join(BASE_DIR, slug)
         os.makedirs(outdir, exist_ok=True)
         canonical = f"{SITE_URL}/{slug}/"
-        html_out = render_content_page(h1, title_tag, meta_desc, lead, body, crumb_name, canonical, banner_slides, slug)
+        html_out = render_content_page(h1, title_tag, meta_desc, lead, body, crumb_name, canonical, banner_slides, slug, catnav_content1)
         with open(os.path.join(outdir, "index.html"), "w", encoding="utf-8") as f:
             f.write(html_out)
         listing_urls.append(canonical)
