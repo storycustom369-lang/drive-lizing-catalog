@@ -938,7 +938,7 @@ def render_blog_list(articles):
     return f'<div class="dl-blog-list">{cards}</div><p style="margin-top:24px;">Короткие ответы без сплошного текста — в разделе <a href="../faq/">«Вопросы и ответы»</a>.</p>'
 
 CATNAV_STYLE = '''<style>
-.dl-catnav{background:var(--surface);border-bottom:1px solid var(--border);position:relative;z-index:42;}
+.dl-catnav{background:var(--surface);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:42;}
 .dl-catnav__inner{max-width:1180px;margin:0 auto;padding:10px 24px;display:flex;align-items:center;gap:6px;flex-wrap:wrap;}
 .dl-catnav__item{position:relative;}
 .dl-catnav__trigger{display:flex;align-items:center;gap:6px;padding:10px 18px;border:none;border-radius:999px;background:none;font-family:'Onest',Arial,sans-serif;font-size:14px;font-weight:600;color:var(--navy);cursor:pointer;transition:background .15s,color .15s;}
@@ -989,6 +989,18 @@ CATNAV_SCRIPT = '''<script>
   function cancelClose(el){
     clearTimeout(el._dlCloseTimer);
   }
+  // Шапка (лого+слоган) прилипает к верху сама по себе (.dl-topbar). Чтобы
+  // строка навигации ехала вместе с ней, а не уезжала под неё при скролле,
+  // тоже делаем её sticky и ставим top точно под высоту шапки -- без этого
+  // обе sticky-полосы встанут в одну точку top:0 и наедут друг на друга.
+  function syncCatnavOffset(){
+    var topbar = document.querySelector('.dl-topbar');
+    var bar = document.querySelector('.dl-catnav');
+    if (!topbar || !bar) return;
+    bar.style.top = topbar.getBoundingClientRect().height + 'px';
+  }
+  syncCatnavOffset();
+  window.addEventListener('resize', syncCatnavOffset);
   // На мобильной ширине панель становится position:fixed (чтобы не резаться
   // горизонтальным скроллом строки навигации), поэтому top:100% из CSS больше
   // не значит "под кнопкой", а значит "100% высоты экрана" -- панель рисуется
