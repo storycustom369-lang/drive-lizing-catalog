@@ -970,10 +970,11 @@ CATNAV_STYLE = '''<style>
 .dl-catnav__link--active{background:var(--blue);color:#fff;}
 .dl-catnav__link--active:hover{background:var(--blue-dark);color:#fff;}
 @media (max-width:640px){
-  .dl-catnav__inner{padding:0 16px;overflow-x:auto;scrollbar-width:none;}
+  .dl-catnav__inner{padding:0 16px;overflow-x:auto;scrollbar-width:none;flex-wrap:nowrap;}
   .dl-catnav__inner::-webkit-scrollbar{display:none;}
-  .dl-catnav__trigger,.dl-catnav__link{padding:12px 10px;font-size:13px;white-space:nowrap;}
-  .dl-catnav__panel{position:fixed;left:16px;right:16px;width:auto !important;}
+  .dl-catnav__item{flex:none;}
+  .dl-catnav__trigger,.dl-catnav__link{padding:12px 10px;font-size:13px;white-space:nowrap;flex:none;}
+  .dl-catnav__panel{position:fixed;left:16px;right:16px;width:auto !important;max-height:70vh;overflow-y:auto;}
   .dl-catnav__flyout{position:static;margin:6px 0 6px 14px;box-shadow:none;border:none;padding:0;width:auto!important;}
 }
 </style>'''
@@ -988,6 +989,22 @@ CATNAV_SCRIPT = '''<script>
   function cancelClose(el){
     clearTimeout(el._dlCloseTimer);
   }
+  // На мобильной ширине панель становится position:fixed (чтобы не резаться
+  // горизонтальным скроллом строки навигации), поэтому top:100% из CSS больше
+  // не значит "под кнопкой", а значит "100% высоты экрана" -- панель рисуется
+  // за нижним краем viewport. Ставим top явно под нижнюю границу самой панели.
+  function positionMobilePanel(item){
+    if (window.innerWidth > 640) return;
+    var panel = item.querySelector(':scope > .dl-catnav__panel');
+    var bar = item.closest('.dl-catnav');
+    if (!panel || !bar) return;
+    panel.style.top = bar.getBoundingClientRect().bottom + 'px';
+  }
+  function closeItem(item){
+    item.classList.remove('is-open');
+    var panel = item.querySelector(':scope > .dl-catnav__panel');
+    if (panel) panel.style.top = '';
+  }
   var items = document.querySelectorAll('.dl-catnav__item');
   items.forEach(function(item){
     var trigger = item.querySelector('.dl-catnav__trigger');
@@ -995,17 +1012,18 @@ CATNAV_SCRIPT = '''<script>
     trigger.addEventListener('click', function(e){
       e.stopPropagation();
       var wasOpen = item.classList.contains('is-open');
-      items.forEach(function(i){ i.classList.remove('is-open'); });
-      if (!wasOpen) item.classList.add('is-open');
+      items.forEach(closeItem);
+      if (!wasOpen) { item.classList.add('is-open'); positionMobilePanel(item); }
     });
     item.addEventListener('mouseenter', function(){
       cancelClose(item);
-      items.forEach(function(i){ if (i !== item) i.classList.remove('is-open'); });
+      items.forEach(function(i){ if (i !== item) closeItem(i); });
       item.classList.add('is-open');
+      positionMobilePanel(item);
     });
     item.addEventListener('mouseleave', function(){
       armClose(item, function(){
-        item.classList.remove('is-open');
+        closeItem(item);
         item.querySelectorAll('.dl-catnav__submenu.is-open').forEach(function(s){ s.classList.remove('is-open'); });
       });
     });
@@ -1067,7 +1085,7 @@ CATNAV_SCRIPT = '''<script>
     });
   });
   document.addEventListener('click', function(){
-    items.forEach(function(i){ i.classList.remove('is-open'); });
+    items.forEach(closeItem);
     subs.forEach(function(s){ s.classList.remove('is-open'); });
   });
 })();
