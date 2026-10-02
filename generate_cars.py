@@ -938,7 +938,7 @@ def render_blog_list(articles):
     return f'<div class="dl-blog-list">{cards}</div><p style="margin-top:24px;">Короткие ответы без сплошного текста — в разделе <a href="../faq/">«Вопросы и ответы»</a>.</p>'
 
 CATNAV_STYLE = '''<style>
-.dl-catnav{background:var(--surface-tint);border-bottom:1px solid var(--border);position:relative;z-index:42;}
+.dl-catnav{background:var(--surface);border-bottom:1px solid var(--border);position:relative;z-index:42;}
 .dl-catnav__inner{max-width:1180px;margin:0 auto;padding:10px 24px;display:flex;align-items:center;gap:6px;flex-wrap:wrap;}
 .dl-catnav__item{position:relative;}
 .dl-catnav__trigger{display:flex;align-items:center;gap:6px;padding:10px 18px;border:none;border-radius:999px;background:none;font-family:'Onest',Arial,sans-serif;font-size:14px;font-weight:600;color:var(--navy);cursor:pointer;transition:background .15s,color .15s;}
