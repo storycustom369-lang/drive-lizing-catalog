@@ -50,7 +50,7 @@
 <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Onest:wght@500;600;700;800&family=Golos+Text:wght@400;500;600;700&display=swap">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Onest:wght@500;600;700;800&family=Golos+Text:wght@400;500;600;700&display=swap" media="print" onload="this.media='all'">
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Onest:wght@500;600;700;800&family=Golos+Text:wght@400;500;600;700&display=swap"></noscript>
-<link rel="preload" as="image" href="images/range-cards/10-15.webp" fetchpriority="high">
+<link rel="preload" as="image" href="images/cars/stor6132-3266-4134-b262-303439396463_6e187098e2b5d41614dd3947f1adbf9a.webp" fetchpriority="high">
 <style>
 :root{
   --navy:#1B435C;
@@ -228,6 +228,40 @@ h1,h2,h3,.dl-num,.dl-btn,.dl-pill,.dl-title{font-family:'Onest',Arial,sans-serif
 .dl-marquee--top .dl-marquee__item svg{filter:none;}
 .dl-marquee--top .dl-marquee__dot{background:var(--border-strong);}
 
+
+.dl-hero2{padding:28px 24px 0;}
+.dl-hero2__inner{max-width:1180px;margin:0 auto;display:grid;grid-template-columns:1.05fr 0.95fr;gap:48px;align-items:center;}
+@media (max-width:860px){ .dl-hero2__inner{grid-template-columns:1fr;gap:28px;} }
+.dl-hero2__brand{display:inline-flex;align-items:center;gap:9px;margin-bottom:22px;font-family:'Onest',Arial,sans-serif;font-weight:800;font-size:14px;color:var(--navy);}
+.dl-hero2__brand img{height:26px;width:auto;display:block;}
+.dl-hero2__title{font-family:'Onest',Arial,sans-serif;font-size:42px;line-height:1.1;font-weight:800;letter-spacing:-0.01em;margin:0 0 16px;text-wrap:balance;color:var(--navy);}
+.dl-hero2__title em{font-style:normal;color:var(--blue);}
+@media (max-width:860px){ .dl-hero2__title{font-size:30px;} }
+.dl-hero2__sub{font-size:16px;line-height:1.55;color:var(--navy-soft);margin:0 0 26px;max-width:46ch;}
+.dl-hero2__cta{display:inline-flex;align-items:center;gap:10px;background:var(--blue);color:#fff;border:none;border-radius:999px;padding:15px 26px;font-family:'Onest',Arial,sans-serif;font-size:15px;font-weight:700;cursor:pointer;transition:transform .15s ease,background .15s ease;white-space:nowrap;}
+.dl-hero2__cta:hover{background:var(--blue-dark);transform:translateY(-1px);}
+.dl-hero2__cta:active{transform:translateY(0) scale(.98);}
+.dl-hero2__cta svg{flex:none;transition:transform .15s ease;}
+.dl-hero2__cta:hover svg{transform:translateX(3px);}
+.dl-hero2__media{position:relative;aspect-ratio:1/1;}
+.dl-hero2__shape{position:absolute;inset:0 6% 6% 0;background:var(--surface-tint);border-radius:44% 56% 58% 42%/58% 44% 56% 42%;}
+.dl-hero2__photo{position:absolute;inset:9% 11% 11% 9%;width:80%;height:80%;border-radius:26px;object-fit:cover;display:block;box-shadow:0 24px 48px rgba(15,30,59,.14);}
+.dl-hero2__badge{position:absolute;left:4%;bottom:6%;background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:12px 16px;display:flex;align-items:center;gap:10px;box-shadow:0 14px 32px rgba(15,30,59,.12);}
+.dl-hero2__badge-num{font-family:'Onest',Arial,sans-serif;font-size:20px;font-weight:800;color:var(--navy);line-height:1;}
+.dl-hero2__badge-label{font-size:11px;color:var(--muted);line-height:1.3;max-width:13ch;}
+.dl-hero2__trust{margin:46px auto 0;max-width:1180px;padding:24px 24px 0;border-top:1px solid var(--border);display:grid;grid-template-columns:repeat(4,1fr);gap:20px;}
+@media (max-width:860px){ .dl-hero2__trust{grid-template-columns:repeat(2,1fr);} }
+.dl-hero2__trust-item{display:flex;align-items:center;gap:11px;}
+.dl-hero2__trust-icon{flex:none;width:36px;height:36px;border-radius:10px;background:var(--surface-tint);display:flex;align-items:center;justify-content:center;color:var(--blue);}
+.dl-hero2__trust-text{font-size:13px;color:var(--navy-soft);line-height:1.3;}
+.dl-hero2__trust-text b{display:block;color:var(--navy);font-size:14px;font-weight:700;}
+@media (prefers-reduced-motion: no-preference){
+  .dl-hero2__title,.dl-hero2__sub,.dl-hero2__cta,.dl-hero2__media{animation:dlHeroRise .55s cubic-bezier(.16,1,.3,1) both;}
+  .dl-hero2__sub{animation-delay:.06s;}
+  .dl-hero2__cta{animation-delay:.12s;}
+  .dl-hero2__media{animation-delay:.08s;}
+  @keyframes dlHeroRise{from{opacity:0;transform:translateY(14px);}to{opacity:1;transform:translateY(0);}}
+}
 
 .dl-ranges{background:var(--blue);padding:44px 24px;}
 .dl-ranges--first{padding-top:40px;scroll-margin-top:160px;}
@@ -599,6 +633,50 @@ h1,h2,h3,.dl-num,.dl-btn,.dl-pill,.dl-title{font-family:'Onest',Arial,sans-serif
   <div class="dl-marquee__track" id="dlMarqueeTrackTop"></div>
 </div>
 
+<section class="dl-hero2">
+  <div class="dl-hero2__inner">
+    <div>
+      <div class="dl-hero2__brand">
+        <img src="logo-topbar.webp" alt="Драйв Лизинг">
+        Драйв Лизинг
+      </div>
+      <p class="dl-hero2__title">Уезжайте на новом авто,<br><em>даже если банк отказал</em></p>
+      <p class="dl-hero2__sub">Аренда с выкупом и лизинг в Иркутске. Взнос от 0%, оформление по двум документам, без банка и кредитной истории.</p>
+      <a class="dl-hero2__cta" href="#catalog-start">
+        Рассчитать платёж
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </a>
+    </div>
+    <div class="dl-hero2__media">
+      <div class="dl-hero2__shape"></div>
+      <img class="dl-hero2__photo" src="images/cars/stor6132-3266-4134-b262-303439396463_6e187098e2b5d41614dd3947f1adbf9a.webp" alt="Haval Jolion Max из автопарка Драйв Лизинг" width="1000" height="562" fetchpriority="high">
+      <div class="dl-hero2__badge">
+        <span class="dl-hero2__badge-num">4.9</span>
+        <span class="dl-hero2__badge-label">рейтинг, 400+ отзывов</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="dl-hero2__trust">
+    <div class="dl-hero2__trust-item">
+      <span class="dl-hero2__trust-icon"><svg width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="M12 2L4 5v6c0 5 3.4 9.4 8 11 4.6-1.6 8-6 8-11V5l-8-3z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg></span>
+      <span class="dl-hero2__trust-text"><b>92%</b>одобрений заявок</span>
+    </div>
+    <div class="dl-hero2__trust-item">
+      <span class="dl-hero2__trust-icon"><svg width="17" height="17" viewBox="0 0 24 24" fill="none"><rect x="4" y="4" width="16" height="16" rx="2" stroke="currentColor" stroke-width="1.8"/><path d="M8 9h8M8 13h5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></span>
+      <span class="dl-hero2__trust-text"><b>2 документа</b>паспорт и права</span>
+    </div>
+    <div class="dl-hero2__trust-item">
+      <span class="dl-hero2__trust-icon"><svg width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="M3 10l9-7 9 7v9a2 2 0 01-2 2H5a2 2 0 01-2-2v-9z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg></span>
+      <span class="dl-hero2__trust-text"><b>100+</b>машин в парке</span>
+    </div>
+    <div class="dl-hero2__trust-item">
+      <span class="dl-hero2__trust-icon"><svg width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="M12 21s-7-4.3-9.5-8.8C.8 8.7 2.3 5 5.8 5c2 0 3.4 1.3 4.2 2.5C10.8 6.3 12.2 5 14.2 5c3.5 0 5 3.7 3.3 7.2C19 16.7 12 21 12 21z" stroke="currentColor" stroke-width="1.8"/></svg></span>
+      <span class="dl-hero2__trust-text"><b>Без банка</b>решение за 1 день</span>
+    </div>
+  </div>
+</section>
+
 <div class="dl-ranges dl-ranges--first" id="catalog-start">
   <div class="dl-ranges__inner">
     <div class="dl-ranges__head">
@@ -606,7 +684,7 @@ h1,h2,h3,.dl-num,.dl-btn,.dl-pill,.dl-title{font-family:'Onest',Arial,sans-serif
       <p>Нажмите на диапазон, покажем подходящие машины</p>
     </div>
     <div class="dl-range-grid" id="dlRangeGrid">
-      <button type="button" class="dl-range-card dl-range-card--full" data-bucket="10-15"><img src="images/range-cards/10-15.webp" alt="10-15 тыс ₽ в неделю" width="1828" height="796" fetchpriority="high"></button>
+      <button type="button" class="dl-range-card dl-range-card--full" data-bucket="10-15"><img src="images/range-cards/10-15.webp" alt="10-15 тыс ₽ в неделю" width="1828" height="796"></button>
       <button type="button" class="dl-range-card dl-range-card--full" data-bucket="15-20"><img src="images/range-cards/15-20.webp" alt="15-20 тыс ₽ в неделю" width="1828" height="796"></button>
       <button type="button" class="dl-range-card dl-range-card--full" data-bucket="20-25"><img src="images/range-cards/20-25.webp" alt="20-25 тыс ₽ в неделю" width="1828" height="796"></button>
       <button type="button" class="dl-range-card dl-range-card--full" data-bucket="bolee25"><img src="images/range-cards/bolee25.webp" alt="более 25 тыс ₽ в неделю" width="1828" height="796"></button>
