@@ -1449,9 +1449,29 @@ h1,h2,h3,.dl-num,.dl-btn,.dl-pill,.dl-title{font-family:'Onest',Arial,sans-serif
       if (!phoneInput.value) phoneInput.value = '+7 ';
     });
     phoneInput.addEventListener('input', function(){
-      var digits = phoneInput.value.replace(/\D/g, '');
-      if (digits.charAt(0) === '7' || digits.charAt(0) === '8') digits = digits.slice(1);
-      phoneInput.value = formatPhone(digits);
+      var caret = phoneInput.selectionStart;
+      var rawVal = phoneInput.value;
+      var digitsBeforeCaret = rawVal.slice(0, caret).replace(/\D/g, '').length;
+      var digits = rawVal.replace(/\D/g, '');
+      if (digits.charAt(0) === '7' || digits.charAt(0) === '8') {
+        digits = digits.slice(1);
+        digitsBeforeCaret = Math.max(0, digitsBeforeCaret - 1);
+      }
+      var formatted = formatPhone(digits);
+      phoneInput.value = formatted;
+      var pos = formatted.length;
+      if (digitsBeforeCaret > 0) {
+        var seen = 0;
+        for (var i = 2; i < formatted.length; i++) {
+          if (/\d/.test(formatted[i])) {
+            seen++;
+            if (seen === digitsBeforeCaret) { pos = i + 1; break; }
+          }
+        }
+      } else {
+        pos = Math.min(3, formatted.length);
+      }
+      phoneInput.setSelectionRange(pos, pos);
     });
     phoneInput.addEventListener('keydown', function(e){
       if ((e.key === 'Backspace' || e.key === 'Delete') && phoneInput.selectionStart <= 3 && phoneInput.selectionEnd <= 3) {
