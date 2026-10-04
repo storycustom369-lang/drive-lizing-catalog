@@ -1,0 +1,8 @@
+# claudex-loop рабочие файлы в корне репо (транзитные).
+# Финальные планы + review-логи лежат в _plans/.
+/PLAN.md
+/PLAN-REVIEW-LOG.md
+
+# Черновик скиллов (SCRATCH_DIR-fallback, если харнесс не даёт свой scratchpad).
+# Содержит сырой вывод Codex и отчёты сканеров — никогда не коммитить.
+/.claudex-tmp/
