@@ -56,11 +56,6 @@
 .dl-footer__promo-text{position:relative !important;z-index:2 !important;font-family:'Onest',Arial,sans-serif !important;font-size:15px !important;font-weight:700 !important;text-transform:uppercase !important;line-height:1.35 !important;color:var(--navy) !important;max-width:150px !important;}
 .dl-footer__promo-text span{color:var(--blue) !important;}
 .dl-footer__promo img{position:absolute !important;right:-12px !important;bottom:-8px !important;width:80% !important;max-width:200px !important;z-index:1 !important;}
-.dl-footer__reviews{display:flex !important;flex-direction:column !important;align-items:center !important;gap:6px !important;padding:24px 0 !important;border-top:1px solid var(--border) !important;text-align:center !important;}
-.dl-footer__reviews .dl-topbar__stars{justify-content:center !important;}
-.dl-footer__reviews .dl-topbar__stars svg{width:16px !important;height:16px !important;}
-.dl-footer__reviews .dl-topbar__stars b{font-size:16px !important;}
-.dl-footer__reviews .dl-topbar__reviews-text{justify-content:center !important;font-size:13px !important;max-width:none !important;margin-top:2px !important;}
 #footer-contacts,#footer-reviews{scroll-margin-top:100px !important;}
 .dl-footer__bottom{display:flex !important;flex-wrap:wrap !important;justify-content:space-between !important;align-items:center !important;gap:10px !important;padding-top:20px !important;border-top:1px solid var(--border) !important;font-size:12.5px !important;color:var(--muted) !important;}
 .dl-footer__bottom-right{display:flex !important;align-items:center !important;gap:8px !important;}
@@ -75,7 +70,6 @@
   .dl-footer__bottom{flex-direction:column !important;align-items:flex-start !important;}
 }
 
-.dl-footer__top{grid-template-columns:1.35fr 1fr!important;gap:36px 52px!important}.dl-footer__brand{grid-column:1;grid-row:1}.dl-footer__top>div:nth-child(2){grid-column:2;grid-row:1}.dl-footer__top>#footer-contacts{grid-column:1;grid-row:2}.dl-footer__promo{grid-column:2;grid-row:2}.dl-footer__logo img{width:auto!important;height:58px!important}.dl-footer__logo-title{font-size:24px!important}.dl-footer__logo-sub{font-size:14px!important}.dl-footer__tagline{max-width:370px!important;font-size:16px!important;line-height:1.55!important}.dl-footer__promo{min-height:210px!important;padding:24px!important}.dl-footer__promo-text{font-size:21px!important;max-width:215px!important}.dl-footer__contacts .dl-footer__contact-item:nth-child(n+3){display:flex!important}@media(max-width:640px){.dl-footer__top{grid-template-columns:1fr!important;gap:28px!important}.dl-footer__top>div{grid-column:auto!important;grid-row:auto!important}.dl-footer__logo img{height:48px!important}.dl-footer__tagline{font-size:14px!important;max-width:none!important}.dl-footer__promo{min-height:190px!important}}
 .dl-footer__brand .dl-footer__tagline{display:block!important}.dl-footer__brand .dl-footer__social{display:flex!important}.dl-footer__col-title{display:block!important}
 
 /* FAQ: separate soft cards with a clear expand control. */
