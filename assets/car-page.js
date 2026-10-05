@@ -158,6 +158,7 @@
         createdAt: new Date().toISOString(),
         carArt: opts.art,
         carTitle: opts.carTitle,
+        isLeaseProgram: !!opts.isLeaseProgram,
         pv: opts.pv,
         term: opts.term,
         weekPayment: opts.weekPayment,
@@ -176,8 +177,11 @@
         var box = document.createElement("div");
         box.className = "dl-success";
         box.innerHTML = '<svg viewBox="0 0 24 24" fill="none"><path d="M12 2L4 5v6c0 5 3.4 9.4 8 11 4.6-1.6 8-6 8-11V5l-8-3z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="M9 12l2 2 4-4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>' +
-          '<div class="dl-success__title">Заявка принята</div>' +
-          '<div class="dl-success__text">Мы получили бронь на ' + opts.carTitle + '. Менеджер свяжется с вами в ближайшее время, чтобы подтвердить условия.</div>';
+          '<div class="dl-success__title">Заявка принята</div>';
+        var successText = document.createElement('div');
+        successText.className = 'dl-success__text';
+        successText.textContent = 'Мы получили бронь на ' + opts.carTitle + '. Менеджер свяжется с вами в ближайшее время, чтобы подтвердить условия.';
+        box.appendChild(successText);
         modal.appendChild(box);
       }).catch(function(){
         if (window.dlTrack) dlTrack("lead_failed", {type: "booking", art: opts.art});
@@ -581,6 +585,7 @@
       openBookingModal({
         art: calc.dataset.art,
         carTitle: calc.dataset.car,
+        isLeaseProgram: calc.dataset.leaseProgram === "true",
         pv: variant.label,
         term: term + " мес",
         weekPayment: t ? t.week : null,
@@ -592,7 +597,7 @@
 
   document.querySelectorAll(".dl-calc-unavailable .dl-btn--calc-cta").forEach(function(btn){
     btn.addEventListener("click", function(){
-      openBookingModal({ art: btn.dataset.art, carTitle: btn.dataset.car, pv: null, term: null, weekPayment: null, monthPayment: null });
+      openBookingModal({ art: btn.dataset.art, carTitle: btn.dataset.car, isLeaseProgram: btn.dataset.leaseProgram === "true", pv: null, term: null, weekPayment: null, monthPayment: null });
     });
   });
 

@@ -1631,9 +1631,15 @@ h1,h2,h3,.dl-num,.dl-btn,.dl-pill,.dl-title{font-family:'Onest',Arial,sans-serif
     container.innerHTML = '';
     var box = document.createElement('div');
     box.className = 'dl-success';
-    box.innerHTML = '<svg viewBox="0 0 24 24" fill="none"><path d="M12 2L4 5v6c0 5 3.4 9.4 8 11 4.6-1.6 8-6 8-11V5l-8-3z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="M9 12l2 2 4-4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>' +
-      '<div class="dl-success__title">' + title + '</div>' +
-      '<div class="dl-success__text">' + text + '</div>';
+    box.innerHTML = '<svg viewBox="0 0 24 24" fill="none"><path d="M12 2L4 5v6c0 5 3.4 9.4 8 11 4.6-1.6 8-6 8-11V5l-8-3z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="M9 12l2 2 4-4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+    var successTitle = document.createElement('div');
+    successTitle.className = 'dl-success__title';
+    successTitle.textContent = title;
+    var successText = document.createElement('div');
+    successText.className = 'dl-success__text';
+    successText.textContent = text;
+    box.appendChild(successTitle);
+    box.appendChild(successText);
     container.appendChild(box);
   }
 

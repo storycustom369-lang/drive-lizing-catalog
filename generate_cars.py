@@ -4,9 +4,13 @@
 Точка А -> Б: превращает JS-модалки внутри одной страницы в реальные краулящиеся URL.
 
 Запуск: python3 generate_cars.py
+Перед первым прогоном: --migrate-markers (только маркеры текущих папок).
+Предпросмотр удаления без записи: --dry-run. Непустой список ручной проверки
+нужно разобрать перед публикацией; sitemap_generated.xml сверить с sitemap.xml.
 Результат: cars/<slug>/index.html на каждую машину + обновлённый sitemap.xml (не трогает старый sitemap.xml файл напрямую, пишет sitemap_generated.xml для ручной проверки перед заменой).
 """
-import re, json, os, html, hashlib
+import re, json, os, html, hashlib, argparse
+from collections import Counter
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 CATALOG_HTML = os.path.join(BASE_DIR, "catalog.html")
@@ -82,18 +86,18 @@ def load_cars():
     return json.loads(m.group(1))
 
 def write_slugs_to_catalog(cars, slugs_by_art):
-    """Прописывает car.slug в CARS внутри catalog.html, чтобы карточки каталога
-    могли вести на cars/<slug>/ (единственный источник правды для слага - slugify() выше)."""
-    text = open(CATALOG_HTML, encoding='utf-8').read()
+    """Синхронизирует CARS и slug в каталоге и на главной; источник — catalog.html."""
     for c in cars:
         c['slug'] = slugs_by_art[c['art']]
     new_blob = json.dumps(cars, ensure_ascii=False)
-    new_text, n = re.subn(r'var CARS = \[.*?\];', 'var CARS = ' + new_blob + ';', text, count=1, flags=re.S)
-    if n != 1:
-        raise RuntimeError("Не нашёл var CARS = [...]; в catalog.html, слаги не записаны")
-    if new_text != text:
-        open(CATALOG_HTML, 'w', encoding='utf-8').write(new_text)
-        print("catalog.html: обновлены слаги для", len(cars), "машин")
+    for path in (CATALOG_HTML, INDEX_HTML):
+        text = open(path, encoding='utf-8').read()
+        new_text, n = re.subn(r'var CARS = \[.*?\];', lambda m: 'var CARS = ' + new_blob + ';', text, count=1, flags=re.S)
+        if n != 1:
+            raise RuntimeError(f"Не нашёл var CARS = [...]; в {path}, слаги не записаны")
+        if new_text != text:
+            open(path, 'w', encoding='utf-8').write(new_text)
+            print(f"{os.path.basename(path)}: обновлён CARS для {len(cars)} машин")
 
 def write_catalog_grid(cars, slugs_by_art):
     """Пишет статический список карточек в <div id="dlGrid"></div> catalog.html,
@@ -1378,24 +1382,24 @@ DESC_CLOSERS = [
 ]
 
 def render_description(car, spec_d, art_idx_seed):
-    title = car_title(car)
+    title = html.escape(car_title(car))
     h = int(hashlib.md5(art_idx_seed.encode()).hexdigest(), 16)
     opener = DESC_OPENERS[h % len(DESC_OPENERS)]
     spec_clause = DESC_SPEC_CLAUSES[(h // 7) % len(DESC_SPEC_CLAUSES)]
     komplekt_clause = DESC_KOMPLEKT_CLAUSES[(h // 13) % len(DESC_KOMPLEKT_CLAUSES)]
     closer = DESC_CLOSERS[(h // 29) % len(DESC_CLOSERS)]
 
-    year_bit = f"{car.get('year')} года " if car.get('year') else ""
-    year_bit2 = f" {car.get('year')} года" if car.get('year') else ""
-    body_bit = f"{spec_d['body']} " if spec_d.get('body') else ""
-    body_bit2 = f"({spec_d['body']}) " if spec_d.get('body') else ""
+    year_bit = f"{html.escape(str(car.get('year')))} года " if car.get('year') else ""
+    year_bit2 = f" {html.escape(str(car.get('year')))} года" if car.get('year') else ""
+    body_bit = f"{html.escape(spec_d['body'])} " if spec_d.get('body') else ""
+    body_bit2 = f"({html.escape(spec_d['body'])}) " if spec_d.get('body') else ""
 
     parts = [opener.format(title=title, year_bit=year_bit, year_bit2=year_bit2, body_bit=body_bit, body_bit2=body_bit2)]
     if spec_d.get('mileage') and spec_d.get('color') and spec_d.get('engine'):
-        parts.append(spec_clause.format(mileage=spec_d['mileage'], color=spec_d['color'], engine=spec_d['engine']))
+        parts.append(spec_clause.format(mileage=html.escape(spec_d['mileage']), color=html.escape(spec_d['color']), engine=html.escape(spec_d['engine'])))
     komplekt = komplekt_items(car.get('komplekt'))
     if komplekt:
-        top = ', '.join(komplekt[:3]).lower()
+        top = ', '.join(html.escape(item.lower()) for item in komplekt[:3])
         parts.append(komplekt_clause.format(items=top))
     parts.append(closer)
     return f'<p class="dl-description">{" ".join(parts)}</p>'
@@ -1544,6 +1548,7 @@ def render_slider(kind, keys, labels_map, suffix):
       </div>'''
 
 def render_calculator(car):
+    lease_program = "true" if car.get("isLeaseProgram") else "false"
     title_attr = html.escape(car_title(car)).replace('"', '&quot;')
     head = f'''<div class="dl-calc-head">
     <div class="dl-calc-head__text">
@@ -1559,7 +1564,7 @@ def render_calculator(car):
         return f'{head}<div class="dl-calc-unavailable">Этот автомобиль уже выдан клиенту и недоступен для оформления. Посмотрите похожие варианты в каталоге.<a class="dl-btn dl-btn--calc-cta" href="../../catalog.html" style="text-decoration:none;display:flex;align-items:center;justify-content:center;">Смотреть каталог {ci("arrow")}</a></div>'
     variants = car.get('variants')
     if not variants:
-        return f'{head}<div class="dl-calc-unavailable">Точная цена уточняется у менеджера. Оставьте заявку, посчитаем индивидуально.<button class="dl-btn dl-btn--calc-cta" type="button" data-art="{car["art"]}" data-car="{title_attr}">Быстрый заказ {ci("arrow")}</button></div>'
+        return f'{head}<div class="dl-calc-unavailable">Точная цена уточняется у менеджера. Оставьте заявку, посчитаем индивидуально.<button class="dl-btn dl-btn--calc-cta" type="button" data-art="{car["art"]}" data-car="{title_attr}" data-lease-program="{lease_program}">Быстрый заказ {ci("arrow")}</button></div>'
     pv_keys = sorted(variants.keys(), key=int)
     last_variant = variants[pv_keys[-1]]
     term_keys = sorted(last_variant['terms'].keys(), key=int)
@@ -1567,7 +1572,7 @@ def render_calculator(car):
     term_slider = render_slider('term', term_keys, TERM_LABELS, ' мес')
     lease_note = '<div class="dl-calc-lease-note">Автомобиль по лизинговой программе: суммы ориентировочные, точный расчёт подготовит менеджер.</div>' if car.get('isLeaseProgram') else ''
     return f'''{head}
-  <div class="dl-calc" data-car-data='{build_calculator_data(car)}' data-art="{car['art']}" data-car="{title_attr}">
+  <div class="dl-calc" data-car-data='{build_calculator_data(car)}' data-art="{car['art']}" data-car="{title_attr}" data-lease-program="{lease_program}">
     <div class="dl-field">
       <span class="dl-label dl-label--row">{ci('coins')}Первоначальный взнос</span>
       {pv_slider}
@@ -1897,7 +1902,47 @@ KUZOV_LABELS = {
     'универсал': 'Универсал', 'кейкар': 'Кей-кар', 'пикап': 'Пикап', 'фургон': 'Фургон',
 }
 
+def stale_car_directories(current_slugs):
+    """Только чтение: чужие папки не считаются принадлежащими генератору."""
+    candidates, review = [], []
+    if os.path.isdir(CARS_DIR):
+        for slug in sorted(os.listdir(CARS_DIR)):
+            path = os.path.join(CARS_DIR, slug)
+            if not os.path.isdir(path) or slug in current_slugs:
+                continue
+            if not os.path.islink(path) and os.path.isfile(os.path.join(path, '.generated')):
+                candidates.append(path)
+            else:
+                review.append(path)
+    return candidates, review
+
+
+def remove_stale_car_pages(candidates, review):
+    """Удаляет только вывод генератора; соседние файлы сохраняет для ручного разбора."""
+    for path in candidates:
+        for name in ('index.html', '.generated'):
+            target = os.path.join(path, name)
+            if os.path.isfile(target) or os.path.islink(target):
+                os.unlink(target)
+        if os.listdir(path):
+            review.append(path)
+        else:
+            os.rmdir(path)
+        print(f"Удалена устаревшая страница: {path}")
+
+
+def print_manual_review(review):
+    print(f"Требует ручной проверки: {len(review)}")
+    for path in review:
+        print(f"  {path}: {', '.join(sorted(os.listdir(path)))}")
+
+
 def main():
+    parser = argparse.ArgumentParser(description=__doc__)
+    modes = parser.add_mutually_exclusive_group()
+    modes.add_argument('--dry-run', action='store_true', help='Показать кандидатов без записи и удаления')
+    modes.add_argument('--migrate-markers', action='store_true', help='Однократно пометить существующие текущие car-папки')
+    args = parser.parse_args()
     cars = load_cars()
     slugs_by_art = {}
     used = set()
@@ -1909,6 +1954,32 @@ def main():
             slug += "-2"
         used.add(slug)
         slugs_by_art[c['art']] = slug
+
+    duplicates = sorted(art for art, count in Counter(c['art'] for c in cars).items() if count > 1)
+    if duplicates:
+        raise RuntimeError("Дублирующиеся артикулы: " + ", ".join(duplicates))
+
+    current_slugs = set(slugs_by_art.values())
+    # Миграция — отдельный режим, не часть dry-run или обычной сборки.
+    if args.migrate_markers:
+        count = 0
+        for slug in sorted(current_slugs):
+            path = os.path.join(CARS_DIR, slug)
+            if os.path.isdir(path) and not os.path.islink(path):
+                with open(os.path.join(path, '.generated'), 'w'):
+                    pass
+                count += 1
+        print(f"Миграция маркеров: {count}")
+        return
+
+    # Снимок кандидатов строго до любых записей, одинаковый для обоих режимов.
+    candidates, review = stale_car_directories(current_slugs)
+    print(f"Кандидатов на удаление: {len(candidates)}")
+    for path in candidates:
+        print(f"  {path}")
+    if args.dry_run:
+        print_manual_review(review)
+        return
 
     brand_slugs = {m: slugify(m) for m in sorted(set(c['marka'].strip() for c in cars))}
     kuzov_slugs = {k: slugify(k) for k in KUZOV_LABELS}
@@ -1969,7 +2040,13 @@ def main():
         )
         with open(os.path.join(outdir, "index.html"), "w", encoding="utf-8") as f:
             f.write(html_out)
+        with open(os.path.join(outdir, ".generated"), "w"):
+            pass
         urls.append(canonical)
+
+    # Удаление разрешено лишь после успешной записи всех текущих car-страниц.
+    remove_stale_car_pages(candidates, review)
+    print_manual_review(review)
 
     # Лендинги по маркам
     listing_urls = []

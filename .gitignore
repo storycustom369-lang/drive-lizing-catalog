@@ -6,3 +6,11 @@
 # Черновик скиллов (SCRATCH_DIR-fallback, если харнесс не даёт свой scratchpad).
 # Содержит сырой вывод Codex и отчёты сканеров — никогда не коммитить.
 /.claudex-tmp/
+
+# Маркеры владения generate_cars.py (cars/<slug>/.generated) — локальное служебное
+# состояние, самовосстанавливается на каждом обычном прогоне (см. generate_cars.py
+# main()); коммитить незачем, это не влияет на опубликованный сайт.
+.generated
+
+# Python bytecode cache.
+__pycache__/
