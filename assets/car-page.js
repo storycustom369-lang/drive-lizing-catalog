@@ -183,7 +183,7 @@
         if (window.dlTrack) dlTrack("lead_failed", {type: "booking", art: opts.art});
         submitBtn.disabled = false;
         submitBtn.textContent = "Забронировать автомобиль";
-        errorMsg.innerHTML = "Не получилось отправить. Попробуйте ещё раз или <a href=\"https://t.me/avtohere38\" target=\"_blank\" rel=\"noopener\">напишите нам в Telegram</a>.";
+        errorMsg.innerHTML = "Не получилось отправить. Попробуйте ещё раз или <a href=\"https://t.me/drivelizing\" target=\"_blank\" rel=\"noopener\">напишите нам в Telegram</a>.";
         errorMsg.hidden = false;
       });
     });
@@ -345,7 +345,7 @@
         if (window.dlTrack) dlTrack("lead_failed", {type: "pick_request"});
         submitBtn.disabled = false;
         submitBtn.textContent = "Отправить заявку";
-        errorMsg.innerHTML = "Не получилось отправить. Попробуйте ещё раз или <a href=\"https://t.me/avtohere38\" target=\"_blank\" rel=\"noopener\">напишите нам в Telegram</a>.";
+        errorMsg.innerHTML = "Не получилось отправить. Попробуйте ещё раз или <a href=\"https://t.me/drivelizing\" target=\"_blank\" rel=\"noopener\">напишите нам в Telegram</a>.";
         errorMsg.hidden = false;
       });
     });

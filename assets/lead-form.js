@@ -163,8 +163,8 @@ function buildLeadForm(container, opts){
       submitBtn.disabled = false;
       submitBtn.textContent = opts.submitLabel || 'Отправить';
       errorMsg.innerHTML = timedOut
-        ? 'Сервер долго не отвечает. Попробуйте ещё раз или <a href="https://t.me/avtohere38" target="_blank" rel="noopener">напишите нам в Telegram</a>.'
-        : 'Не получилось отправить. Попробуйте ещё раз или <a href="https://t.me/avtohere38" target="_blank" rel="noopener">напишите нам в Telegram</a>.';
+        ? 'Сервер долго не отвечает. Попробуйте ещё раз или <a href="https://t.me/drivelizing" target="_blank" rel="noopener">напишите нам в Telegram</a>.'
+        : 'Не получилось отправить. Попробуйте ещё раз или <a href="https://t.me/drivelizing" target="_blank" rel="noopener">напишите нам в Telegram</a>.';
       errorMsg.hidden = false;
     });
   });

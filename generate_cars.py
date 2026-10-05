@@ -585,7 +585,7 @@ CONTACTS_BODY = CONTACTS_SCHEMA + '''
 <ul class="dl-content-page__facts">
 <li>📞 Телефон: <a href="tel:+79950527683">+7 995 052-76-83</a>, ежедневно с 9:00 до 21:00</li>
 <li>📍 Адрес: г. Иркутск, ул. Байкальская, 208 (отдел продаж)</li>
-<li>💬 Telegram: <a href="https://t.me/avtohere38" target="_blank" rel="noopener">написать нам</a></li>
+<li>💬 Telegram: <a href="https://t.me/drivelizing" target="_blank" rel="noopener">написать нам</a></li>
 <li>💬 MAX: <a href="https://max.ru/u/f9LHodD0cOJwdXPtIRKpSznrrNNKwx-l7-HcyIykYTEMu3kGUgp9u4vTgm8" target="_blank" rel="noopener">написать нам</a></li>
 </ul>
 <p>Быстрее всего отвечаем в мессенджерах — там же можно скинуть ссылку на объявление или фото машины, если ищете что-то конкретное.</p>
@@ -1739,7 +1739,7 @@ FOOTER_HTML = '''<footer class="dl-footer">
           </div>
           <div class="dl-footer__contact-item">
             <span class="dl-footer__contact-badge"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="12" fill="#29A9EB"/><path d="M17.53 7.2L15.4 17.6c-.16.72-.58.9-1.18.56l-3.26-2.4-1.57 1.51c-.17.18-.32.33-.66.33l.24-3.36 6.1-5.51c.27-.24-.06-.37-.41-.13l-7.54 4.75-3.25-1.02c-.7-.22-.72-.7.15-1.04l12.7-4.9c.59-.22 1.1.14.9 1.05z" fill="#fff"/></svg></span>
-            <div class="dl-footer__contact-body"><a href="https://t.me/avtohere38" target="_blank" rel="noopener">Telegram<div class="dl-footer__contact-sub">Написать нам</div></a></div>
+            <div class="dl-footer__contact-body"><a href="https://t.me/drivelizing" target="_blank" rel="noopener">Telegram<div class="dl-footer__contact-sub">Написать нам</div></a></div>
           </div>
           <div class="dl-footer__contact-item">
             <span class="dl-footer__contact-badge"><img src="../../images/icons3d/max-badge.png" alt=""></span>
