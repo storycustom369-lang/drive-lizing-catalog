@@ -1724,6 +1724,7 @@ FOOTER_HTML = '''<footer class="dl-footer">
           <li><a href="../../faq/">Вопросы и ответы</a></li>
           <li><a href="../../contacts/">Контакты</a></li>
           <li><a href="../../privacy.html">Политика конфиденциальности</a></li>
+          <li><a href="../../terms.html">Пользовательское соглашение</a></li>
         </ul>
       </div>
       <div>
