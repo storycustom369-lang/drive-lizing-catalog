@@ -160,6 +160,24 @@ def card_day_at_max_term(car):
     t = variant['terms'][max_term]
     return t
 
+def week_bucket_of(car):
+    """Зеркалит weekBucketOf() из JS каталога — бакет считается из той же цены,
+    что показана на карточке, а не из статичного car['bucket'] (проставляется
+    вручную и расходится с реальной ценой примерно у трети машин)."""
+    t = card_day_at_max_term(car)
+    if not t:
+        return None
+    week = t['week']
+    if week < 10000:
+        return 'do10'
+    if week < 15000:
+        return '10-15'
+    if week < 20000:
+        return '15-20'
+    if week < 25000:
+        return '20-25'
+    return 'bolee25'
+
 def render_catalog_grid(cars, slugs_by_art, base=''):
     """Статический (пререндеренный) список карточек. Используется и для <div id="dlGrid">
     в catalog.html (base=''), и для страниц-лендингов по маркам/кузовам (base='../../') —
@@ -489,7 +507,7 @@ def render_subscribe_slide():
 def render_banner_slides(cars, slugs_by_art):
     by_art = {c['art']: c for c in cars}
     generic = ('<a class="dl-banner-carousel__slide is-active" href="../../catalog.html">'
-               '<img src="../../images/promo/sidebar-banner.webp" alt="Более 60 авто в наличии — без банка, взнос от 0%, по 2 документам. Смотреть каталог" loading="lazy"></a>')
+               '<img src="../../images/promo/sidebar-banner.webp" alt="Более 50 авто в наличии — без банка, взнос от 0%, по 2 документам. Смотреть каталог" loading="lazy"></a>')
     cards = "".join(
         render_promo_car_card(by_art[art], slugs_by_art[art])
         for art in BANNER_CAR_ARTS if art in by_art
@@ -1220,7 +1238,7 @@ def render_gallery(photos, title):
     if not photos:
         return '<div class="dl-gallery__empty">Фото уточняйте у менеджера</div>'
     slides = "".join(
-        f'<div class="dl-gallery__slide"><img src="{photo_rel(p)}" alt="{html.escape(title)}, фото {i+1}" loading="{"eager" if i==0 else "lazy"}"></div>'
+        f'<div class="dl-gallery__slide"><img src="{html.escape(photo_rel(p))}" alt="{html.escape(title)}, фото {i+1}" loading="{"eager" if i==0 else "lazy"}"></div>'
         for i, p in enumerate(photos)
     )
     dots = "".join(f'<button class="dl-gallery__dot{" is-active" if i==0 else ""}" data-i="{i}" aria-label="Фото {i+1}"></button>' for i in range(len(photos)))
@@ -1237,7 +1255,7 @@ def render_thumbs(photos, title):
     if not photos or len(photos) < 2:
         return ''
     thumbs = "".join(
-        f'<button class="dl-thumb{" is-active" if i==0 else ""}" data-i="{i}"><img src="{photo_rel(p)}" alt="{html.escape(title)}, миниатюра {i+1}" loading="lazy"></button>'
+        f'<button class="dl-thumb{" is-active" if i==0 else ""}" data-i="{i}"><img src="{html.escape(photo_rel(p))}" alt="{html.escape(title)}, миниатюра {i+1}" loading="lazy"></button>'
         for i, p in enumerate(photos)
     )
     return f'<div class="dl-thumbs">{thumbs}</div>'
@@ -1564,7 +1582,7 @@ def render_calculator(car):
         return f'{head}<div class="dl-calc-unavailable">Этот автомобиль уже выдан клиенту и недоступен для оформления. Посмотрите похожие варианты в каталоге.<a class="dl-btn dl-btn--calc-cta" href="../../catalog.html" style="text-decoration:none;display:flex;align-items:center;justify-content:center;">Смотреть каталог {ci("arrow")}</a></div>'
     variants = car.get('variants')
     if not variants:
-        return f'{head}<div class="dl-calc-unavailable">Точная цена уточняется у менеджера. Оставьте заявку, посчитаем индивидуально.<button class="dl-btn dl-btn--calc-cta" type="button" data-art="{car["art"]}" data-car="{title_attr}" data-lease-program="{lease_program}">Быстрый заказ {ci("arrow")}</button></div>'
+        return f'{head}<div class="dl-calc-unavailable">Точная цена уточняется у менеджера. Оставьте заявку, посчитаем индивидуально.<button class="dl-btn dl-btn--calc-cta" type="button" data-art="{html.escape(car["art"])}" data-car="{title_attr}" data-lease-program="{lease_program}">Быстрый заказ {ci("arrow")}</button></div>'
     pv_keys = sorted(variants.keys(), key=int)
     last_variant = variants[pv_keys[-1]]
     term_keys = sorted(last_variant['terms'].keys(), key=int)
@@ -1572,7 +1590,7 @@ def render_calculator(car):
     term_slider = render_slider('term', term_keys, TERM_LABELS, ' мес')
     lease_note = '<div class="dl-calc-lease-note">Автомобиль по лизинговой программе: суммы ориентировочные, точный расчёт подготовит менеджер.</div>' if car.get('isLeaseProgram') else ''
     return f'''{head}
-  <div class="dl-calc" data-car-data='{build_calculator_data(car)}' data-art="{car['art']}" data-car="{title_attr}" data-lease-program="{lease_program}">
+  <div class="dl-calc" data-car-data='{html.escape(build_calculator_data(car))}' data-art="{html.escape(car['art'])}" data-car="{title_attr}" data-lease-program="{lease_program}">
     <div class="dl-field">
       <span class="dl-label dl-label--row">{ci('coins')}Первоначальный взнос</span>
       {pv_slider}
@@ -1608,7 +1626,7 @@ def render_related(car, all_cars, slugs_by_art):
     title_attr = html.escape(car_title(car)).replace('"', '&quot;')
     others = [c for c in all_cars if c['art'] != car['art']]
     # prefer same bucket, then fill with anything else
-    same_bucket = [c for c in others if c.get('bucket') == car.get('bucket')]
+    same_bucket = [c for c in others if week_bucket_of(c) == week_bucket_of(car)]
     pool = same_bucket if len(same_bucket) >= 4 else others
     picked = pool[:8]
     cards = []
@@ -1623,7 +1641,7 @@ def render_related(car, all_cars, slugs_by_art):
             price = min_week_price(c)
         except Exception:
             pass
-        img = f'<img src="{photo_rel(photo)}" alt="{html.escape(car_title(c))}" loading="lazy">' if photo else ''
+        img = f'<img src="{html.escape(photo_rel(photo))}" alt="{html.escape(car_title(c))}" loading="lazy">' if photo else ''
         price_html = f'от <b>{fmt_money(price)}</b> / нед.' if price else 'Цена по запросу'
         count_html = (
             f'<span class="dl-related2__count"><svg viewBox="0 0 24 24" fill="none"><rect x="3" y="6" width="18" height="14" rx="2" stroke="currentColor" stroke-width="1.8"/><path d="M8 6l1.5-2h5L16 6" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><circle cx="12" cy="13" r="3.2" stroke="currentColor" stroke-width="1.8"/></svg>1/{photo_count}</span>'
@@ -1666,8 +1684,8 @@ def render_related(car, all_cars, slugs_by_art):
           <p class="dl-related2__cta-text">Оставьте заявку, подберём автомобиль под ваши параметры.</p>
         </div>
       </div>
-      <button type="button" class="dl-btn dl-related2__cta-btn" data-art="{car['art']}" data-car="{title_attr}">Подобрать автомобиль {ci('arrow')}</button>
-      <div class="dl-related2__cta-stat"><svg viewBox="0 0 24 24" fill="none"><path d="M16 11a4 4 0 10-4-4M6 11a3 3 0 100-6 3 3 0 000 6z" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/><path d="M2 20c.6-3.4 3-5.5 6-5.5M14 20c-.4-3.9 2.4-7 7-7" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg><div><b>Более 60</b><span>автомобилей в наличии</span></div></div>
+      <button type="button" class="dl-btn dl-related2__cta-btn" data-art="{html.escape(car['art'])}" data-car="{title_attr}">Подобрать автомобиль {ci('arrow')}</button>
+      <div class="dl-related2__cta-stat"><svg viewBox="0 0 24 24" fill="none"><path d="M16 11a4 4 0 10-4-4M6 11a3 3 0 100-6 3 3 0 000 6z" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/><path d="M2 20c.6-3.4 3-5.5 6-5.5M14 20c-.4-3.9 2.4-7 7-7" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg><div><b>Более 50</b><span>автомобилей в наличии</span></div></div>
     </div>
   </div>'''
 
