@@ -7,7 +7,7 @@
 Перед первым прогоном: --migrate-markers (только маркеры текущих папок).
 Предпросмотр удаления без записи: --dry-run. Непустой список ручной проверки
 нужно разобрать перед публикацией; sitemap_generated.xml сверить с sitemap.xml.
-Результат: cars/<slug>/index.html на каждую машину + обновлённый sitemap.xml (не трогает старый sitemap.xml файл напрямую, пишет sitemap_generated.xml для ручной проверки перед заменой).
+Результат: cars/<slug>/index.html на каждую машину + sitemap_generated.xml (не трогает действующий sitemap.xml напрямую — его нужно сверить и опубликовать вручную).
 """
 import re, json, os, html, hashlib, argparse
 from collections import Counter

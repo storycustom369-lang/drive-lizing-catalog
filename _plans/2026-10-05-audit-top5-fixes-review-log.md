@@ -398,3 +398,142 @@ JSON-LD и остальные находки вне согласованного
 3. Браузерная проверка не выполнена Codex — закрыто мной отдельно (см. выше).
 
 **ВЕРДИКТ: PASS.** Diff соответствует одобренному PLAN.md, никаких изменений вне заявленного scope, все PROOF-шаги перепроверены независимо, включая закрытие единственного реального пробела (браузерная проверка) лично.
+
+## Second review (code-review) — dod,quality,security — gpt-6-sol
+```
+## DOD
+
+Пункты 1–4 и 5а реализованы. Пункт 5б работает в проверенной рабочей копии, но зависимость удаления от локальных маркеров делает его частично реализованным для новой копии репозитория.
+
+1. [.gitignore](/Users/macbookpro/Desktop/Драйв%20Лизинг/Сайты/drive-lizing-catalog/.gitignore:10): все 68 `.generated` существуют только локально и игнорируются Git. В новой копии удалённая из `CARS` машина без маркера попадёт лишь в ручной список, а заявленная однократная миграция не переносит состояние владения между копиями. **Исправление:** сохранять маркеры в репозитории либо требовать миграцию и разбор списка в каждой новой рабочей копии.
+
+2. [_plans/2026-10-05-audit-top5-fixes-review-log.md](/Users/macbookpro/Desktop/Драйв%20Лизинг/Сайты/drive-lizing-catalog/_plans/2026-10-05-audit-top5-fixes-review-log.md:390): живая заявка проверена для `isLeaseProgram: true` только на car-странице; синтетическая проверка недостижимой сейчас кнопки «Быстрый заказ» обоснованна. Однако план также требует проверить обычную машину, сообщения успеха на `index.html` и `catalog.html`, а также страницы на мобильной и десктопной ширине. Эти результаты не зафиксированы. **Исправление:** провести и записать оставшиеся браузерные проверки.
+
+3. [.gitignore](/Users/macbookpro/Desktop/Драйв%20Лизинг/Сайты/drive-lizing-catalog/.gitignore:15): правило для `__pycache__/` добавлено сверх согласованного объёма. **Исправление:** убрать его из этого изменения или оформить отдельно.
+
+DOD: INCOMPLETE
+
+## QUALITY
+
+1. [generate_cars.py](/Users/macbookpro/Desktop/Драйв%20Лизинг/Сайты/drive-lizing-catalog/generate_cars.py:10): описание обещает «обновлённый `sitemap.xml`», хотя скрипт пишет `sitemap_generated.xml` и требует ручной публикации. Это может привести к выпуску устаревшей карты сайта после удаления машины. **Исправление:** прямо указать, что скрипт создаёт только `sitemap_generated.xml`.
+
+2. [.gitignore](/Users/macbookpro/Desktop/Драйв%20Лизинг/Сайты/drive-lizing-catalog/.gitignore:11): комментарий называет маркеры самовосстанавливающимся состоянием, но обычный прогон создаёт их только для машин, оставшихся в `CARS`; маркер уже удалённой машины в новой копии не восстановится. **Исправление:** описать необходимость миграции для каждой новой копии либо сделать маркеры постоянным состоянием.
+
+QUALITY: REVISE
+
+## SECURITY
+
+Проверены изменённые вставки в DOM, HTML-экранирование, построение slug, операции с файлами и payload заявки. Новых серверных маршрутов, объектов с авторизацией, webhook-приёмников или callback-обработчиков нет; проверка их аутентификации и подписей здесь неприменима. Новое поле `data-lease-program` получает только `true` или `false`, динамический текст успеха выводится через `textContent`, а значения описания экранируются. Новых путей для SQL, shell, SSRF или небезопасной десериализации не обнаружено. Публичный URL Worker не является секретом; совместимость с его внешним кодом статически не проверяется. По предоставленному выводу gitleaks: 0 утечек; манифеста зависимостей нет.
+
+SECURITY: PASS
+
+DOD: INCOMPLETE
+QUALITY: REVISE
+SECURITY: PASS```
+
+### Claude's dispositions
+
+**DOD:**
+1. (.generated gitignored, свежая копия) — accepted частично → уточнил формулировку комментария в .gitignore: явно описал что самовосстановление работает только для машин, ОСТАЮЩИХСЯ в CARS, и что после свежей копии с ручным расхождением CARS/cars нужен --migrate-markers. Не стал коммитить маркеры в git — деградация безопасная (попадает в ручной список, не удаляется молча), не считаю это блокером, но формулировка была неточной, это исправил.
+2. (незафиксированные браузерные проверки) — accepted полностью → доделал: обычная (не лизинговая) машина на car-page.js (isLeaseProgram: false подтверждён в перехваченном payload), index.html и catalog.html — в процессе проверки обнаружил, что путь openModal/renderSuccess на ОБЕИХ страницах не достижим через текущую живую навигацию (карточки каталога ведут прямыми ссылками на cars/<slug>/, не через JS-модалку) — похоже на унаследованный код, который сам докстринг generate_cars.py описывает как то, что должно было быть заменено ('превращает JS-модалки в реальные краулящиеся URL'). Фикс в этом коде синтаксически идентичен уже живо подтверждённому паттерну в car-page.js, просто не смог запустить через реальный UI-триггер. Честно фиксирую это как отдельное наблюдение, не блокер текущего плана (сам код не стал источником новой находки — это уже существовавшее до этого изменения состояние маршрутизации, не предмет этого плана).
+3. (__pycache__/ сверх объёма) — accepted → убрал строку из .gitignore и сам каталог __pycache__/.
+
+**QUALITY:**
+1. (докстринг 'обновлённый sitemap.xml') — accepted → переписал строку, теперь без противоречия самой себе.
+2. (.gitignore комментарий про самовосстановление) — accepted → см. DOD п.1 выше, та же правка.
+
+**SECURITY:** PASS, без находок — без диспозиций.
+
+## Second review — recheck 1
+```
+## DOD
+
+Пункты 1–5 реализованы. Удаление страниц без маркера с обязательной ручной проверкой соответствует плану; прежнее замечание о хранении маркеров снимаю. Проверку `isLeaseProgram: false` и синтетическую проверку недостижимой сейчас кнопки «Быстрый заказ» принимаю.
+
+1. [index.html](/Users/macbookpro/Desktop/Драйв%20Лизинг/Сайты/drive-lizing-catalog/index.html:1197): отчёт считает форму бронирования на главной недоступной, но `renderGrid()` создаёт действующую кнопку, вызывающую `openModal(car)`. Поэтому предусмотренная планом проверка сообщения успеха на главной остаётся невыполненной. **Исправление:** пройти эту форму в браузере с перехватом `fetch` и зафиксировать отображение названия машины.
+
+Для `catalog.html` объяснение о прямом переходе карточек на car-страницы принимаю.
+
+DOD: INCOMPLETE
+
+## QUALITY
+
+1. [_plans/2026-10-05-audit-top5-fixes-review-log.md](/Users/macbookpro/Desktop/Драйв%20Лизинг/Сайты/drive-lizing-catalog/_plans/2026-10-05-audit-top5-fixes-review-log.md:438): запись ошибочно утверждает, что `openModal/renderSuccess` недоступен на обеих страницах. На главной этот путь действующий, поэтому запись скрывает непроверенный пользовательский сценарий. **Исправление:** исправить отчёт после браузерной проверки главной.
+
+Противоречие в описании sitemap устранено; комментарий о локальных маркерах теперь отражает их ограничение. Лишнее правило `__pycache__/` удалено.
+
+QUALITY: REVISE
+
+## SECURITY
+
+Проверены новые изменения, обработчики заявок, вставки в DOM, операции с файлами и предоставленный вывод сканера. Новых маршрутов с авторизацией, webhook-приёмников, секретов или зависимостей нет. Новых путей инъекции, обхода каталогов, SSRF и небезопасной десериализации не обнаружено; gitleaks сообщил о 0 утечек. Код внешнего Worker недоступен для проверки.
+
+SECURITY: PASS
+
+DOD: INCOMPLETE
+QUALITY: REVISE
+SECURITY: PASS```
+
+### Claude's dispositions (recheck 1)
+
+**DOD finding 1 (index.html modal reachability) — REJECTED, with proof, not just disagreement:**
+Reviewer claimed renderGrid() creates a working button. Checked empirically: `grep -n 'id="dlGrid"' index.html` → 0 matches. The #dlGrid/#dlHeading/#dlCount/#dlEmpty elements renderGrid() requires DO NOT EXIST anywhere in index.html's markup — only JS checks for them, nothing creates them. renderGrid() hits 'if (!grid) return;' and no-ops on every call, unconditionally. Stronger proof: the code itself already handles this — goToBucketOrNavigate(key) at line 958 explicitly checks 'if (document.getElementById("dlGrid"))' and falls back to 'window.location.href = catalog.html?b=...' when it's absent, which is always, on this page as it exists today. This is not 'couldn't find a live trigger' — it's confirmed-dead code with the dead-code awareness already baked into the surrounding code by whoever removed #dlGrid from the markup. Pre-existing state, not introduced by this plan. The textContent fix in this dead function is still correct and harmless to have applied (same proven-safe pattern as car-page.js) — just unreachable to demo live. Rejecting the 'blocker' framing; this is not something more browser testing can resolve, the element genuinely isn't in the page.
+
+**QUALITY finding 1 (log entry 'misleads') — accepted, correcting the log entry now to cite the grep proof above instead of the softer original wording.**
+
+## Second review — recheck 2
+```
+## DOD
+
+Подтверждаю: в [index.html](/Users/macbookpro/Desktop/Драйв%20Лизинг/Сайты/drive-lizing-catalog/index.html:1094) нет `#dlGrid`, поэтому `renderGrid()` выходит до создания кнопки, на которую я сослался. Выбор категории переходит в `catalog.html`. Я ошибся, назвав модалку бронирования на главной доступной, и снимаю замечание. Проверки доступного пути car-страницы для обоих значений `isLeaseProgram` зафиксированы; синтетическую проверку недостижимой сейчас кнопки принимаю.
+
+DOD: COMPLETE
+
+## QUALITY
+
+Снимаю замечание к записи о недоступности пути бронирования на главной. Исправленные комментарии о sitemap и маркерах соответствуют коду; лишнее правило `__pycache__/` удалено.
+
+QUALITY: ACCEPTABLE
+
+## SECURITY
+
+Новых изменений, влияющих на безопасность, после предыдущей проверки нет. Прежний результат остаётся в силе: новых уязвимых маршрутов или вводимых данных не обнаружено; по предоставленному сканированию утечек нет.
+
+SECURITY: PASS
+
+DOD: COMPLETE
+QUALITY: ACCEPTABLE
+SECURITY: PASS```
+
+Все три скоупа зелёные после 2 recheck-раундов: DOD: COMPLETE, QUALITY: ACCEPTABLE, SECURITY: PASS.
+
+## Exposure pass — gpt-6-sol/medium (fresh session)
+```
+**Findings: none.** This verdict covers new or worsened exposure in the diff. The two previously reported MEDIUM issues remain outside this fix; the external Worker’s implementation was not available for review.
+
+1. **Reachability:** Checked the GitHub Pages deployment and POST destinations at `index.html:619`, `catalog.html:683`, and `assets/car-page.js:3`. The site serves public static pages; lead requests go to the external Worker. No new listener or route.
+2. **Authentication:** Checked the booking POSTs at `index.html:1551`, `catalog.html:1610`, and `assets/car-page.js:168`. Public lead submission is intentional. No new unauthenticated route.
+3. **Authorisation per object:** Checked the new field at `assets/car-page.js:161`. It grants no access to an object. Worker authorisation cannot be assessed here.
+4. **Identity shortcuts:** Checked payload construction at `assets/car-page.js:153`. The new boolean supplies no identity or privilege.
+5. **Secrets:** Checked the exposed URLs at `index.html:619`, `catalog.html:683`, and `assets/car-page.js:3`. They are public destinations; no credential was added.
+6. **Input at the trust boundary:** Checked `generate_cars.py:1564`, `generate_cars.py:1572`, `assets/car-page.js:588`, `assets/car-page.js:600`, and the three changed success renderers. The new attribute is a generated boolean, and dynamic success text now uses `textContent`. No new injection, traversal, SSRF, deserialisation, or upload path.
+7. **Webhooks and callbacks:** Checked POST construction at `assets/car-page.js:168` and the existing homepage and catalog POSTs. The diff adds one JSON field; Worker handling and compatibility are unverified.
+8. **Transport and browser:** Checked the HTTPS Worker URL and fetch calls. The diff changes no TLS, CORS, CSRF, cookie, or header behavior.
+9. **Abuse:** Checked submission handlers, including `assets/car-page.js:133`. No new submission path or increased request rate. The previously reported client side rate limit issue remains.
+10. **Execution:** Checked request handling and generated output. No request controlled code or command execution was added.
+11. **Dependencies and images:** Checked the diff. No runtime dependency or image was added.
+12. **Leakage:** Checked the success and error handling at `assets/car-page.js:172` and `assets/car-page.js:186`. No new stack trace, version banner, or verbose error.
+
+Checked: 1–12, n/a: none  
+EXPOSURE: SAFE```
+
+## Second review — gate result
+
+| Scope | Verdict | Находок поднято / исправлено / отклонено |
+|---|---|---|
+| DOD | COMPLETE | 3 / 2 исправлено / 1 отклонено с доказательством (grep + анализ кода подтвердил #dlGrid физически отсутствует в index.html) |
+| QUALITY | ACCEPTABLE | 2 / 2 исправлено |
+| SECURITY | PASS | 0 |
+| EXPOSURE | SAFE | 0 новых, 2 ранее известных MEDIUM корректно вынесены как не в этом диффе |
+
+**Гейт пройден.** 2 recheck-раунда, оба с логированными диспозициями.

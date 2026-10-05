@@ -290,4 +290,6 @@ vs помечено как выдано), план и аудит изначал�
 - Сам Cloudflare Worker (не в этом репозитории, недоступен для изменений отсюда).
 
 ## Closing gate (after the build)
-<!-- claudex-gate: pending; due-after: шаг 5 (прогон generate_cars.py + тестовая заявка с обоих путей калькулятора) -->
+<!-- claudex-gate: done; due-after: шаг 5 (прогон generate_cars.py + тестовая заявка с обоих путей калькулятора) -->
+Результат: DOD COMPLETE, QUALITY ACCEPTABLE, SECURITY PASS, EXPOSURE SAFE (2 recheck-раунда).
+Полный протокол — _plans/2026-10-05-audit-top5-fixes-review-log.md.
