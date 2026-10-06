@@ -720,3 +720,28 @@ h1,h2,h3,.dl-num,.dl-btn,.dl-pill,.dl-title{font-family:'Onest',Arial,sans-serif
   .dl-footer__updates{max-width:none;}
   .dl-footer__bottom{flex-direction:column;align-items:flex-start;}
 }
+
+/* Sticky "quick order" bar: jumps straight to the calculator so mobile visitors
+   don't have to scroll past gallery/specs to find it. Car pages only. */
+.dl-sticky-order{display:none;}
+@media(max-width:700px){
+  body.dl-has-sticky-order{padding-bottom:76px;}
+  .dl-sticky-order{
+    display:flex;align-items:center;justify-content:space-between;gap:12px;
+    position:fixed;left:0;right:0;bottom:0;z-index:60;
+    background:var(--surface);border-top:1px solid var(--border);
+    box-shadow:0 -6px 24px rgba(15,30,59,.1);
+    padding:10px 16px calc(10px + env(safe-area-inset-bottom,0px));
+  }
+  .dl-sticky-order__price{font-size:15px;color:var(--navy);white-space:nowrap;}
+  .dl-sticky-order__price b{font-weight:800;}
+  .dl-sticky-order__price span{font-size:11px;color:var(--muted);font-weight:400;}
+  .dl-sticky-order__btn{
+    display:inline-flex;align-items:center;gap:6px;flex:none;
+    background:#16A874;color:#fff;border:none;border-radius:999px;
+    padding:12px 18px;font-weight:700;font-size:13.5px;white-space:nowrap;
+    text-decoration:none;
+  }
+  .dl-sticky-order__btn:hover{background:#139764;}
+  .dl-sticky-order__btn svg{width:16px;height:16px;flex:none;}
+}

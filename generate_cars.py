@@ -229,7 +229,7 @@ LISTING_PAGE_TEMPLATE = '''<!DOCTYPE html>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Onest:wght@500;600;700;800&family=Golos+Text:wght@400;500;600;700&display=swap">
-<link rel="stylesheet" href="../../assets/site.css">
+<link rel="stylesheet" href="../../assets/site.css?v=20261006">
 <script type="application/ld+json">{breadcrumb_schema}</script>
 </head>
 <body>
@@ -321,7 +321,7 @@ CONTENT_PAGE_TEMPLATE = '''<!DOCTYPE html>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Onest:wght@500;600;700;800&family=Golos+Text:wght@400;500;600;700&display=swap">
-<link rel="stylesheet" href="../../assets/site.css">
+<link rel="stylesheet" href="../../assets/site.css?v=20261006">
 <script type="application/ld+json">{breadcrumb_schema}</script>
 </head>
 <body>
@@ -1358,6 +1358,13 @@ def render_hero_banner(car, min_week, slug):
     <div class="dl-hero-banner__points">{points}</div>
   </div>'''
 
+def render_sticky_order(car, min_week, slug):
+    price_html = f'от <b>{fmt_money(min_week)}</b> <span>в нед.</span>' if min_week is not None else '<b>Цена по запросу</b>'
+    return f'''<div class="dl-sticky-order">
+    <div class="dl-sticky-order__price">{price_html}</div>
+    <a class="dl-sticky-order__btn" href="#calc">Быстрый заказ<svg viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+  </div>'''
+
 DESC_OPENERS = [
     "{title} {year_bit}в нашем автопарке, {body_bit}готов к передаче в лизинг прямо сейчас.",
     "Смотрите {title}{year_bit2}, один из автомобилей, которые уже стоят у нас {body_bit2}и ждут нового пользователя.",
@@ -1798,10 +1805,10 @@ PAGE_TEMPLATE = '''<!DOCTYPE html>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Onest:wght@500;600;700;800&family=Golos+Text:wght@400;500;600;700&family=Caveat:wght@600;700&display=swap">
-<link rel="stylesheet" href="../../assets/site.css">
+<link rel="stylesheet" href="../../assets/site.css?v=20261006">
 {schema}
 </head>
-<body>
+<body class="dl-has-sticky-order">
 <div class="dl-topbar">
   <div class="dl-topbar__inner">
     <a href="../../" class="dl-topbar__logo">
@@ -1891,6 +1898,8 @@ PAGE_TEMPLATE = '''<!DOCTYPE html>
 
 {cookie_banner}
 
+{sticky_order}
+
 <script src="../../assets/car-page.js"></script>
 </body>
 </html>
@@ -1953,6 +1962,7 @@ def main():
             title_js=html.escape(title).replace('"','&quot;'),
             badges=render_badges2(),
             hero_banner=render_hero_banner(c, min_week, slug),
+            sticky_order=render_sticky_order(c, min_week, slug),
             subtitle=render_subtitle(spec_d),
             hero_top_right=render_hero_top_right(c),
             gallery=render_gallery(c['photos'], title),
