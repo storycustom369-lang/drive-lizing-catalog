@@ -51,3 +51,9 @@
 
 /* Complete arrow-free illustrations for the mobile route. */
 @media(max-width:700px){.hp-journey-mobile article:nth-child(n) .hp-journey-mobile-art{clip-path:none;aspect-ratio:1}.hp-journey-mobile-art img{top:0!important}.hp-journey-mobile article:nth-child(n+4) .hp-journey-mobile-art img{top:-100%!important}.hp-journey-mobile h3{font-size:clamp(12px,3.5vw,18px);overflow-wrap:normal}.hp-journey-mobile{padding-inline:6px}.hp-route-arrow-horizontal{top:40%}}
+
+/* Calculate-action buttons: green accent, distinct from the blue brand color used everywhere else. */
+.hp-btn-calc{background:#16A874!important;border-color:#16A874!important;color:#fff!important;box-shadow:none!important;}
+.hp-btn-calc:hover{background:#139764!important;border-color:#139764!important;}
+.hp-btn-outline{background:#fff!important;color:#0064ed!important;border:1px solid #0064ed!important;box-shadow:none!important;}
+.hp-btn-outline:hover{background:#eef4ff!important;}
