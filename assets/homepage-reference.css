@@ -57,3 +57,6 @@
 .hp-btn-calc:hover{background:#139764!important;border-color:#139764!important;}
 .hp-btn-outline{background:#fff!important;color:#0064ed!important;border:1px solid #0064ed!important;box-shadow:none!important;}
 .hp-btn-outline:hover{background:#eef4ff!important;}
+
+/* Once-only car arrival, stationary Baikal and persistent headlights. */
+.hp-car-scene .hp-car-backdrop{display:block;width:100%;height:auto}.hp-car-scene .hp-car-moving{position:absolute;inset:0;transform-origin:65% 68%;transform:translate(2.2%,-.8%) scale(.96)}.hp-car-scene .hp-car-moving img{display:block;width:100%;height:auto}.hp-car-lights{position:absolute;inset:0;width:100%;height:100%;opacity:0;pointer-events:none}.hp-car-scene.is-arriving .hp-car-moving{animation:hp-car-arrive 1.4s cubic-bezier(.22,.61,.36,1) both}.hp-car-scene.is-arriving .hp-car-lights{animation:hp-lights-on .8s ease-out 1.05s both}@keyframes hp-car-arrive{to{transform:translate(0,0) scale(1)}}@keyframes hp-lights-on{to{opacity:1}}@media(prefers-reduced-motion:reduce){.hp-car-scene .hp-car-moving,.hp-car-scene.is-arriving .hp-car-moving{animation:none;transform:none}.hp-car-scene.is-arriving .hp-car-lights{animation:none;opacity:1}}
