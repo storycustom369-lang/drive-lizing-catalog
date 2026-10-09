@@ -506,6 +506,8 @@
       var thumb = root.querySelector(".dl-slider__thumb");
       var labels = Array.prototype.slice.call(root.querySelectorAll(".dl-slider__label"));
       var n = labels.length;
+      var current = n - 1;
+      labels.forEach(function(l, li){ if (l.classList.contains("is-active")) current = li; });
 
       function pctForIndex(i){ return n > 1 ? (i / (n - 1)) * 100 : 0; }
       function paint(i){
@@ -514,14 +516,10 @@
         thumb.style.left = pct + "%";
         labels.forEach(function(l, li){ l.classList.toggle("is-active", li === i); });
       }
-      function activeIndex(){
-        var i = n - 1;
-        labels.forEach(function(l, li){ if (l.classList.contains("is-active")) i = li; });
-        return i;
-      }
       function setIndex(i){
         i = Math.max(0, Math.min(n - 1, i));
-        var changed = i !== activeIndex();
+        var changed = i !== current;
+        current = i;
         paint(i);
         if (changed) update();
       }
