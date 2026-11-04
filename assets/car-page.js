@@ -187,7 +187,7 @@
         if (window.dlTrack) dlTrack("lead_failed", {type: "booking", art: opts.art});
         submitBtn.disabled = false;
         submitBtn.textContent = "Забронировать автомобиль";
-        errorMsg.innerHTML = "Не получилось отправить. Попробуйте ещё раз или <a href=\"https://t.me/avtohere38\" target=\"_blank\" rel=\"noopener\">напишите нам в Telegram</a>.";
+        errorMsg.innerHTML = "Не получилось отправить. Попробуйте ещё раз или <a href=\"https://t.me/drivelizing\" target=\"_blank\" rel=\"noopener\">напишите нам в Telegram</a>.";
         errorMsg.hidden = false;
       });
     });
@@ -349,7 +349,7 @@
         if (window.dlTrack) dlTrack("lead_failed", {type: "pick_request"});
         submitBtn.disabled = false;
         submitBtn.textContent = "Отправить заявку";
-        errorMsg.innerHTML = "Не получилось отправить. Попробуйте ещё раз или <a href=\"https://t.me/avtohere38\" target=\"_blank\" rel=\"noopener\">напишите нам в Telegram</a>.";
+        errorMsg.innerHTML = "Не получилось отправить. Попробуйте ещё раз или <a href=\"https://t.me/drivelizing\" target=\"_blank\" rel=\"noopener\">напишите нам в Telegram</a>.";
         errorMsg.hidden = false;
       });
     });
@@ -510,6 +510,8 @@
       var thumb = root.querySelector(".dl-slider__thumb");
       var labels = Array.prototype.slice.call(root.querySelectorAll(".dl-slider__label"));
       var n = labels.length;
+      var current = n - 1;
+      labels.forEach(function(l, li){ if (l.classList.contains("is-active")) current = li; });
 
       function pctForIndex(i){ return n > 1 ? (i / (n - 1)) * 100 : 0; }
       function paint(i){
@@ -518,14 +520,10 @@
         thumb.style.left = pct + "%";
         labels.forEach(function(l, li){ l.classList.toggle("is-active", li === i); });
       }
-      function activeIndex(){
-        var i = n - 1;
-        labels.forEach(function(l, li){ if (l.classList.contains("is-active")) i = li; });
-        return i;
-      }
       function setIndex(i){
         i = Math.max(0, Math.min(n - 1, i));
-        var changed = i !== activeIndex();
+        var changed = i !== current;
+        current = i;
         paint(i);
         if (changed) update();
       }

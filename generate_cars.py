@@ -251,7 +251,7 @@ LISTING_PAGE_TEMPLATE = '''<!DOCTYPE html>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Onest:wght@500;600;700;800&family=Golos+Text:wght@400;500;600;700&display=swap">
-<link rel="stylesheet" href="../../assets/site.css">
+<link rel="stylesheet" href="../../assets/site.css?v=20261006">
 <script type="application/ld+json">{breadcrumb_schema}</script>
 </head>
 <body>
@@ -267,6 +267,7 @@ LISTING_PAGE_TEMPLATE = '''<!DOCTYPE html>
   </div>
 </div>
 {catnav}
+<div class="dl-marquee"><div class="dl-marquee__track"><span class="dl-marquee__item"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M12 2L4 5v6c0 5 3.4 9.4 8 11 4.6-1.6 8-6 8-11V5l-8-3z" stroke="#2F6FED" stroke-width="2" stroke-linejoin="round"/><path d="M9 12l2 2 4-4" stroke="#2F6FED" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>92% одобрений</span></span><span class="dl-marquee__dot"></span><span class="dl-marquee__item"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M6 2h9l5 5v15H6V2z" stroke="#2F6FED" stroke-width="2" stroke-linejoin="round"/><path d="M9 13h6M9 17h6" stroke="#2F6FED" stroke-width="2" stroke-linecap="round"/></svg><span>По 2 документам</span></span><span class="dl-marquee__dot"></span><span class="dl-marquee__item"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M4 7h13l-3-3M20 17H7l3 3" stroke="#2F6FED" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Trade-in</span></span><span class="dl-marquee__dot"></span><span class="dl-marquee__item"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M3 13l2-6h14l2 6v5h-3M6 18H3v-5M9 18h6" stroke="#2F6FED" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="7" cy="17" r="1.6" stroke="#2F6FED" stroke-width="2"/><circle cx="17" cy="17" r="1.6" stroke="#2F6FED" stroke-width="2"/></svg><span>Более 60 автомобилей</span></span><span class="dl-marquee__dot"></span><span class="dl-marquee__item"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M3 10l9-6 9 6M5 10v9M9 10v9M15 10v9M19 10v9M3 21h18" stroke="#2F6FED" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Без банка</span></span><span class="dl-marquee__dot"></span><span class="dl-marquee__item"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M12 2l2.9 6.3 6.9.7-5.2 4.6 1.6 6.8L12 16.9 5.8 20.4l1.6-6.8L2.2 9l6.9-.7L12 2z" stroke="#2F6FED" stroke-width="1.6" stroke-linejoin="round"/></svg><span>Новые и с пробегом</span></span><span class="dl-marquee__dot"></span><span class="dl-marquee__item"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M4 7h13l-3-3M20 17H7l3 3" stroke="#2F6FED" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Аренда авто с выкупом</span></span><span class="dl-marquee__dot"></span><span class="dl-marquee__item"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M3 10l9-6 9 6M5 10v9M9 10v9M15 10v9M19 10v9M3 21h18" stroke="#2F6FED" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Лизинг для физ. и юр.лиц</span></span><span class="dl-marquee__dot"></span><span class="dl-marquee__item"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M12 2L4 5v6c0 5 3.4 9.4 8 11 4.6-1.6 8-6 8-11V5l-8-3z" stroke="#2F6FED" stroke-width="2" stroke-linejoin="round"/><path d="M9 12l2 2 4-4" stroke="#2F6FED" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>92% одобрений</span></span><span class="dl-marquee__dot"></span><span class="dl-marquee__item"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M6 2h9l5 5v15H6V2z" stroke="#2F6FED" stroke-width="2" stroke-linejoin="round"/><path d="M9 13h6M9 17h6" stroke="#2F6FED" stroke-width="2" stroke-linecap="round"/></svg><span>По 2 документам</span></span><span class="dl-marquee__dot"></span><span class="dl-marquee__item"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M4 7h13l-3-3M20 17H7l3 3" stroke="#2F6FED" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Trade-in</span></span><span class="dl-marquee__dot"></span><span class="dl-marquee__item"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M3 13l2-6h14l2 6v5h-3M6 18H3v-5M9 18h6" stroke="#2F6FED" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="7" cy="17" r="1.6" stroke="#2F6FED" stroke-width="2"/><circle cx="17" cy="17" r="1.6" stroke="#2F6FED" stroke-width="2"/></svg><span>Более 60 автомобилей</span></span><span class="dl-marquee__dot"></span><span class="dl-marquee__item"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M3 10l9-6 9 6M5 10v9M9 10v9M15 10v9M19 10v9M3 21h18" stroke="#2F6FED" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Без банка</span></span><span class="dl-marquee__dot"></span><span class="dl-marquee__item"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M12 2l2.9 6.3 6.9.7-5.2 4.6 1.6 6.8L12 16.9 5.8 20.4l1.6-6.8L2.2 9l6.9-.7L12 2z" stroke="#2F6FED" stroke-width="1.6" stroke-linejoin="round"/></svg><span>Новые и с пробегом</span></span><span class="dl-marquee__dot"></span><span class="dl-marquee__item"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M4 7h13l-3-3M20 17H7l3 3" stroke="#2F6FED" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Аренда авто с выкупом</span></span><span class="dl-marquee__dot"></span><span class="dl-marquee__item"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M3 10l9-6 9 6M5 10v9M9 10v9M15 10v9M19 10v9M3 21h18" stroke="#2F6FED" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Лизинг для физ. и юр.лиц</span></span><span class="dl-marquee__dot"></span></div></div>
 
 <div class="dl-wrap">
   <nav class="dl-breadcrumb" aria-label="Хлебные крошки">
@@ -342,7 +343,7 @@ CONTENT_PAGE_TEMPLATE = '''<!DOCTYPE html>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Onest:wght@500;600;700;800&family=Golos+Text:wght@400;500;600;700&display=swap">
-<link rel="stylesheet" href="../../assets/site.css">
+<link rel="stylesheet" href="../../assets/site.css?v=20261006">
 <script type="application/ld+json">{breadcrumb_schema}</script>
 </head>
 <body>
@@ -358,6 +359,7 @@ CONTENT_PAGE_TEMPLATE = '''<!DOCTYPE html>
   </div>
 </div>
 {catnav}
+<div class="dl-marquee"><div class="dl-marquee__track"><span class="dl-marquee__item"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M12 2L4 5v6c0 5 3.4 9.4 8 11 4.6-1.6 8-6 8-11V5l-8-3z" stroke="#2F6FED" stroke-width="2" stroke-linejoin="round"/><path d="M9 12l2 2 4-4" stroke="#2F6FED" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>92% одобрений</span></span><span class="dl-marquee__dot"></span><span class="dl-marquee__item"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M6 2h9l5 5v15H6V2z" stroke="#2F6FED" stroke-width="2" stroke-linejoin="round"/><path d="M9 13h6M9 17h6" stroke="#2F6FED" stroke-width="2" stroke-linecap="round"/></svg><span>По 2 документам</span></span><span class="dl-marquee__dot"></span><span class="dl-marquee__item"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M4 7h13l-3-3M20 17H7l3 3" stroke="#2F6FED" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Trade-in</span></span><span class="dl-marquee__dot"></span><span class="dl-marquee__item"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M3 13l2-6h14l2 6v5h-3M6 18H3v-5M9 18h6" stroke="#2F6FED" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="7" cy="17" r="1.6" stroke="#2F6FED" stroke-width="2"/><circle cx="17" cy="17" r="1.6" stroke="#2F6FED" stroke-width="2"/></svg><span>Более 60 автомобилей</span></span><span class="dl-marquee__dot"></span><span class="dl-marquee__item"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M3 10l9-6 9 6M5 10v9M9 10v9M15 10v9M19 10v9M3 21h18" stroke="#2F6FED" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Без банка</span></span><span class="dl-marquee__dot"></span><span class="dl-marquee__item"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M12 2l2.9 6.3 6.9.7-5.2 4.6 1.6 6.8L12 16.9 5.8 20.4l1.6-6.8L2.2 9l6.9-.7L12 2z" stroke="#2F6FED" stroke-width="1.6" stroke-linejoin="round"/></svg><span>Новые и с пробегом</span></span><span class="dl-marquee__dot"></span><span class="dl-marquee__item"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M4 7h13l-3-3M20 17H7l3 3" stroke="#2F6FED" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Аренда авто с выкупом</span></span><span class="dl-marquee__dot"></span><span class="dl-marquee__item"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M3 10l9-6 9 6M5 10v9M9 10v9M15 10v9M19 10v9M3 21h18" stroke="#2F6FED" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Лизинг для физ. и юр.лиц</span></span><span class="dl-marquee__dot"></span><span class="dl-marquee__item"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M12 2L4 5v6c0 5 3.4 9.4 8 11 4.6-1.6 8-6 8-11V5l-8-3z" stroke="#2F6FED" stroke-width="2" stroke-linejoin="round"/><path d="M9 12l2 2 4-4" stroke="#2F6FED" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>92% одобрений</span></span><span class="dl-marquee__dot"></span><span class="dl-marquee__item"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M6 2h9l5 5v15H6V2z" stroke="#2F6FED" stroke-width="2" stroke-linejoin="round"/><path d="M9 13h6M9 17h6" stroke="#2F6FED" stroke-width="2" stroke-linecap="round"/></svg><span>По 2 документам</span></span><span class="dl-marquee__dot"></span><span class="dl-marquee__item"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M4 7h13l-3-3M20 17H7l3 3" stroke="#2F6FED" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Trade-in</span></span><span class="dl-marquee__dot"></span><span class="dl-marquee__item"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M3 13l2-6h14l2 6v5h-3M6 18H3v-5M9 18h6" stroke="#2F6FED" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="7" cy="17" r="1.6" stroke="#2F6FED" stroke-width="2"/><circle cx="17" cy="17" r="1.6" stroke="#2F6FED" stroke-width="2"/></svg><span>Более 60 автомобилей</span></span><span class="dl-marquee__dot"></span><span class="dl-marquee__item"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M3 10l9-6 9 6M5 10v9M9 10v9M15 10v9M19 10v9M3 21h18" stroke="#2F6FED" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Без банка</span></span><span class="dl-marquee__dot"></span><span class="dl-marquee__item"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M12 2l2.9 6.3 6.9.7-5.2 4.6 1.6 6.8L12 16.9 5.8 20.4l1.6-6.8L2.2 9l6.9-.7L12 2z" stroke="#2F6FED" stroke-width="1.6" stroke-linejoin="round"/></svg><span>Новые и с пробегом</span></span><span class="dl-marquee__dot"></span><span class="dl-marquee__item"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M4 7h13l-3-3M20 17H7l3 3" stroke="#2F6FED" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Аренда авто с выкупом</span></span><span class="dl-marquee__dot"></span><span class="dl-marquee__item"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M3 10l9-6 9 6M5 10v9M9 10v9M15 10v9M19 10v9M3 21h18" stroke="#2F6FED" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Лизинг для физ. и юр.лиц</span></span><span class="dl-marquee__dot"></span></div></div>
 
 <div class="dl-wrap">
   <nav class="dl-breadcrumb" aria-label="Хлебные крошки">
@@ -489,7 +491,7 @@ def render_subscribe_slide():
       <div class="dl-banner-subscribe__title">Узнавайте первыми<span>о новых предложениях</span></div>
       <p class="dl-banner-subscribe__text">В наших каналах публикуем выгодные автомобили, актуальные предложения и полезные советы.</p>
       <a class="dl-banner-subscribe__btn dl-banner-subscribe__btn--max" href="{MAX_CHANNEL_URL}" target="_blank" rel="noopener">
-        <span class="dl-banner-subscribe__btn-ico"><img src="../../images/icons3d/max-badge.png" alt=""></span>
+        <span class="dl-banner-subscribe__btn-ico"><img src="../../images/icons3d/max-badge.webp" alt=""></span>
         <span>Перейти в MAX</span>
         <span class="dl-banner-subscribe__btn-arrow">→</span>
       </a>
@@ -607,7 +609,7 @@ CONTACTS_BODY = CONTACTS_SCHEMA + '''
 <ul class="dl-content-page__facts">
 <li>📞 Телефон: <a href="tel:+79950527683">+7 995 052-76-83</a>, ежедневно с 9:00 до 21:00</li>
 <li>📍 Адрес: г. Иркутск, ул. Байкальская, 208 (отдел продаж)</li>
-<li>💬 Telegram: <a href="https://t.me/avtohere38" target="_blank" rel="noopener">написать нам</a></li>
+<li>💬 Telegram: <a href="https://t.me/drivelizing" target="_blank" rel="noopener">написать нам</a></li>
 <li>💬 MAX: <a href="https://max.ru/u/f9LHodD0cOJwdXPtIRKpSznrrNNKwx-l7-HcyIykYTEMu3kGUgp9u4vTgm8" target="_blank" rel="noopener">написать нам</a></li>
 </ul>
 <p>Быстрее всего отвечаем в мессенджерах — там же можно скинуть ссылку на объявление или фото машины, если ищете что-то конкретное.</p>
@@ -1378,6 +1380,13 @@ def render_hero_banner(car, min_week, slug):
     <div class="dl-hero-banner__points">{points}</div>
   </div>'''
 
+def render_sticky_order(car, min_week, slug):
+    price_html = f'от <b>{fmt_money(min_week)}</b> <span>в нед.</span>' if min_week is not None else '<b>Цена по запросу</b>'
+    return f'''<div class="dl-sticky-order">
+    <div class="dl-sticky-order__price">{price_html}</div>
+    <a class="dl-sticky-order__btn" href="#calc">Быстрый заказ<svg viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+  </div>'''
+
 DESC_OPENERS = [
     "{title} {year_bit}в нашем автопарке, {body_bit}готов к передаче в лизинг прямо сейчас.",
     "Смотрите {title}{year_bit2}, один из автомобилей, которые уже стоят у нас {body_bit2}и ждут нового пользователя.",
@@ -1734,7 +1743,7 @@ FOOTER_HTML = '''<footer class="dl-footer">
           <a class="dl-footer__updates" href="https://t.me/drivelizing" target="_blank" rel="noopener">Будьте в курсе наших новостей<svg viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
           <div class="dl-footer__social-icons">
             <a class="dl-footer__social-ico" href="https://t.me/drivelizing" target="_blank" rel="noopener" aria-label="Telegram"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="12" fill="#29A9EB"/><path d="M17.53 7.2L15.4 17.6c-.16.72-.58.9-1.18.56l-3.26-2.4-1.57 1.51c-.17.18-.32.33-.66.33l.24-3.36 6.1-5.51c.27-.24-.06-.37-.41-.13l-7.54 4.75-3.25-1.02c-.7-.22-.72-.7.15-1.04l12.7-4.9c.59-.22 1.1.14.9 1.05z" fill="#fff"/></svg></a>
-            <a class="dl-footer__social-ico" href="https://max.ru/id30954831331_biz" target="_blank" rel="noopener" aria-label="MAX"><img src="../../images/icons3d/max-badge.png" alt="MAX"></a>
+            <a class="dl-footer__social-ico" href="https://max.ru/id30954831331_biz" target="_blank" rel="noopener" aria-label="MAX"><img src="../../images/icons3d/max-badge.webp" alt="MAX"></a>
           </div>
         </div>
       </div>
@@ -1747,6 +1756,7 @@ FOOTER_HTML = '''<footer class="dl-footer">
           <li><a href="../../faq/">Вопросы и ответы</a></li>
           <li><a href="../../contacts/">Контакты</a></li>
           <li><a href="../../privacy.html">Политика конфиденциальности</a></li>
+          <li><a href="../../terms.html">Пользовательское соглашение</a></li>
         </ul>
       </div>
       <div>
@@ -1762,17 +1772,17 @@ FOOTER_HTML = '''<footer class="dl-footer">
           </div>
           <div class="dl-footer__contact-item">
             <span class="dl-footer__contact-badge"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="12" fill="#29A9EB"/><path d="M17.53 7.2L15.4 17.6c-.16.72-.58.9-1.18.56l-3.26-2.4-1.57 1.51c-.17.18-.32.33-.66.33l.24-3.36 6.1-5.51c.27-.24-.06-.37-.41-.13l-7.54 4.75-3.25-1.02c-.7-.22-.72-.7.15-1.04l12.7-4.9c.59-.22 1.1.14.9 1.05z" fill="#fff"/></svg></span>
-            <div class="dl-footer__contact-body"><a href="https://t.me/avtohere38" target="_blank" rel="noopener">Telegram<div class="dl-footer__contact-sub">Написать нам</div></a></div>
+            <div class="dl-footer__contact-body"><a href="https://t.me/drivelizing" target="_blank" rel="noopener">Telegram<div class="dl-footer__contact-sub">Написать нам</div></a></div>
           </div>
           <div class="dl-footer__contact-item">
-            <span class="dl-footer__contact-badge"><img src="../../images/icons3d/max-badge.png" alt=""></span>
+            <span class="dl-footer__contact-badge"><img src="../../images/icons3d/max-badge.webp" alt=""></span>
             <div class="dl-footer__contact-body"><a href="https://max.ru/u/f9LHodD0cOJwdXPtIRKpSznrrNNKwx-l7-HcyIykYTEMu3kGUgp9u4vTgm8" target="_blank" rel="noopener">MAX<div class="dl-footer__contact-sub">Написать нам</div></a></div>
           </div>
         </div>
       </div>
       <div class="dl-footer__promo">
         <div class="dl-footer__promo-text">Уезжайте на новом автомобиле<br><span>уже сегодня</span></div>
-        <img src="../../images/icons3d/footer-promo-car.png" alt="">
+        <img src="../../images/icons3d/footer-promo-car.webp" alt="">
       </div>
     </div>
     <div class="dl-footer__bottom">
@@ -1818,10 +1828,10 @@ PAGE_TEMPLATE = '''<!DOCTYPE html>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Onest:wght@500;600;700;800&family=Golos+Text:wght@400;500;600;700&family=Caveat:wght@600;700&display=swap">
-<link rel="stylesheet" href="../../assets/site.css">
+<link rel="stylesheet" href="../../assets/site.css?v=20261006">
 {schema}
 </head>
-<body>
+<body class="dl-has-sticky-order">
 <div class="dl-topbar">
   <div class="dl-topbar__inner">
     <a href="../../" class="dl-topbar__logo">
@@ -1834,6 +1844,7 @@ PAGE_TEMPLATE = '''<!DOCTYPE html>
   </div>
 </div>
 {catnav}
+<div class="dl-marquee"><div class="dl-marquee__track"><span class="dl-marquee__item"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M12 2L4 5v6c0 5 3.4 9.4 8 11 4.6-1.6 8-6 8-11V5l-8-3z" stroke="#2F6FED" stroke-width="2" stroke-linejoin="round"/><path d="M9 12l2 2 4-4" stroke="#2F6FED" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>92% одобрений</span></span><span class="dl-marquee__dot"></span><span class="dl-marquee__item"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M6 2h9l5 5v15H6V2z" stroke="#2F6FED" stroke-width="2" stroke-linejoin="round"/><path d="M9 13h6M9 17h6" stroke="#2F6FED" stroke-width="2" stroke-linecap="round"/></svg><span>По 2 документам</span></span><span class="dl-marquee__dot"></span><span class="dl-marquee__item"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M4 7h13l-3-3M20 17H7l3 3" stroke="#2F6FED" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Trade-in</span></span><span class="dl-marquee__dot"></span><span class="dl-marquee__item"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M3 13l2-6h14l2 6v5h-3M6 18H3v-5M9 18h6" stroke="#2F6FED" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="7" cy="17" r="1.6" stroke="#2F6FED" stroke-width="2"/><circle cx="17" cy="17" r="1.6" stroke="#2F6FED" stroke-width="2"/></svg><span>Более 60 автомобилей</span></span><span class="dl-marquee__dot"></span><span class="dl-marquee__item"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M3 10l9-6 9 6M5 10v9M9 10v9M15 10v9M19 10v9M3 21h18" stroke="#2F6FED" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Без банка</span></span><span class="dl-marquee__dot"></span><span class="dl-marquee__item"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M12 2l2.9 6.3 6.9.7-5.2 4.6 1.6 6.8L12 16.9 5.8 20.4l1.6-6.8L2.2 9l6.9-.7L12 2z" stroke="#2F6FED" stroke-width="1.6" stroke-linejoin="round"/></svg><span>Новые и с пробегом</span></span><span class="dl-marquee__dot"></span><span class="dl-marquee__item"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M4 7h13l-3-3M20 17H7l3 3" stroke="#2F6FED" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Аренда авто с выкупом</span></span><span class="dl-marquee__dot"></span><span class="dl-marquee__item"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M3 10l9-6 9 6M5 10v9M9 10v9M15 10v9M19 10v9M3 21h18" stroke="#2F6FED" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Лизинг для физ. и юр.лиц</span></span><span class="dl-marquee__dot"></span><span class="dl-marquee__item"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M12 2L4 5v6c0 5 3.4 9.4 8 11 4.6-1.6 8-6 8-11V5l-8-3z" stroke="#2F6FED" stroke-width="2" stroke-linejoin="round"/><path d="M9 12l2 2 4-4" stroke="#2F6FED" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>92% одобрений</span></span><span class="dl-marquee__dot"></span><span class="dl-marquee__item"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M6 2h9l5 5v15H6V2z" stroke="#2F6FED" stroke-width="2" stroke-linejoin="round"/><path d="M9 13h6M9 17h6" stroke="#2F6FED" stroke-width="2" stroke-linecap="round"/></svg><span>По 2 документам</span></span><span class="dl-marquee__dot"></span><span class="dl-marquee__item"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M4 7h13l-3-3M20 17H7l3 3" stroke="#2F6FED" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Trade-in</span></span><span class="dl-marquee__dot"></span><span class="dl-marquee__item"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M3 13l2-6h14l2 6v5h-3M6 18H3v-5M9 18h6" stroke="#2F6FED" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="7" cy="17" r="1.6" stroke="#2F6FED" stroke-width="2"/><circle cx="17" cy="17" r="1.6" stroke="#2F6FED" stroke-width="2"/></svg><span>Более 60 автомобилей</span></span><span class="dl-marquee__dot"></span><span class="dl-marquee__item"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M3 10l9-6 9 6M5 10v9M9 10v9M15 10v9M19 10v9M3 21h18" stroke="#2F6FED" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Без банка</span></span><span class="dl-marquee__dot"></span><span class="dl-marquee__item"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M12 2l2.9 6.3 6.9.7-5.2 4.6 1.6 6.8L12 16.9 5.8 20.4l1.6-6.8L2.2 9l6.9-.7L12 2z" stroke="#2F6FED" stroke-width="1.6" stroke-linejoin="round"/></svg><span>Новые и с пробегом</span></span><span class="dl-marquee__dot"></span><span class="dl-marquee__item"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M4 7h13l-3-3M20 17H7l3 3" stroke="#2F6FED" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Аренда авто с выкупом</span></span><span class="dl-marquee__dot"></span><span class="dl-marquee__item"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M3 10l9-6 9 6M5 10v9M9 10v9M15 10v9M19 10v9M3 21h18" stroke="#2F6FED" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Лизинг для физ. и юр.лиц</span></span><span class="dl-marquee__dot"></span></div></div>
 
 <div class="dl-wrap">
   <nav class="dl-breadcrumb" aria-label="Хлебные крошки">
@@ -1909,6 +1920,8 @@ PAGE_TEMPLATE = '''<!DOCTYPE html>
 </div>
 
 {cookie_banner}
+
+{sticky_order}
 
 <script src="../../assets/car-page.js"></script>
 </body>
@@ -2038,6 +2051,7 @@ def main():
             title_js=html.escape(title).replace('"','&quot;'),
             badges=render_badges2(),
             hero_banner=render_hero_banner(c, min_week, slug),
+            sticky_order=render_sticky_order(c, min_week, slug),
             subtitle=render_subtitle(spec_d),
             hero_top_right=render_hero_top_right(c),
             gallery=render_gallery(c['photos'], title),
