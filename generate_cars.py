@@ -144,6 +144,56 @@ TERM_LABELS = {"12": "12 мес", "24": "24 мес", "36": "36 мес"}
 def car_title(car):
     return f"{car['marka'].strip()} {car['model'].strip()}"
 
+def unique_car_titles(cars):
+    """Title для <title> страницы машины без дублей: у одинаковых моделей
+    добавляем год, затем цвет, затем пробег, в крайнем случае артикул.
+    Яндекс помечает повторяющиеся title как проблему SEO."""
+    groups = {}
+    for c in cars:
+        base = f"{c['marka'].strip()} {c['model'].strip()}"
+        groups.setdefault(base, []).append(c['art'])
+    cars_by_art = {c['art']: c for c in cars}
+    result = {}
+
+    def candidate(art, base, level):
+        c = cars_by_art[art]
+        parts = [base]
+        if level >= 1 and c.get('year'):
+            parts.append(str(c['year']))
+        if level >= 2:
+            color = parse_spec(c.get('spec')).get('color')
+            if color:
+                parts.append(color)
+        if level >= 3:
+            m = re.search(r'([\d\s]{3,})\s*км', c.get('spec') or '')
+            if m:
+                try:
+                    th = int(m.group(1).replace(' ', '')) // 1000
+                    parts.append(f"{th} тыс. км")
+                except ValueError:
+                    pass
+        if level >= 4:
+            parts.append(f"({c['art']})")
+        return ' '.join(parts)
+
+    for base, arts in groups.items():
+        if len(arts) == 1:
+            result[arts[0]] = base
+            continue
+        for level in range(0, 5):
+            assigned, seen = {}, set()
+            for art in arts:
+                key = candidate(art, base, level).lower()
+                if key in seen:
+                    assigned = None
+                    break
+                seen.add(key)
+                assigned[art] = candidate(art, base, level)
+            if assigned:
+                result.update(assigned)
+                break
+    return result
+
 def build_calculator_data(car):
     # JSON blob embedded per-page for the small vanilla-JS toggle script
     return json.dumps(car['variants'], ensure_ascii=False)
@@ -2023,6 +2073,7 @@ def main():
     catnav_content1 = render_catnav(brand_links_tpl.format(base='../../'), kuzov_links_tpl.format(base='../../'), base='../../', active=None)
 
     os.makedirs(CARS_DIR, exist_ok=True)
+    uniq_titles = unique_car_titles(cars)
     urls = []
     for c in cars:
         slug = slugs_by_art[c['art']]
@@ -2034,7 +2085,7 @@ def main():
         canonical = f"{SITE_URL}/cars/{slug}/"
         og_image = photo_abs(c['photos'][0]) if c.get('photos') else f"{SITE_URL}/logo.png"
         price_bit = f" от {fmt_money(min_week)}/нед" if min_week is not None else ""
-        title_tag = f"{title} в лизинг в Иркутске без банка{price_bit} · Драйв Лизинг"
+        title_tag = f"{uniq_titles.get(c['art'], title)} в лизинг в Иркутске без банка{price_bit} · Драйв Лизинг"
         price_sentence = f" Платёж от {fmt_money(min_week)} в неделю." if min_week is not None else " Точная цена по запросу у менеджера."
         meta_desc = f"{title}, {spec_d['raw']}. Лизинг и аренда с выкупом в Иркутске, взнос от 0%, оформление по 2 документам.{price_sentence}"
         marka_slug = brand_slugs[c['marka'].strip()]
@@ -2191,14 +2242,16 @@ def main():
         listing_urls.append(canonical)
 
     # sitemap (separate file for review, not overwriting the live one yet)
+    from datetime import date
+    sitemap_lastmod = date.today().isoformat()
     sitemap = ['<?xml version="1.0" encoding="UTF-8"?>', '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">']
-    sitemap.append(f'  <url><loc>{SITE_URL}/</loc><changefreq>daily</changefreq><priority>1.0</priority></url>')
-    sitemap.append(f'  <url><loc>{SITE_URL}/catalog.html</loc><changefreq>daily</changefreq><priority>0.9</priority></url>')
-    sitemap.append(f'  <url><loc>{SITE_URL}/privacy.html</loc><changefreq>monthly</changefreq><priority>0.3</priority></url>')
+    sitemap.append(f'  <url><loc>{SITE_URL}/</loc><lastmod>{sitemap_lastmod}</lastmod><changefreq>daily</changefreq><priority>1.0</priority></url>')
+    sitemap.append(f'  <url><loc>{SITE_URL}/catalog.html</loc><lastmod>{sitemap_lastmod}</lastmod><changefreq>daily</changefreq><priority>0.9</priority></url>')
+    sitemap.append(f'  <url><loc>{SITE_URL}/privacy.html</loc><lastmod>{sitemap_lastmod}</lastmod><changefreq>monthly</changefreq><priority>0.3</priority></url>')
     for u in urls:
-        sitemap.append(f'  <url><loc>{u}</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>')
+        sitemap.append(f'  <url><loc>{u}</loc><lastmod>{sitemap_lastmod}</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>')
     for u in listing_urls:
-        sitemap.append(f'  <url><loc>{u}</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>')
+        sitemap.append(f'  <url><loc>{u}</loc><lastmod>{sitemap_lastmod}</lastmod><changefreq>weekly</changefreq><priority>0.6</priority></url>')
     sitemap.append('</urlset>')
     with open(os.path.join(BASE_DIR, "sitemap_generated.xml"), "w", encoding="utf-8") as f:
         f.write("\n".join(sitemap))
