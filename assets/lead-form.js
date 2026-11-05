@@ -97,12 +97,23 @@ function buildLeadForm(container, opts){
     consentField.classList.remove('is-error');
   });
 
+  // Ловушка для ботов (honeypot): люди поле не видят и не заполняют,
+  // боты автозаполнением заполняют. Worker молча отбрасывает такие заявки.
+  var honeypotInput = document.createElement('input');
+  honeypotInput.type = 'text';
+  honeypotInput.name = 'website';
+  honeypotInput.tabIndex = -1;
+  honeypotInput.autocomplete = 'off';
+  honeypotInput.setAttribute('aria-hidden', 'true');
+  honeypotInput.style.cssText = 'position:absolute;left:-10000px;top:auto;width:1px;height:1px;overflow:hidden;';
+
   container.appendChild(nameField);
   container.appendChild(phoneField);
   container.appendChild(commentField);
   container.appendChild(consentField);
   container.appendChild(errorMsg);
   container.appendChild(submitBtn);
+  container.appendChild(honeypotInput);
 
   submitBtn.addEventListener('click', function(){
     var name = nameInput.value.trim();
@@ -128,6 +139,7 @@ function buildLeadForm(container, opts){
       name: name,
       phone: phone,
       comment: commentInput.value.trim(),
+      website: honeypotInput.value,
       createdAt: new Date().toISOString()
     }, opts.extra || {});
 

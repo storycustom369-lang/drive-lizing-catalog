@@ -123,12 +123,22 @@
     submitBtn.type = "button";
     submitBtn.textContent = "Забронировать автомобиль";
 
+    // Ловушка для ботов (honeypot): люди поле не видят, боты заполняют.
+    var honeypotInput = document.createElement("input");
+    honeypotInput.type = "text";
+    honeypotInput.name = "website";
+    honeypotInput.tabIndex = -1;
+    honeypotInput.autocomplete = "off";
+    honeypotInput.setAttribute("aria-hidden", "true");
+    honeypotInput.style.cssText = "position:absolute;left:-10000px;top:auto;width:1px;height:1px;overflow:hidden;";
+
     modal.appendChild(nameField);
     modal.appendChild(phoneField);
     modal.appendChild(commentField);
     modal.appendChild(consentField);
     modal.appendChild(errorMsg);
     modal.appendChild(submitBtn);
+    modal.appendChild(honeypotInput);
 
     submitBtn.addEventListener("click", function(){
       var name = nameInput.value.trim();
@@ -155,6 +165,7 @@
         name: name,
         phone: phone,
         comment: commentInput.value.trim(),
+        website: honeypotInput.value,
         createdAt: new Date().toISOString(),
         carArt: opts.art,
         carTitle: opts.carTitle,
@@ -295,12 +306,22 @@
     submitBtn.type = "button";
     submitBtn.textContent = "Отправить заявку";
 
+    // Ловушка для ботов (honeypot): люди поле не видят, боты заполняют.
+    var honeypotInput = document.createElement("input");
+    honeypotInput.type = "text";
+    honeypotInput.name = "website";
+    honeypotInput.tabIndex = -1;
+    honeypotInput.autocomplete = "off";
+    honeypotInput.setAttribute("aria-hidden", "true");
+    honeypotInput.style.cssText = "position:absolute;left:-10000px;top:auto;width:1px;height:1px;overflow:hidden;";
+
     modal.appendChild(nameField);
     modal.appendChild(phoneField);
     modal.appendChild(commentField);
     modal.appendChild(consentField);
     modal.appendChild(errorMsg);
     modal.appendChild(submitBtn);
+    modal.appendChild(honeypotInput);
 
     submitBtn.addEventListener("click", function(){
       var name = nameInput.value.trim();
@@ -327,6 +348,7 @@
         name: name,
         phone: phone,
         comment: commentInput.value.trim(),
+        website: honeypotInput.value,
         createdAt: new Date().toISOString(),
         source: "car-page:" + location.pathname
       };
